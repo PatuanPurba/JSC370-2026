@@ -5,7 +5,7 @@
 ### Where and When
 * Instructor: [Meredith Franklin](https://meredithfranklin.github.io)
   * Email: <meredith.franklin@utoronto.ca>, please put "JSC370" in the subject line.
-* Teaching Assistant: Johnny Meng and Mandy Yao
+* Teaching Assistants: Johnny Meng and Mandy Yao
 * Time: Mondays (Lecture) and Wednesdays (Lab), 1-3pm
 * Location: MS 3278 (Mondays),  (Wednesdays)
 * Office hours: TBD
@@ -16,7 +16,7 @@
 ### Weekly Course Schedule
 
 | Week | Dates | Topics / Weekly Activities | Due (Weds labs 11:59pm; Fri HW 11:59pm) |
-|---|---|---|---|
+|-----|-------|-------|-----|
 | **Week 1** | January 5 (lecture), January 7 (lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
 | **Week 2** | January 12 (lecture), January 14 (lab) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
 | **Week 3** | January 19 (lecture), January 21 (lab) | Exploratory Data Analysis | **Lab 3** |
