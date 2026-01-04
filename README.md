@@ -17,19 +17,19 @@
 
 | Week | Dates | Topics / Weekly Activities | Due (Weds labs 11:59pm; Fri HW 11:59pm) |
 |---|---|---|---|
-| **Week 1** | January 5 (lecture) | January 7 (lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
-| **Week 2** | January 12 (lecture)  | January 14 (lab) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
-| **Week 3** | January 19 (lecture)  | January 21 (lab) | Exploratory Data Analysis | **Lab 3** |
-| **Week 4** | January 26 (lecture)  | January 28 (lab) | Data visualization | **HW1**, **Lab 4** |
-| **Week 5** | February 2 (lecture)  | February 4 (lab) | Data cleaning and wrangling; ML 1 | **Lab 5** |
-| **Week 6** | February 9 (lecture)  | February 11 (lab) | Regular expressions; data scraping; using APIs | **HW2**, **Lab 6** |
+| **Week 1** | January 5 (lecture), January 7 (lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
+| **Week 2** | January 12 (lecture), January 14 (lab) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
+| **Week 3** | January 19 (lecture), January 21 (lab) | Exploratory Data Analysis | **Lab 3** |
+| **Week 4** | January 26 (lecture), January 28 (lab) | Data visualization | **HW1**, **Lab 4** |
+| **Week 5** | February 2 (lecture), February 4 (lab) | Data cleaning and wrangling; ML 1 | **Lab 5** |
+| **Week 6** | February 9 (lecture), February 11 (lab) | Regular expressions; data scraping; using APIs | **HW2**, **Lab 6** |
 | **Week 7** | February 16 | Reading Week |  |
-| **Week 8** | February 23 (lecture)  | February 25 (lab) | Text mining, LLMs | **Lab 8** |
-| **Week 9** | March 2 (lecture)  | March 4 (lab) | High performance computing; cloud computing | **HW3**, **Lab 9** |
-| **Week 10** | March 9 (lecture)  | March 11 (lab) | ML 2 (trees, random forests, boosting) | **Midterm**, **Lab 10** |
-| **Week 11** | March 16 (lecture)  | March 18 (lab) | Interactive visualization & effective data communication I | **Lab 11** |
-| **Week 12** | March 23 (lecture)  | March 25 (lab) | Interactive visualization & effective data communication II | **HW4**, **Lab 12** |
-| **Week 13** | March 30  | April 1 | Final Project Workshop | **HW5** |
+| **Week 8** | February 23 (lecture), February 25 (lab) | Text mining, LLMs | **Lab 8** |
+| **Week 9** | March 2 (lecture), March 4 (lab) | High performance computing; cloud computing | **HW3**, **Lab 9** |
+| **Week 10** | March 9 (lecture), March 11 (lab) | ML 2 (trees, random forests, boosting) | **Midterm**, **Lab 10** |
+| **Week 11** | March 16 (lecture), March 18 (lab) | Interactive visualization & effective data communication I | **Lab 11** |
+| **Week 12** | March 23 (lecture), March 25 (lab) | Interactive visualization & effective data communication II | **HW4**, **Lab 12** |
+| **Week 13** | March 30 (lecture), April 1 (lab) | Wrap-Up  | **HW5** |
 | **Week 15** | April 27 |  | **Final Project** |
 
 ### Grading Breakdown
