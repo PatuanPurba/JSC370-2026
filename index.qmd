@@ -10,15 +10,19 @@ subtitle: "Winter 2026 · University of Toronto"
   * Email: <meredith.franklin@utoronto.ca>, please put "JSC370" in the subject line.
 * Teaching Assistants: Johnny Meng and Mandy Yao
 * Time: Mondays (Lecture) and Wednesdays (Lab), 1-3pm
-* Location: MS 3278 (Mondays),  (Wednesdays)
+* Location: MS 3278 (Mondays), HS 108 (Wednesdays)
 * Office hours: TBD
 * Course Forum: Piazza
+
+### Course Description
+
+This course serves as the second in a series of courses on data science. We will focus on the acquisition and analysis of real-life data. Students will learn the toolsets needed to 1) create workable and reproducible data by accessing, scraping, sampling and cleaning data; 2) conduct exploratory data analysis and data visualizations; 3) apply statistical and machine learning tools to learn from data; 4) conduct computing on remote systems. Python, VS Code, Quarto, and GitHub will be used.
 
 ### Weekly Course Schedule
 
 | Week | Dates | Topics / Weekly Activities | Due (end of day): <br> Labs Wed,  HW Sun|
-|-----|-----------|-----------------|---------|
-| **Week 1** | January 5 (lecture) <br> January 7 (lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
+|-----|--------------|-----------------|---------|
+| **Week 1** | January 5 [(lecture)](slides/JSC370-slides-01.html) <br> January 7 (lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
 | **Week 2** | January 12 (lecture) <br> January 14 (lab) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
 | **Week 3** | January 19 (lecture) <br> January 21 (lab) | Exploratory Data Analysis | **Lab 3** |
 | **Week 4** | January 26 (lecture) <br> January 28 (lab) | Data visualization | **HW1**, **Lab 4** |
@@ -26,7 +30,7 @@ subtitle: "Winter 2026 · University of Toronto"
 | **Week 6** | February 9 (lecture) <br> February 11 (lab) | Regular expressions; data scraping; using APIs | **HW2**, **Lab 6** |
 | **Week 7** | February 16 | Reading Week |  |
 | **Week 8** | February 23 (lecture) <br> February 25 (lab) | Text mining, LLMs | **Lab 8** |
-| **Week 9** | March 2 (lecture) <br> March 4 (lab) | High performance computing; cloud computing | **HW3**, **Lab 9** |
+| **Week 9** | March 2 (lecture) <br> March 4 (lab) | SQL, High performance computing; cloud computing | **HW3**, **Lab 9** |
 | **Week 10** | March 9 (lecture) <br> March 11 (lab) | ML 2 (trees, random forests, boosting) | **Midterm**, **Lab 10** |
 | **Week 11** | March 16 (lecture) <br> March 18 (lab) | Interactive visualization & effective data communication | **Lab 11** |
 | **Week 12** | March 23 (lecture) <br> March 25 (lab) | Building Website and Interactive Apps | **HW4**, **Lab 12** |
@@ -41,6 +45,14 @@ subtitle: "Winter 2026 · University of Toronto"
 |Homework (5)|25|
 |Midterm report|25|
 |Final project|35|
+
+* Homework: There will be 5 homeworks given throughout the semester. Students may discuss the problems with one another; however, individual solutions must be submitted and copying will not be tolerated. All homework must be completed in Quarto (.qmd) using Python code chunks, and submitted through the course GitHub Classroom. Late assignments will be penalized by 10% per day past the due date.
+
+* Midterm Project: A mid-semester report detailing the dataset you will use for the final project. Exploratory data analysis, visualizations, and summaries of the data will be presented.
+
+* Final Project: Apply the concepts learned in the course to analyze a dataset that you have chosen. Create and deploy a GitHub website with interactive components.
+
+* Labs: Lab attendance and participation is required and counts toward the overall lab grade. The lab assignment will be handed in at the end of the lab (or by the end of the lab day if more time is needed). The lowest lab grade will be dropped in calculating your final grade.
 
 ### Readings (Not Required)
 
@@ -106,81 +118,81 @@ Many of these websites provide APIs and/or bulk downloads.
 
 ### Canadian Data
 
-- Government of Canada Open Data (Open Government Portal): https://open.canada.ca/en
-- Statistics Canada (Census + surveys): https://www12.statcan.gc.ca/census-recensement/index-eng.cfm
-- Statistics Canada Web Data Service (API): https://www.statcan.gc.ca/en/microdata/api
-- Canada GIS Data: https://canadiangis.com/
-- University of Toronto Library (Geospatial data guides): https://guides.library.utoronto.ca/c.php?g=250719&p=4976498
-- City of Toronto Open Data: https://open.toronto.ca/
-- Toronto Police Service Open Data: https://data.torontopolice.on.ca/pages/open-data
-- Ontario Data Catalogue: https://data.ontario.ca/
-- Public Health Ontario Open Data: https://www.publichealthontario.ca/en/data-and-analysis/using-data/open-data
-- British Columbia Data Catalogue: https://catalogue.data.gov.bc.ca/
+- [Government of Canada Open Data (Open Government Portal)](https://open.canada.ca/en)
+- [Statistics Canada (Census + surveys)](https://www12.statcan.gc.ca/census-recensement/index-eng.cfm)
+- [Statistics Canada Web Data Service (API)](https://www.statcan.gc.ca/en/microdata/api)
+- [Canada GIS Data](https://canadiangis.com/)
+- [University of Toronto Library (Geospatial data guides)](https://guides.library.utoronto.ca/c.php?g=250719&p=4976498)
+- [City of Toronto Open Data](https://open.toronto.ca/)
+- [Toronto Police Service Open Data](https://data.torontopolice.on.ca/pages/open-data)
+- [Ontario Data Catalogue](https://data.ontario.ca/)
+- [Public Health Ontario Open Data](https://www.publichealthontario.ca/en/data-and-analysis/using-data/open-data)
+- [British Columbia Data Catalogue](https://catalogue.data.gov.bc.ca/)
 
 ### Environmental and Climate Data
 
-- US EPA Air Quality Data: https://www.epa.gov/outdoor-air-quality-data
-- US EPA AQS Data API (Air Quality System): https://aqs.epa.gov/aqsweb/documents/ramltohtml.html
-- NOAA National Centers for Environmental Information (NCEI): https://www.ncei.noaa.gov/
-- NOAA NCEI Access Data Service (API): https://www.ncei.noaa.gov/support/access-data-service-api-user-documentation
-- North American Regional Climate Change Assessment Program (NARCCAP): https://narccap.ucar.edu/
-- Natural Resources Canada (Geospatial data/tools): https://natural-resources.canada.ca/science-data/data-analysis/geospatial-data-tools-services/geospatial-data-tools-services
-- Coastal wave / buoy data (CDIP, UCSD): https://cdip.ucsd.edu/m/deployment/station_view/
-- Great Lakes Bathymetry (NOAA): https://www.ncei.noaa.gov/products/great-lakes-bathymetry
-- US Energy Information Administration (EIA): https://www.eia.gov/
+- [US EPA Air Quality Data](https://www.epa.gov/outdoor-air-quality-data)
+- [US EPA AQS Data API (Air Quality System)](https://aqs.epa.gov/aqsweb/documents/ramltohtml.html)
+- [NOAA National Centers for Environmental Information (NCEI)](https://www.ncei.noaa.gov/)
+- [NOAA NCEI Access Data Service (API)](https://www.ncei.noaa.gov/support/access-data-service-api-user-documentation)
+- [North American Regional Climate Change Assessment Program (NARCCAP)](https://narccap.ucar.edu/)
+- [Natural Resources Canada (Geospatial data/tools)](https://natural-resources.canada.ca/science-data/data-analysis/geospatial-data-tools-services/geospatial-data-tools-services)
+- [Coastal wave / buoy data (CDIP, UCSD)](https://cdip.ucsd.edu/m/deployment/station_view/)
+- [Great Lakes Bathymetry (NOAA)](https://www.ncei.noaa.gov/products/great-lakes-bathymetry)
+- [US Energy Information Administration (EIA)](https://www.eia.gov/)
 
 ### International and Global Data
 
-- UN Geospatial Hub: https://geoservices.un.org/webapps/geohub/
-- UNdata API manual: https://data.un.org/Host.aspx?Content=API
-- World Bank Open Data: https://data.worldbank.org/
-- World Bank Developer / API info: https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information
-- FAO FAOSTAT (global food/agriculture stats): https://www.fao.org/faostat/en/#data
-- FAOSTAT API entry point: https://faostatservices.fao.org/api/v1
-- NASA Earthdata (data catalog): https://www.earthdata.nasa.gov/data/catalog
+- [UN Geospatial Hub](https://geoservices.un.org/webapps/geohub/)
+- [UNdata API manual](https://data.un.org/Host.aspx?Content=API)
+- [World Bank Open Data](https://data.worldbank.org/)
+- [World Bank Developer / API info](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589-developer-information)
+- [FAO FAOSTAT (global food/agriculture stats)](https://www.fao.org/faostat/en/#data)
+- [FAOSTAT API entry point](https://faostatservices.fao.org/api/v1)
+- [NASA Earthdata (data catalog)](https://www.earthdata.nasa.gov/data/catalog)
 
 ### US Data
 
-- Data.gov (catalog): https://catalog.data.gov/
-- Data.gov Geospatial datasets: https://catalog.data.gov/dataset/?metadata_type=geospatial
-- US Census (NHGIS): https://www.nhgis.org/
-- NYU Spatial Data Repository: https://geo.nyu.edu/
-- Google Earth Engine datasets: https://developers.google.com/earth-engine/datasets/
-- Google Dataset Search: https://datasetsearch.research.google.com/
-- FiveThirtyEight data (GitHub): https://github.com/fivethirtyeight/data
-- Los Angeles Open Data: https://data.lacity.org/
+- [Data.gov (catalog)](https://catalog.data.gov/)
+- [Data.gov Geospatial datasets](https://catalog.data.gov/dataset/?metadata_type=geospatial)
+- [US Census (NHGIS)](https://www.nhgis.org/)
+- [NYU Spatial Data Repository](https://geo.nyu.edu/)
+- [Google Earth Engine datasets](https://developers.google.com/earth-engine/datasets/)
+- [Google Dataset Search](https://datasetsearch.research.google.com/)
+- [FiveThirtyEight data (GitHub)](https://github.com/fivethirtyeight/data)
+- [Los Angeles Open Data](https://data.lacity.org/)
 
 ### Health and Biological Data
 
-- SEER (NIH/NCI cancer surveillance): https://seer.cancer.gov/
-- World Health Organization (GHO OData API): https://www.who.int/data/gho/info/gho-odata-api
-- CDC Open Data: https://data.cdc.gov/
-- California Health & Human Services Open Data: https://data.chhs.ca.gov/
-- Canada COVID tracking (community project): https://covid19tracker.ca/
-- UniProt (proteins): https://www.uniprot.org/
-- Gene Ontology: http://geneontology.org/
+- [SEER (NIH/NCI cancer surveillance)](https://seer.cancer.gov/)
+- [World Health Organization (GHO OData API)](https://www.who.int/data/gho/info/gho-odata-api)
+- [CDC Open Data](https://data.cdc.gov/)
+- [California Health & Human Services Open Data](https://data.chhs.ca.gov/)
+- [Canada COVID tracking (community project)](https://covid19tracker.ca/)
+- [UniProt (proteins)](https://www.uniprot.org/)
+- [Gene Ontology](http://geneontology.org/)
 
 ### News, Media, and Text Data
 
-- New York Times APIs (specs repo): https://github.com/NYTimes/public_api_specs
-- The Guardian Open Platform: https://open-platform.theguardian.com/
-- GDELT Project (global news/events): https://www.gdeltproject.org/
-- Common Crawl (web archive): https://commoncrawl.org/get-started
-- Wikipedia / Wikimedia APIs (MediaWiki REST API): https://www.mediawiki.org/wiki/API:REST_API/en
+- [New York Times APIs (specs repo)](https://github.com/NYTimes/public_api_specs)
+- [The Guardian Open Platform](https://open-platform.theguardian.com/)
+- [GDELT Project (global news/events)](https://www.gdeltproject.org/)
+- [Common Crawl (web archive)](https://commoncrawl.org/get-started)
+- [Wikipedia / Wikimedia APIs (MediaWiki REST API)](https://www.mediawiki.org/wiki/API:REST_API/en)
 
 ### Social Networks and Platforms
 
-- X (Twitter) Developer Platform: https://developer.twitter.com/
-- GitHub REST API: https://docs.github.com/en/rest
-- Instagram Platform (Graph API docs live under Meta for Developers): https://developers.facebook.com/docs/instagram-api/
-- LinkedIn API documentation (Microsoft Learn): https://learn.microsoft.com/en-us/linkedin/
-- Spotify Web API: https://developer.spotify.com/documentation/web-api
-- Zillow Group Data & APIs: https://www.zillowgroup.com/developers/
+- [X (Twitter) Developer Platform](https://developer.twitter.com/)
+- [GitHub REST API](https://docs.github.com/en/rest)
+- [Instagram Platform](https://developers.facebook.com/docs/instagram-api/)
+- [LinkedIn API documentation (Microsoft Learn)](https://learn.microsoft.com/en-us/linkedin/)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api)
+- [Zillow Group Data & APIs](https://www.zillowgroup.com/developers/)
 
 ### Academic Publications and Research Data
 
-- Figshare: https://figshare.com/
-- Zenodo: https://zenodo.org/
-- Harvard Dataverse: https://dataverse.harvard.edu/
-- Elsevier Developer APIs: https://dev.elsevier.com/
-- OpenAlex (scholarly metadata + API): https://docs.openalex.org/
+- [Figshare](https://figshare.com/)
+- [Zenodo](https://zenodo.org/)
+- [Harvard Dataverse](https://dataverse.harvard.edu/)
+- [Elsevier Developer APIs](https://dev.elsevier.com/)
+- [OpenAlex (scholarly metadata + API)](https://docs.openalex.org/)
