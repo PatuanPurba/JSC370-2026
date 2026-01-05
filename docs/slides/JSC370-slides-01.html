@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="dcterms.date" content="2026-01-05">
+  <title>JSC 370: Data Science II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-534cd8e3a96973385dffff3f4709048d.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">JSC 370: Data Science II</h1>
+  <p class="subtitle">Week 1: Introduction</p>
+
+<div class="quarto-title-authors">
+</div>
+
+  <p class="date">2026-01-05</p>
+</section>
+<section id="course-details" class="slide level2">
+<h2>Course Details</h2>
+<p>Lectures: <strong>Mondays 1–3pm</strong>, MS 3278<br>
+Labs: <strong>Wednesdays 1–3pm</strong>, HS 108</p>
+<ul>
+<li class="fragment">Meredith Franklin: meredith.franklin@utoronto.ca</li>
+<li class="fragment">TAs: Johnny Meng and Mandy Yao</li>
+</ul>
+</section>
+<section id="my-background" class="slide level2">
+<h2>My Background</h2>
+<ul>
+<li class="fragment">In late 2021 moved from Los Angeles where I was an Assistant/Associate Professor of Biostatistics at University of Southern California</li>
+<li class="fragment">From Canada: McGill (BSc), Ottawa/Carleton Institute of Math (MSc), Harvard (PhD), UChicago (postdoc)</li>
+<li class="fragment">Here I’m an Associate Professor with tenure in the Department of Statistical Science (51%) and the School of the Environment (49%)</li>
+<li class="fragment">I am the Data Science Concentration Lead for the MScAC</li>
+<li class="fragment">I am on the executive committee for the U of T Data Science Institute</li>
+</ul>
+</section>
+<section id="my-teaching" class="slide level2">
+<h2>My Teaching</h2>
+<ul>
+<li class="fragment">Founded a Master’s of Health Data Science program at USC that launched in 2020</li>
+<li class="fragment">Co-taught the introduction data science course</li>
+<li class="fragment">Taught graduate-level spatial statistics, inference, linear models</li>
+<li class="fragment">At U of T I teach STA465/STA2016/ENV1112 (Spatial Data Analysis) and I have also taught STA255 (Statistical Theory) and ENV1197 (Research Methods)</li>
+</ul>
+</section>
+<section id="my-research" class="slide level2">
+<h2>My Research</h2>
+<ul>
+<li class="fragment">Spatial statistical methods for environmental data</li>
+<li class="fragment">Environmental epidemiology</li>
+<li class="fragment">Data science techniques for remote sensing data/imagery</li>
+<li class="fragment">Focus on pollution (air, noise) and climate (ghg, land cover change)</li>
+<li class="fragment">Machine learning/Deep learning for spatiotemporal data</li>
+</ul>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/research_fig.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="course-goals" class="slide level2">
+<h2>Course Goals</h2>
+<p>Through this course, you will hone techniques used in data science. You will learn:</p>
+<ul>
+<li class="fragment">Programming in <strong>Python</strong>, and tools <strong>Markdown/Quarto</strong>, <strong>Git</strong></li>
+<li class="fragment">Exploratory data analysis — generating hypotheses and building intuition</li>
+<li class="fragment">Data visualization — interpretable summaries</li>
+<li class="fragment">Data collection — APIs, data scraping, wrangling, cleaning</li>
+<li class="fragment">Statistical and machine learning algorithms</li>
+<li class="fragment">Building a <strong>github.io</strong> website with interaction to communicate your work</li>
+</ul>
+</section>
+<section id="course-platforms" class="slide level2">
+<h2>Course Platforms</h2>
+<ul>
+<li class="fragment"><p><strong>Course website</strong>: weekly breakdown, lecture slides, labs, datasets<br>
+<code>https://jsc370.github.io/JSC370-2026/</code></p></li>
+<li class="fragment"><p><strong>Quercus</strong>: announcements, Piazza discussion, grades, course logistics</p></li>
+</ul>
+</section>
+<section id="what-is-data-science" class="slide level2">
+<h2>What is data science?</h2>
+<ul>
+<li class="fragment">Data science is an exciting discipline that allows you to turn raw data into understanding, insight, and knowledge.</li>
+</ul>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/data-science.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+<p>Source: https://r4ds.hadley.nz/</p>
+</div>
+</section>
+<section id="what-do-data-scientists-actually-do" class="slide level2">
+<h2>What do data scientists actually do?</h2>
+<ul>
+<li class="fragment">Frame a question and define success (what would convince you?)</li>
+<li class="fragment">Acquire data (files, databases, APIs, scraping)</li>
+<li class="fragment">Clean + validate (units, missingness, duplicates, joins)</li>
+<li class="fragment">Explore (EDA) → iterate → refine hypotheses</li>
+<li class="fragment">Model + evaluate (prediction, inference, uncertainty)</li>
+<li class="fragment">Communicate results (reports, dashboards, reproducible code)</li>
+</ul>
+</section>
+<section id="data-scientists-have-great-responsibility-to-communicate-effectively" class="slide level2">
+<h2>Data Scientists have great responsibility to communicate effectively</h2>
+
+<img data-src="https://imgs.xkcd.com/comics/extrapolating.png" class="quarto-figure quarto-figure-center r-stretch" width="500"><p>Source: https://xkcd.com/605/</p>
+</section>
+<section id="why-communication-matters-in-data-science" class="slide level2">
+<h2>Why communication matters in Data Science</h2>
+<ul>
+<li class="fragment">Opaque models without uncertainty estimation or discussion of limitations</li>
+<li class="fragment">Biased or unrepresentative data may lead to biased predictions</li>
+<li class="fragment">Confounding <span class="math inline">\(\ne\)</span> causation (EDA can sometimes mislead)</li>
+<li class="fragment">Overfitting and weak validation</li>
+</ul>
+</section>
+<section id="top-job-titles" class="slide level2">
+<h2>Top Job Titles</h2>
+
+<img data-src="img/ds2023.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="data-scientists-in-demand" class="slide level2">
+<h2>Data Scientists in Demand</h2>
+<ul>
+<li class="fragment">Demand for data science skills is high across many sectors.</li>
+<li class="fragment">Skills show up again and again:
+<ul>
+<li class="fragment">Python + libraries (pandas, numpy, sklearn)</li>
+<li class="fragment">SQL + relational thinking (joins, grouping)</li>
+<li class="fragment">Visualization + storytelling (matplotlib/plotline/plotly)</li>
+<li class="fragment">Reproducibility (git, environments, reports)</li>
+<li class="fragment">Communication (clear write-ups, assumptions, limitations)</li>
+</ul></li>
+</ul>
+</section>
+<section id="global-labor-market-outlook" class="slide level2">
+<h2>Global labor market outlook</h2>
+<p>World Economic Forum (Future of Jobs Report 2025) projects that by <strong>2030</strong>:</p>
+<ul>
+<li class="fragment"><strong>170 million</strong> roles created (across the labor market)</li>
+<li class="fragment"><strong>92 million</strong> roles displaced</li>
+<li class="fragment"><strong>Net +78 million</strong> jobs (<strong>~7%</strong> net growth)</li>
+</ul>
+<p>These totals reflect <em>all</em> occupations (not just AI). Data/AI roles show up when we look at the <strong>fastest-growing job families</strong>. Source: <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/digest/">World Economic Forum</a></p>
+</section>
+<section id="which-jobs-are-growing-fastest" class="slide level2">
+<h2>Which jobs are growing fastest?</h2>
+<p>Fastest-growing roles (percentage terms) include:</p>
+<ul>
+<li class="fragment"><strong>Big Data Specialists</strong></li>
+<li class="fragment"><strong>AI and Machine Learning Specialists</strong></li>
+<li class="fragment"><strong>FinTech Engineers</strong></li>
+<li class="fragment"><strong>Software and Application Developers</strong></li>
+</ul>
+</section>
+<section id="the-data-behind-the-plot" class="slide level2">
+<h2>The data behind the plot</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th style="text-align: right;">Value (millions)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Jobs created</td>
+<td style="text-align: right;">170</td>
+</tr>
+<tr class="even">
+<td>Jobs displaced</td>
+<td style="text-align: right;">92</td>
+</tr>
+<tr class="odd">
+<td>Net change</td>
+<td style="text-align: right;">78</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="visualization-of-these-data" class="slide level2">
+<h2>Visualization of these data</h2>
+<div id="3ee7f7f6" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="1">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a></a>labels <span class="op">=</span> [<span class="st">"Jobs created"</span>, <span class="st">"Jobs displaced"</span>, <span class="st">"Net change"</span>]</span>
+<span id="cb1-3"><a></a>vals <span class="op">=</span> [<span class="dv">170</span>, <span class="dv">92</span>, <span class="dv">78</span>]  <span class="co"># WEF article summary</span></span>
+<span id="cb1-4"><a></a>plt.figure()</span>
+<span id="cb1-5"><a></a>plt.bar(labels, vals)</span>
+<span id="cb1-6"><a></a>plt.ylabel(<span class="st">"Millions of jobs"</span>)</span>
+<span id="cb1-7"><a></a>plt.title(<span class="st">"Projected global job changes by 2030 (WEF)"</span>)</span>
+<span id="cb1-8"><a></a>plt.tight_layout()</span>
+<span id="cb1-9"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-01_files/figure-revealjs/cell-2-output-1.png" width="950" height="470"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="what-is-this-course" class="slide level2">
+<h2>What is this course?</h2>
+<p>This course is an introduction to the world of data science following on from where JSC270 left off.</p>
+<p>We will focus on <strong>transferable</strong> skills and modern workflows:</p>
+<ul>
+<li class="fragment"><strong>Python + VS Code</strong> for computing</li>
+<li class="fragment"><strong>Quarto</strong> for reproducible reports/slides</li>
+<li class="fragment"><strong>Git/GitHub</strong> for version control and collaboration</li>
+</ul>
+</section>
+<section id="what-you-should-expect" class="slide level2">
+<h2>What you should expect</h2>
+<ul>
+<li class="fragment">Weekly labs and bi-weekly homework using Python + Quarto</li>
+<li class="fragment">Submissions via GitHub Classroom (version control matters)</li>
+<li class="fragment">Focus on reproducibility: clean repos, clear reports, runnable code</li>
+<li class="fragment">Collaboration encouraged for discussion, but write-ups/code must be your own</li>
+</ul>
+</section>
+<section id="data-science-resources-python" class="slide level2">
+<h2>Data Science Resources: Python</h2>
+<ul>
+<li class="fragment"><strong><a href="https://wesmckinney.com/book/">Python for Data Analysis (3e)</a></strong> — Wes McKinney
+<ul>
+<li class="fragment">Focus: <strong>pandas + NumPy + Jupyter</strong> for data wrangling, cleaning, and analysis<br>
+</li>
+<li class="fragment">Good for: practical workflows and “how to do it in pandas”</li>
+</ul></li>
+<li class="fragment"><strong><a href="https://jakevdp.github.io/PythonDataScienceHandbook/">Python Data Science Handbook</a></strong> — Jake VanderPlas
+<ul>
+<li class="fragment">Focus: core stack <strong>NumPy, pandas, Matplotlib</strong>, plus intro ML tooling<br>
+</li>
+<li class="fragment">Bonus: full text is online and backed by notebooks:
+<ul>
+<li class="fragment"><strong><a href="https://github.com/jakevdp/PythonDataScienceHandbook/">GitHub notebooks repo</a></strong></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="python-and-vs-code" class="slide level2">
+<h2>Python and VS Code</h2>
+<ul>
+<li class="fragment"><strong>Python</strong>: general-purpose language widely used for data science</li>
+<li class="fragment"><strong>VS Code</strong>: a lightweight, extensible editor with strong Python + notebook support</li>
+</ul>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/VS-code-screen.png" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="what-is-vs-code" class="slide level2">
+<h2>What is VS Code?</h2>
+<ul>
+<li class="fragment">An editor for <strong>code, notebooks, and markdown</strong></li>
+<li class="fragment">Works well with:
+<ul>
+<li class="fragment">Python environments (conda/venv)</li>
+<li class="fragment">Jupyter notebooks</li>
+<li class="fragment">Connecting to remote environments (e.g.&nbsp;Digital Alliance Canada, AWS)</li>
+<li class="fragment">Git/GitHub</li>
+<li class="fragment">Quarto render/preview</li>
+</ul></li>
+</ul>
+</section>
+<section id="vs-code-things-youll-use-every-week" class="slide level2">
+<h2>VS Code: Things you’ll use every week</h2>
+<ul>
+<li class="fragment">Select the correct Python environment</li>
+<li class="fragment">Integrated terminal (run <code>quarto render</code>, <code>git</code>, <code>ssh</code>)</li>
+<li class="fragment">Source control panel (stage/commit/push)</li>
+<li class="fragment">Quarto preview for slides/reports</li>
+</ul>
+</section>
+<section id="vs-code-layout" class="slide level2">
+<h2>VS Code: Layout</h2>
+
+<img data-src="img/VS-code-screen2.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
+<section id="quarto-and-python-and-vs-code" class="slide level2">
+<h2>Quarto and Python and VS Code</h2>
+<ul>
+<li class="fragment"><strong>Quarto</strong>: markdown-based publishing for reports, sites, and slides</li>
+</ul>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/VS-quarto.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="how-does-quarto-work" class="slide level2">
+<h2>How does Quarto work?</h2>
+<div class="fragment">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/quarto-flow.png" class="quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+</div>
+<ul>
+<li class="fragment">You write a single source file (<code>.qmd</code>) that mixes <strong>text</strong>, <strong>code</strong>, and <strong>output options</strong> (YAML + chunk options).</li>
+<li class="fragment">Quarto executes code (e.g., Python via Jupyter) and captures <strong>tables, figures, and printed output</strong>.</li>
+<li class="fragment">It renders the document through <strong>Pandoc</strong> into a chosen format (HTML report, reveal.js slides, PDF, Word, etc.).</li>
+<li class="fragment">The final output is a <strong>self-contained deliverable</strong> (e.g., <code>report.html</code>) that can be shared or published.</li>
+</ul>
+</section>
+<section id="generating-reports-with-quarto" class="slide level2">
+<h2>Generating reports with Quarto</h2>
+<ul>
+<li class="fragment">A Quarto document is a plain-text file with extension <strong><code>.qmd</code></strong>.</li>
+<li class="fragment">At the top is a <strong>YAML header</strong> that controls metadata and output (title, author, date, format, options).</li>
+<li class="fragment">The <code>format</code> field determines what Quarto produces:
+<ul>
+<li class="fragment"><code>html</code> → a web report (<code>.html</code>)</li>
+<li class="fragment"><code>pdf</code> → a PDF report (LaTeX installed)</li>
+<li class="fragment"><code>docx</code> → a Word document</li>
+<li class="fragment"><code>revealjs</code> → slides</li>
+</ul></li>
+</ul>
+</section>
+<section id="generating-reports-with-quarto-1" class="slide level2">
+<h2>Generating reports with Quarto</h2>
+<p>An example yaml header for an html report</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a></a><span class="pp">---</span></span>
+<span id="cb2-2"><a></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Report"</span></span>
+<span id="cb2-3"><a></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span>
+<span id="cb2-4"><a></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li class="fragment">Rendering turns <code>MyReport.qmd</code> into <code>MyReport.html</code> (and supporting files if needed).</li>
+<li class="fragment">Core command: <code>quarto render MyReport.qmd</code></li>
+</ul>
+</section>
+<section id="quarto-code-chunks" class="slide level2">
+<h2>Quarto code chunks</h2>
+<p>A code chunk might look like this:</p>
+
+<img data-src="img/quarto-codechunk.png" class="quarto-figure quarto-figure-center r-stretch" style="width:90.0%"></section>
+<section id="quarto-code-chunks-1" class="slide level2">
+<h2>Quarto code chunks</h2>
+<div id="1e758fdb" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-2"><a></a>plt.plot([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">9</span>])</span>
+<span id="cb3-3"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-01_files/figure-revealjs/cell-3-output-1.png" width="781" height="411"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="quarto-code-chunks-2" class="slide level2">
+<h2>Quarto code chunks</h2>
+<p>Preamble (options):</p>
+<p><code>echo</code>: show/hide code</p>
+<p><code>eval</code>: run or skip</p>
+<p><code>fig-width</code> / <code>fig-height</code>: control plot size</p>
+</section>
+<section id="quarto-code-chunks-and-options" class="slide level2">
+<h2>Quarto Code chunks and options</h2>
+<p>Code:</p>
+<p><code>import</code>: libraries</p>
+<p><code>.plot</code>, <code>.show</code>: make figures and display them</p>
+</section>
+<section id="github" class="slide level2">
+<h2>GitHub</h2>
+<ul>
+<li class="fragment">Version control is essential in industry and academia</li>
+<li class="fragment">Building a GitHub portfolio supports job hunting</li>
+<li class="fragment">You will build a <strong>github.io</strong> website as part of this course, with interactivity and app-type features</li>
+</ul>
+<div class="fragment">
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/git1.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/git2.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+</div>
+</section>
+<section id="git-vs-github" class="slide level2">
+<h2>Git vs GitHub</h2>
+<ul>
+<li class="fragment"><strong>Git</strong>: version control tool on your computer</li>
+<li class="fragment"><strong>GitHub</strong>: hosting + collaboration (remote repos, PRs, issues)</li>
+<li class="fragment">Workflow: edit → commit (git) → push (to GitHub)</li>
+</ul>
+</section>
+<section id="this-week-checklist" class="slide level2">
+<h2>This week: checklist</h2>
+<ul>
+<li class="fragment">Install Python + VS Code + Quarto</li>
+<li class="fragment">Clone your GitHub Classroom repo</li>
+<li class="fragment">Render a <code>.qmd</code> locally</li>
+<li class="fragment">Commit + push your changes</li>
+<li class="fragment">Lab will be on your own this week, starting in person next week, January 14!</li>
+</ul>
+</section>
+<section id="next-week" class="slide level2">
+<h2>Next Week</h2>
+<ul>
+<li class="fragment">Lecture: Monday January 12, 1–3pm (Version control)</li>
+<li class="fragment">Lab: Wednesday January 14, 1–3pm (VS Code, Python, Quarto, GitHub)</li>
+</ul>
+</section>
+<section class="slide level2">
+
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
