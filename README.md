@@ -1,6 +1,8 @@
 ## JSC370: Data Science II (Winter 2026), University of Toronto
 
-<img src="assets/datascience.png" width="400">
+<p align="center">
+  <img src="assets/datascience.png" width="400">
+</p>
 
 ### Where and When
 * Instructor: [Meredith Franklin](https://meredithfranklin.github.io)
@@ -11,12 +13,10 @@
 * Office hours: TBD
 * Course Forum: Piazza
 
-
-
 ### Weekly Course Schedule
 
-| Week | Dates | Topics / Weekly Activities | Due (Weds labs 11:59pm; Fri HW 11:59pm) |
-|-------|---------|---------|--------|
+| Week | Dates | Topics / Weekly Activities | Due: Labs Wed 11:59pm,  <br> HW Fri 11:59pm |
+|-------|--------------|---------|------------------|
 | **Week 1** | January 5 (lecture) <br> January 7 (lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
 | **Week 2** | January 12 (lecture) <br> January 14 (lab) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
 | **Week 3** | January 19 (lecture) <br> January 21 (lab) | Exploratory Data Analysis | **Lab 3** |
@@ -47,6 +47,7 @@
 * [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/), Jake VanderPlas.
 * [The Turing Way](https://book.the-turing-way.org/): Reproducible, ethical, and collaborative data science.
 * [Pro Git (online book)](https://git-scm.com/book/en/v2), Scott Chacon and Ben Straub.
+* [An Introduction to Statistical Learning](https://www.statlearning.com/), 2023 James, Witten, Hastie, Tibshirani, Taylor
 
 
 # Resources
@@ -81,9 +82,6 @@
 
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Python](https://www.python.org/)
-- Environment managers:
-  - [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/install)
-  - [uv (Astral)](https://docs.astral.sh/uv/)
 - Core libraries:
   - [pandas](https://pandas.pydata.org/docs/)
   - [NumPy](https://numpy.org/doc/stable/)
@@ -97,21 +95,14 @@
   - [Quarto](https://quarto.org/)
   - [Pandoc](https://pandoc.org/)
   - [Git](https://git-scm.com/)
-  - [GNU Make](https://www.gnu.org/software/make/)
-- Code quality:
-  - [Ruff](https://github.com/astral-sh/ruff)
-  - [Ruff pre-commit hook](https://github.com/astral-sh/ruff-pre-commit)
-
-## Course Infrastructure (GitHub)
-
-- [GitHub](http://github.com)
-- [GitHub Classroom](https://docs.github.com/en/education/manage-coursework-with-github-classroom/get-started-with-github-classroom)
-- [GitHub Pages](https://docs.github.com/en/pages)
+  - [GitHub](http://github.com)
+  - [GitHub Classroom](https://docs.github.com/en/education/manage-coursework-with-github-classroom/get-started-with-github-classroom)
+  - [GitHub Pages](https://docs.github.com/en/pages)
 
 
 ## Data
 
-Many of these websites provide APIs and/or bulk downloads for programmatic access.
+Many of these websites provide APIs and/or bulk downloads.
 
 ### Canadian Data
 
