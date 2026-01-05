@@ -1,245 +1,245 @@
 [
   {
-    "objectID": "slides/JSC370-slides-01.html#course-details",
-    "href": "slides/JSC370-slides-01.html#course-details",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#course-details",
+    "href": "slides/01-introduction/JSC370-slides-01.html#course-details",
     "title": "JSC 370: Data Science II",
     "section": "Course Details",
     "text": "Course Details\nLectures: Mondays 1–3pm, MS 3278\nLabs: Wednesdays 1–3pm, HS 108\n\nMeredith Franklin: meredith.franklin@utoronto.ca\nTAs: Johnny Meng and Mandy Yao"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#my-background",
-    "href": "slides/JSC370-slides-01.html#my-background",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#my-background",
+    "href": "slides/01-introduction/JSC370-slides-01.html#my-background",
     "title": "JSC 370: Data Science II",
     "section": "My Background",
     "text": "My Background\n\nIn late 2021 moved from Los Angeles where I was an Assistant/Associate Professor of Biostatistics at University of Southern California\nFrom Canada: McGill (BSc), Ottawa/Carleton Institute of Math (MSc), Harvard (PhD), UChicago (postdoc)\nHere I’m an Associate Professor with tenure in the Department of Statistical Science (51%) and the School of the Environment (49%)\nI am the Data Science Concentration Lead for the MScAC\nI am on the executive committee for the U of T Data Science Institute"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#my-teaching",
-    "href": "slides/JSC370-slides-01.html#my-teaching",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#my-teaching",
+    "href": "slides/01-introduction/JSC370-slides-01.html#my-teaching",
     "title": "JSC 370: Data Science II",
     "section": "My Teaching",
     "text": "My Teaching\n\nFounded a Master’s of Health Data Science program at USC that launched in 2020\nCo-taught the introduction data science course\nTaught graduate-level spatial statistics, inference, linear models\nAt U of T I teach STA465/STA2016/ENV1112 (Spatial Data Analysis) and I have also taught STA255 (Statistical Theory) and ENV1197 (Research Methods)"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#my-research",
-    "href": "slides/JSC370-slides-01.html#my-research",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#my-research",
+    "href": "slides/01-introduction/JSC370-slides-01.html#my-research",
     "title": "JSC 370: Data Science II",
     "section": "My Research",
     "text": "My Research\n\nSpatial statistical methods for environmental data\nEnvironmental epidemiology\nData science techniques for remote sensing data/imagery\nFocus on pollution (air, noise) and climate (ghg, land cover change)\nMachine learning/Deep learning for spatiotemporal data"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#course-goals",
-    "href": "slides/JSC370-slides-01.html#course-goals",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#course-goals",
+    "href": "slides/01-introduction/JSC370-slides-01.html#course-goals",
     "title": "JSC 370: Data Science II",
     "section": "Course Goals",
     "text": "Course Goals\nThrough this course, you will hone techniques used in data science. You will learn:\n\nProgramming in Python, and tools Markdown/Quarto, Git\nExploratory data analysis — generating hypotheses and building intuition\nData visualization — interpretable summaries\nData collection — APIs, data scraping, wrangling, cleaning\nStatistical and machine learning algorithms\nBuilding a github.io website with interaction to communicate your work"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#course-platforms",
-    "href": "slides/JSC370-slides-01.html#course-platforms",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#course-platforms",
+    "href": "slides/01-introduction/JSC370-slides-01.html#course-platforms",
     "title": "JSC 370: Data Science II",
     "section": "Course Platforms",
     "text": "Course Platforms\n\nCourse website: weekly breakdown, lecture slides, labs, datasets\nhttps://jsc370.github.io/JSC370-2026/\nQuercus: announcements, Piazza discussion, grades, course logistics"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#what-is-data-science",
-    "href": "slides/JSC370-slides-01.html#what-is-data-science",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#what-is-data-science",
+    "href": "slides/01-introduction/JSC370-slides-01.html#what-is-data-science",
     "title": "JSC 370: Data Science II",
     "section": "What is data science?",
     "text": "What is data science?\n\nData science is an exciting discipline that allows you to turn raw data into understanding, insight, and knowledge.\n\n\n\n\n\n\n\nSource: https://r4ds.hadley.nz/"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#what-do-data-scientists-actually-do",
-    "href": "slides/JSC370-slides-01.html#what-do-data-scientists-actually-do",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#what-do-data-scientists-actually-do",
+    "href": "slides/01-introduction/JSC370-slides-01.html#what-do-data-scientists-actually-do",
     "title": "JSC 370: Data Science II",
     "section": "What do data scientists actually do?",
     "text": "What do data scientists actually do?\n\nFrame a question and define success (what would convince you?)\nAcquire data (files, databases, APIs, scraping)\nClean + validate (units, missingness, duplicates, joins)\nExplore (EDA) → iterate → refine hypotheses\nModel + evaluate (prediction, inference, uncertainty)\nCommunicate results (reports, dashboards, reproducible code)"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#data-scientists-have-great-responsibility-to-communicate-effectively",
-    "href": "slides/JSC370-slides-01.html#data-scientists-have-great-responsibility-to-communicate-effectively",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#data-scientists-have-great-responsibility-to-communicate-effectively",
+    "href": "slides/01-introduction/JSC370-slides-01.html#data-scientists-have-great-responsibility-to-communicate-effectively",
     "title": "JSC 370: Data Science II",
     "section": "Data Scientists have great responsibility to communicate effectively",
     "text": "Data Scientists have great responsibility to communicate effectively\n\nSource: https://xkcd.com/605/"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#why-communication-matters-in-data-science",
-    "href": "slides/JSC370-slides-01.html#why-communication-matters-in-data-science",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#why-communication-matters-in-data-science",
+    "href": "slides/01-introduction/JSC370-slides-01.html#why-communication-matters-in-data-science",
     "title": "JSC 370: Data Science II",
     "section": "Why communication matters in Data Science",
     "text": "Why communication matters in Data Science\n\nOpaque models without uncertainty estimation or discussion of limitations\nBiased or unrepresentative data may lead to biased predictions\nConfounding \\(\\ne\\) causation (EDA can sometimes mislead)\nOverfitting and weak validation"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#top-job-titles",
-    "href": "slides/JSC370-slides-01.html#top-job-titles",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#top-job-titles",
+    "href": "slides/01-introduction/JSC370-slides-01.html#top-job-titles",
     "title": "JSC 370: Data Science II",
     "section": "Top Job Titles",
     "text": "Top Job Titles"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#data-scientists-in-demand",
-    "href": "slides/JSC370-slides-01.html#data-scientists-in-demand",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#data-scientists-in-demand",
+    "href": "slides/01-introduction/JSC370-slides-01.html#data-scientists-in-demand",
     "title": "JSC 370: Data Science II",
     "section": "Data Scientists in Demand",
     "text": "Data Scientists in Demand\n\nDemand for data science skills is high across many sectors.\nSkills show up again and again:\n\nPython + libraries (pandas, numpy, sklearn)\nSQL + relational thinking (joins, grouping)\nVisualization + storytelling (matplotlib/plotline/plotly)\nReproducibility (git, environments, reports)\nCommunication (clear write-ups, assumptions, limitations)"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#global-labor-market-outlook",
-    "href": "slides/JSC370-slides-01.html#global-labor-market-outlook",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#global-labor-market-outlook",
+    "href": "slides/01-introduction/JSC370-slides-01.html#global-labor-market-outlook",
     "title": "JSC 370: Data Science II",
     "section": "Global labor market outlook",
     "text": "Global labor market outlook\nWorld Economic Forum (Future of Jobs Report 2025) projects that by 2030:\n\n170 million roles created (across the labor market)\n92 million roles displaced\nNet +78 million jobs (~7% net growth)\n\nThese totals reflect all occupations (not just AI). Data/AI roles show up when we look at the fastest-growing job families. Source: World Economic Forum"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#which-jobs-are-growing-fastest",
-    "href": "slides/JSC370-slides-01.html#which-jobs-are-growing-fastest",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#which-jobs-are-growing-fastest",
+    "href": "slides/01-introduction/JSC370-slides-01.html#which-jobs-are-growing-fastest",
     "title": "JSC 370: Data Science II",
     "section": "Which jobs are growing fastest?",
     "text": "Which jobs are growing fastest?\nFastest-growing roles (percentage terms) include:\n\nBig Data Specialists\nAI and Machine Learning Specialists\nFinTech Engineers\nSoftware and Application Developers"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#the-data-behind-the-plot",
-    "href": "slides/JSC370-slides-01.html#the-data-behind-the-plot",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#the-data-behind-the-plot",
+    "href": "slides/01-introduction/JSC370-slides-01.html#the-data-behind-the-plot",
     "title": "JSC 370: Data Science II",
     "section": "The data behind the plot",
     "text": "The data behind the plot\n\n\n\nQuantity\nValue (millions)\n\n\n\n\nJobs created\n170\n\n\nJobs displaced\n92\n\n\nNet change\n78"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#visualization-of-these-data",
-    "href": "slides/JSC370-slides-01.html#visualization-of-these-data",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#visualization-of-these-data",
+    "href": "slides/01-introduction/JSC370-slides-01.html#visualization-of-these-data",
     "title": "JSC 370: Data Science II",
     "section": "Visualization of these data",
     "text": "Visualization of these data\n\n\nShow code\nimport matplotlib.pyplot as plt\nlabels = [\"Jobs created\", \"Jobs displaced\", \"Net change\"]\nvals = [170, 92, 78]  # WEF article summary\nplt.figure()\nplt.bar(labels, vals)\nplt.ylabel(\"Millions of jobs\")\nplt.title(\"Projected global job changes by 2030 (WEF)\")\nplt.tight_layout()\nplt.show()"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#what-is-this-course",
-    "href": "slides/JSC370-slides-01.html#what-is-this-course",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#what-is-this-course",
+    "href": "slides/01-introduction/JSC370-slides-01.html#what-is-this-course",
     "title": "JSC 370: Data Science II",
     "section": "What is this course?",
     "text": "What is this course?\nThis course is an introduction to the world of data science following on from where JSC270 left off.\nWe will focus on transferable skills and modern workflows:\n\nPython + VS Code for computing\nQuarto for reproducible reports/slides\nGit/GitHub for version control and collaboration"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#what-you-should-expect",
-    "href": "slides/JSC370-slides-01.html#what-you-should-expect",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#what-you-should-expect",
+    "href": "slides/01-introduction/JSC370-slides-01.html#what-you-should-expect",
     "title": "JSC 370: Data Science II",
     "section": "What you should expect",
     "text": "What you should expect\n\nWeekly labs and bi-weekly homework using Python + Quarto\nSubmissions via GitHub Classroom (version control matters)\nFocus on reproducibility: clean repos, clear reports, runnable code\nCollaboration encouraged for discussion, but write-ups/code must be your own"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#data-science-resources-python",
-    "href": "slides/JSC370-slides-01.html#data-science-resources-python",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#data-science-resources-python",
+    "href": "slides/01-introduction/JSC370-slides-01.html#data-science-resources-python",
     "title": "JSC 370: Data Science II",
     "section": "Data Science Resources: Python",
     "text": "Data Science Resources: Python\n\nPython for Data Analysis (3e) — Wes McKinney\n\nFocus: pandas + NumPy + Jupyter for data wrangling, cleaning, and analysis\n\nGood for: practical workflows and “how to do it in pandas”\n\nPython Data Science Handbook — Jake VanderPlas\n\nFocus: core stack NumPy, pandas, Matplotlib, plus intro ML tooling\n\nBonus: full text is online and backed by notebooks:\n\nGitHub notebooks repo"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#python-and-vs-code",
-    "href": "slides/JSC370-slides-01.html#python-and-vs-code",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#python-and-vs-code",
+    "href": "slides/01-introduction/JSC370-slides-01.html#python-and-vs-code",
     "title": "JSC 370: Data Science II",
     "section": "Python and VS Code",
     "text": "Python and VS Code\n\nPython: general-purpose language widely used for data science\nVS Code: a lightweight, extensible editor with strong Python + notebook support"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#what-is-vs-code",
-    "href": "slides/JSC370-slides-01.html#what-is-vs-code",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#what-is-vs-code",
+    "href": "slides/01-introduction/JSC370-slides-01.html#what-is-vs-code",
     "title": "JSC 370: Data Science II",
     "section": "What is VS Code?",
     "text": "What is VS Code?\n\nAn editor for code, notebooks, and markdown\nWorks well with:\n\nPython environments (conda/venv)\nJupyter notebooks\nConnecting to remote environments (e.g. Digital Alliance Canada, AWS)\nGit/GitHub\nQuarto render/preview"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#vs-code-things-youll-use-every-week",
-    "href": "slides/JSC370-slides-01.html#vs-code-things-youll-use-every-week",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#vs-code-things-youll-use-every-week",
+    "href": "slides/01-introduction/JSC370-slides-01.html#vs-code-things-youll-use-every-week",
     "title": "JSC 370: Data Science II",
     "section": "VS Code: Things you’ll use every week",
     "text": "VS Code: Things you’ll use every week\n\nSelect the correct Python environment\nIntegrated terminal (run quarto render, git, ssh)\nSource control panel (stage/commit/push)\nQuarto preview for slides/reports"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#vs-code-layout",
-    "href": "slides/JSC370-slides-01.html#vs-code-layout",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#vs-code-layout",
+    "href": "slides/01-introduction/JSC370-slides-01.html#vs-code-layout",
     "title": "JSC 370: Data Science II",
     "section": "VS Code: Layout",
     "text": "VS Code: Layout"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#quarto-and-python-and-vs-code",
-    "href": "slides/JSC370-slides-01.html#quarto-and-python-and-vs-code",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#quarto-and-python-and-vs-code",
+    "href": "slides/01-introduction/JSC370-slides-01.html#quarto-and-python-and-vs-code",
     "title": "JSC 370: Data Science II",
     "section": "Quarto and Python and VS Code",
     "text": "Quarto and Python and VS Code\n\nQuarto: markdown-based publishing for reports, sites, and slides"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#how-does-quarto-work",
-    "href": "slides/JSC370-slides-01.html#how-does-quarto-work",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#how-does-quarto-work",
+    "href": "slides/01-introduction/JSC370-slides-01.html#how-does-quarto-work",
     "title": "JSC 370: Data Science II",
     "section": "How does Quarto work?",
     "text": "How does Quarto work?\n\n\n\n\n\n\n\n\nYou write a single source file (.qmd) that mixes text, code, and output options (YAML + chunk options).\nQuarto executes code (e.g., Python via Jupyter) and captures tables, figures, and printed output.\nIt renders the document through Pandoc into a chosen format (HTML report, reveal.js slides, PDF, Word, etc.).\nThe final output is a self-contained deliverable (e.g., report.html) that can be shared or published."
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#generating-reports-with-quarto",
-    "href": "slides/JSC370-slides-01.html#generating-reports-with-quarto",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#generating-reports-with-quarto",
+    "href": "slides/01-introduction/JSC370-slides-01.html#generating-reports-with-quarto",
     "title": "JSC 370: Data Science II",
     "section": "Generating reports with Quarto",
     "text": "Generating reports with Quarto\n\nA Quarto document is a plain-text file with extension .qmd.\nAt the top is a YAML header that controls metadata and output (title, author, date, format, options).\nThe format field determines what Quarto produces:\n\nhtml → a web report (.html)\npdf → a PDF report (LaTeX installed)\ndocx → a Word document\nrevealjs → slides"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#generating-reports-with-quarto-1",
-    "href": "slides/JSC370-slides-01.html#generating-reports-with-quarto-1",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#generating-reports-with-quarto-1",
+    "href": "slides/01-introduction/JSC370-slides-01.html#generating-reports-with-quarto-1",
     "title": "JSC 370: Data Science II",
     "section": "Generating reports with Quarto",
     "text": "Generating reports with Quarto\nAn example yaml header for an html report\n---\ntitle: \"My Report\"\nformat: html\n---\n\nRendering turns MyReport.qmd into MyReport.html (and supporting files if needed).\nCore command: quarto render MyReport.qmd"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#quarto-code-chunks",
-    "href": "slides/JSC370-slides-01.html#quarto-code-chunks",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks",
+    "href": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks",
     "title": "JSC 370: Data Science II",
     "section": "Quarto code chunks",
     "text": "Quarto code chunks\nA code chunk might look like this:"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#quarto-code-chunks-1",
-    "href": "slides/JSC370-slides-01.html#quarto-code-chunks-1",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks-1",
+    "href": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks-1",
     "title": "JSC 370: Data Science II",
     "section": "Quarto code chunks",
     "text": "Quarto code chunks\n\nimport matplotlib.pyplot as plt\nplt.plot([1, 2, 3], [1, 4, 9])\nplt.show()"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#quarto-code-chunks-2",
-    "href": "slides/JSC370-slides-01.html#quarto-code-chunks-2",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks-2",
+    "href": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks-2",
     "title": "JSC 370: Data Science II",
     "section": "Quarto code chunks",
     "text": "Quarto code chunks\nPreamble (options):\necho: show/hide code\neval: run or skip\nfig-width / fig-height: control plot size"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#quarto-code-chunks-and-options",
-    "href": "slides/JSC370-slides-01.html#quarto-code-chunks-and-options",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks-and-options",
+    "href": "slides/01-introduction/JSC370-slides-01.html#quarto-code-chunks-and-options",
     "title": "JSC 370: Data Science II",
     "section": "Quarto Code chunks and options",
     "text": "Quarto Code chunks and options\nCode:\nimport: libraries\n.plot, .show: make figures and display them"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#github",
-    "href": "slides/JSC370-slides-01.html#github",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#github",
+    "href": "slides/01-introduction/JSC370-slides-01.html#github",
     "title": "JSC 370: Data Science II",
     "section": "GitHub",
     "text": "GitHub\n\nVersion control is essential in industry and academia\nBuilding a GitHub portfolio supports job hunting\nYou will build a github.io website as part of this course, with interactivity and app-type features"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#git-vs-github",
-    "href": "slides/JSC370-slides-01.html#git-vs-github",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#git-vs-github",
+    "href": "slides/01-introduction/JSC370-slides-01.html#git-vs-github",
     "title": "JSC 370: Data Science II",
     "section": "Git vs GitHub",
     "text": "Git vs GitHub\n\nGit: version control tool on your computer\nGitHub: hosting + collaboration (remote repos, PRs, issues)\nWorkflow: edit → commit (git) → push (to GitHub)"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#this-week-checklist",
-    "href": "slides/JSC370-slides-01.html#this-week-checklist",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#this-week-checklist",
+    "href": "slides/01-introduction/JSC370-slides-01.html#this-week-checklist",
     "title": "JSC 370: Data Science II",
     "section": "This week: checklist",
     "text": "This week: checklist\n\nInstall Python + VS Code + Quarto\nClone your GitHub Classroom repo\nRender a .qmd locally\nCommit + push your changes\nLab will be on your own this week, starting in person next week, January 14!"
   },
   {
-    "objectID": "slides/JSC370-slides-01.html#next-week",
-    "href": "slides/JSC370-slides-01.html#next-week",
+    "objectID": "slides/01-introduction/JSC370-slides-01.html#next-week",
+    "href": "slides/01-introduction/JSC370-slides-01.html#next-week",
     "title": "JSC 370: Data Science II",
     "section": "Next Week",
     "text": "Next Week\n\nLecture: Monday January 12, 1–3pm (Version control)\nLab: Wednesday January 14, 1–3pm (VS Code, Python, Quarto, GitHub)"
