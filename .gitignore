@@ -1,0 +1,86 @@
+.DS_Store
+**/.DS_Store
+
+*_cache/
+*.utf8.md
+*.knit.md
+
+.Renviron
+.Renviron.*
+.httr-oauth
+.Rprofile
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+.Rcheck/
+*-Ex.R
+*.tar.gz
+
+###############################################################################
+# Python
+###############################################################################
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+*.pyd
+*.dll
+*.dylib
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+conda-env/
+pip-wheel-metadata/
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-log.txt
+wheelhouse/
+MANIFEST
+
+# Unit test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+hypothesis/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Type checking / linters
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# OS junk (if not already)
+.DS_Store
+**/.DS_Store
+Thumbs.db
