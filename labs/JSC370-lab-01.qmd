@@ -24,7 +24,7 @@ In this lab you will:
 
 ## What you will submit
 
-- This completed `.qmd` file
+- This completed `.qmd` file. Download the [Lab .qmd on GitHub](https://github.com/JSC370/JSC370-2026/blob/main/labs/JSC370-lab-01.qmd)
 - The rendered HTML output (`JSC370-lab-01.html`)
 
 
