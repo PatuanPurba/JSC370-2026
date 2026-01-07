@@ -22,7 +22,7 @@ This course serves as the second in a series of courses on data science. We will
 
 | Week | Dates | Topics / Weekly Activities | Due (end of day): <br> Labs Wed,  HW Sun|
 |-----|--------------|-----------------|---------|
-| **Week 1** | January 5 [(lecture)](slides/01-introduction/JSC370-slides-01.html) <br> January 7 (no in-person lab) | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
+| **Week 1** | January 5 [(lecture)](slides/01-introduction/JSC370-slides-01.html) <br> January 7 ([lab](labs/JSC370-labs-01.html)) not in person this week only! | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
 | **Week 2** | January 12 (lecture) <br> January 14 (lab) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
 | **Week 3** | January 19 (lecture) <br> January 21 (lab) | Exploratory Data Analysis | **Lab 3** |
 | **Week 4** | January 26 (lecture) <br> January 28 (lab) | Data visualization | **HW1**, **Lab 4** |
@@ -179,6 +179,7 @@ Many of these websites provide APIs and/or bulk downloads.
 - [GDELT Project (global news/events)](https://www.gdeltproject.org/)
 - [Common Crawl (web archive)](https://commoncrawl.org/get-started)
 - [Wikipedia / Wikimedia APIs (MediaWiki REST API)](https://www.mediawiki.org/wiki/API:REST_API/en)
+- [The Movie Database](https://developer.themoviedb.org/reference/getting-started)
 
 ### Social Networks and Platforms
 

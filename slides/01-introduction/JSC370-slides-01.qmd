@@ -3,11 +3,10 @@ title: "JSC 370: Data Science II"
 subtitle: "Week 1: Introduction"
 date: "January 5, 2026"
 format:
-  revealjs:
+  live-revealjs:
     incremental: true
     slide-number: true
     chalkboard: false
-    self-contained: true
 jupyter: python3
 ---
 
@@ -178,7 +177,7 @@ Fastest-growing roles (percentage terms) include:
 
 ## Visualization of these data
 
-```{python}
+```{pyodide}
 #| echo: true
 #| code-fold: true
 #| code-summary: "Show code"
