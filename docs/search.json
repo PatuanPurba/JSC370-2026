@@ -109,7 +109,7 @@
     "href": "slides/01-introduction/JSC370-slides-01.html#visualization-of-these-data",
     "title": "JSC 370: Data Science II",
     "section": "Visualization of these data",
-    "text": "Visualization of these data\n\n\nShow code\nimport matplotlib.pyplot as plt\nlabels = [\"Jobs created\", \"Jobs displaced\", \"Net change\"]\nvals = [170, 92, 78]  # WEF article summary\nplt.figure()\nplt.bar(labels, vals)\nplt.ylabel(\"Millions of jobs\")\nplt.title(\"Projected global job changes by 2030 (WEF)\")\nplt.tight_layout()\nplt.show()"
+    "text": "Visualization of these data"
   },
   {
     "objectID": "slides/01-introduction/JSC370-slides-01.html#what-is-this-course",
@@ -245,6 +245,76 @@
     "text": "Next Week\n\nLecture: Monday January 12, 1–3pm (Version control)\nLab: Wednesday January 14, 1–3pm (VS Code, Python, Quarto, GitHub)"
   },
   {
+    "objectID": "labs/JSC370-lab-01.html",
+    "href": "labs/JSC370-lab-01.html",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "",
+    "text": "In this lab you will:\n\nInstall/confirm VS Code, Python, and Quarto\nConfirm Quarto can run Python chunks (via Jupyter)\nRender a Quarto document locally\n(Next week) Commit and push your work to GitHub Classroom."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#overview",
+    "href": "labs/JSC370-lab-01.html#overview",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "",
+    "text": "In this lab you will:\n\nInstall/confirm VS Code, Python, and Quarto\nConfirm Quarto can run Python chunks (via Jupyter)\nRender a Quarto document locally\n(Next week) Commit and push your work to GitHub Classroom."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#what-you-will-submit",
+    "href": "labs/JSC370-lab-01.html#what-you-will-submit",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "What you will submit",
+    "text": "What you will submit\n\nThis completed .qmd file\nThe rendered HTML output (JSC370-lab-01.html)"
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#before-you-start",
+    "href": "labs/JSC370-lab-01.html#before-you-start",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "0. Before you start",
+    "text": "0. Before you start\n\nIf you do not already have it, install VS Code. Then open this file in .\nIn VS Code open the terminal (Terminal -&gt; New Terminal). Recall you can toggle between terminals in VS Code. You should see a list of terminals on the bottom right panel."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#quarto",
+    "href": "labs/JSC370-lab-01.html#quarto",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "1. Quarto",
+    "text": "1. Quarto\nIn the terminal, run:\nquarto --version\nIf it is not installed, go to the Quarto download page and install for your OS: https://quarto.org/docs/download/.\nAfter installing, quit and reopen VS Code (so PATH updates), then run quarto –version again.\nPASTE YOUR VERSION HERE\nNow install the Quarto extension in VS Code:\n\nIn VS Code, click the Extensions icon (left sidebar), or press:\n\nmacOS: Cmd+Shift+X\nWindows/Linux: Ctrl+Shift+X\n\nSearch: Quarto\nInstall: Quarto (publisher: quarto-dev)\nYou may need to reload VS Code.\n\nPreview this lab in VS Code\nOpen this .qmd file, then preview it with Command Palette (Cmd/Ctrl+Shift+P) and select Quarto: Preview.\nTo stop preview: press Ctrl+C in the terminal running the preview."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#confirm-python-is-installed",
+    "href": "labs/JSC370-lab-01.html#confirm-python-is-installed",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "2. Confirm Python is installed",
+    "text": "2. Confirm Python is installed\nYou can try this in terminal:\n\n!python3 --version\n\nPython 3.13.0\n\n\n(If python3 doesn’t work, try python –version.) Paste the output, but the chunk above should do it for you if installed correctly."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#install-core-packages-in-terminal",
+    "href": "labs/JSC370-lab-01.html#install-core-packages-in-terminal",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "3. Install core packages in terminal",
+    "text": "3. Install core packages in terminal\nRun the following in terminal. It is best to install packages in the terminal (not from inside Quarto).\npython3 -m pip install -U pip\npython3 -m pip install numpy pandas matplotlib jupyter ipykernel plotnine plotly\nAlso install the Jupyter extension in VS Code, similarly to how we installed the Quarto extension above (search for Jupyter).\nConfirm Quarto can see Jupyter\nquarto check jupyter\nPASTE OUTPUT HERE"
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#verify-your-python-environment",
+    "href": "labs/JSC370-lab-01.html#verify-your-python-environment",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "4. Verify your Python environment",
+    "text": "4. Verify your Python environment\nRun the chunk below. If this fails, double-check that VS Code is using the Python environment where you installed packages."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#your-turn-make-a-plot",
+    "href": "labs/JSC370-lab-01.html#your-turn-make-a-plot",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "5. Your turn: make a plot",
+    "text": "5. Your turn: make a plot\nUse the plotnine library (ggplot-like) to make a simple scatterplot. Update the code below:\n\nTitle must include your name (e.g., \"Penguin bill measurements — Your Name\").\nChange the point transparency by setting alpha to a new value."
+  },
+  {
+    "objectID": "labs/JSC370-lab-01.html#render-.qmd-to-.html",
+    "href": "labs/JSC370-lab-01.html#render-.qmd-to-.html",
+    "title": "Lab 1 — Setup: VS Code with Python and Quarto",
+    "section": "6. Render ‘.qmd’ to ‘.html’",
+    "text": "6. Render ‘.qmd’ to ‘.html’\nIn the terminal, make sure you are in the folder containing this file, then run:\nquarto render JSC370-lab-01.qmd\nThis should create an HTML file in the same folder, e.g. JSC370-lab-01.html.\nConfirm it exists:\nls -l JSC370-lab-01.html\nOpen the HTML in your browser to confirm it looks correct."
+  },
+  {
     "objectID": "index.html#resources",
     "href": "index.html#resources",
     "title": "JSC370: Data Science II",
@@ -256,6 +326,6 @@
     "href": "index.html#data",
     "title": "JSC370: Data Science II",
     "section": "Data",
-    "text": "Data\nMany of these websites provide APIs and/or bulk downloads.\n\nCanadian Data\n\nGovernment of Canada Open Data (Open Government Portal)\nStatistics Canada (Census + surveys)\nStatistics Canada Web Data Service (API)\nCanada GIS Data\nUniversity of Toronto Library (Geospatial data guides)\nCity of Toronto Open Data\nToronto Police Service Open Data\nOntario Data Catalogue\nPublic Health Ontario Open Data\nBritish Columbia Data Catalogue\n\n\n\nEnvironmental and Climate Data\n\nUS EPA Air Quality Data\nUS EPA AQS Data API (Air Quality System)\nNOAA National Centers for Environmental Information (NCEI)\nNOAA NCEI Access Data Service (API)\nNorth American Regional Climate Change Assessment Program (NARCCAP)\nNatural Resources Canada (Geospatial data/tools)\nCoastal wave / buoy data (CDIP, UCSD)\nGreat Lakes Bathymetry (NOAA)\nUS Energy Information Administration (EIA)\n\n\n\nInternational and Global Data\n\nUN Geospatial Hub\nUNdata API manual\nWorld Bank Open Data\nWorld Bank Developer / API info\nFAO FAOSTAT (global food/agriculture stats)\nFAOSTAT API entry point\nNASA Earthdata (data catalog)\n\n\n\nUS Data\n\nData.gov (catalog)\nData.gov Geospatial datasets\nUS Census (NHGIS)\nNYU Spatial Data Repository\nGoogle Earth Engine datasets\nGoogle Dataset Search\nFiveThirtyEight data (GitHub)\nLos Angeles Open Data\n\n\n\nHealth and Biological Data\n\nSEER (NIH/NCI cancer surveillance)\nWorld Health Organization (GHO OData API)\nCDC Open Data\nCalifornia Health & Human Services Open Data\nCanada COVID tracking (community project)\nUniProt (proteins)\nGene Ontology\n\n\n\nNews, Media, and Text Data\n\nNew York Times APIs (specs repo)\nThe Guardian Open Platform\nGDELT Project (global news/events)\nCommon Crawl (web archive)\nWikipedia / Wikimedia APIs (MediaWiki REST API)\n\n\n\nSocial Networks and Platforms\n\nX (Twitter) Developer Platform\nGitHub REST API\nInstagram Platform\nLinkedIn API documentation (Microsoft Learn)\nSpotify Web API\nZillow Group Data & APIs\n\n\n\nAcademic Publications and Research Data\n\nFigshare\nZenodo\nHarvard Dataverse\nElsevier Developer APIs\nOpenAlex (scholarly metadata + API)"
+    "text": "Data\nMany of these websites provide APIs and/or bulk downloads.\n\nCanadian Data\n\nGovernment of Canada Open Data (Open Government Portal)\nStatistics Canada (Census + surveys)\nStatistics Canada Web Data Service (API)\nCanada GIS Data\nUniversity of Toronto Library (Geospatial data guides)\nCity of Toronto Open Data\nToronto Police Service Open Data\nOntario Data Catalogue\nPublic Health Ontario Open Data\nBritish Columbia Data Catalogue\n\n\n\nEnvironmental and Climate Data\n\nUS EPA Air Quality Data\nUS EPA AQS Data API (Air Quality System)\nNOAA National Centers for Environmental Information (NCEI)\nNOAA NCEI Access Data Service (API)\nNorth American Regional Climate Change Assessment Program (NARCCAP)\nNatural Resources Canada (Geospatial data/tools)\nCoastal wave / buoy data (CDIP, UCSD)\nGreat Lakes Bathymetry (NOAA)\nUS Energy Information Administration (EIA)\n\n\n\nInternational and Global Data\n\nUN Geospatial Hub\nUNdata API manual\nWorld Bank Open Data\nWorld Bank Developer / API info\nFAO FAOSTAT (global food/agriculture stats)\nFAOSTAT API entry point\nNASA Earthdata (data catalog)\n\n\n\nUS Data\n\nData.gov (catalog)\nData.gov Geospatial datasets\nUS Census (NHGIS)\nNYU Spatial Data Repository\nGoogle Earth Engine datasets\nGoogle Dataset Search\nFiveThirtyEight data (GitHub)\nLos Angeles Open Data\n\n\n\nHealth and Biological Data\n\nSEER (NIH/NCI cancer surveillance)\nWorld Health Organization (GHO OData API)\nCDC Open Data\nCalifornia Health & Human Services Open Data\nCanada COVID tracking (community project)\nUniProt (proteins)\nGene Ontology\n\n\n\nNews, Media, and Text Data\n\nNew York Times APIs (specs repo)\nThe Guardian Open Platform\nGDELT Project (global news/events)\nCommon Crawl (web archive)\nWikipedia / Wikimedia APIs (MediaWiki REST API)\nThe Movie Database\n\n\n\nSocial Networks and Platforms\n\nX (Twitter) Developer Platform\nGitHub REST API\nInstagram Platform\nLinkedIn API documentation (Microsoft Learn)\nSpotify Web API\nZillow Group Data & APIs\n\n\n\nAcademic Publications and Research Data\n\nFigshare\nZenodo\nHarvard Dataverse\nElsevier Developer APIs\nOpenAlex (scholarly metadata + API)"
   }
 ]
