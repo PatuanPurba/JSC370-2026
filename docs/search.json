@@ -327,5 +327,446 @@
     "title": "JSC370: Data Science II",
     "section": "Data",
     "text": "Data\nMany of these websites provide APIs and/or bulk downloads.\n\nCanadian Data\n\nGovernment of Canada Open Data (Open Government Portal)\nStatistics Canada (Census + surveys)\nStatistics Canada Web Data Service (API)\nCanada GIS Data\nUniversity of Toronto Library (Geospatial data guides)\nCity of Toronto Open Data\nToronto Police Service Open Data\nOntario Data Catalogue\nPublic Health Ontario Open Data\nBritish Columbia Data Catalogue\n\n\n\nEnvironmental and Climate Data\n\nUS EPA Air Quality Data\nUS EPA AQS Data API (Air Quality System)\nNOAA National Centers for Environmental Information (NCEI)\nNOAA NCEI Access Data Service (API)\nNorth American Regional Climate Change Assessment Program (NARCCAP)\nNatural Resources Canada (Geospatial data/tools)\nCoastal wave / buoy data (CDIP, UCSD)\nGreat Lakes Bathymetry (NOAA)\nUS Energy Information Administration (EIA)\n\n\n\nInternational and Global Data\n\nUN Geospatial Hub\nUNdata API manual\nWorld Bank Open Data\nWorld Bank Developer / API info\nFAO FAOSTAT (global food/agriculture stats)\nFAOSTAT API entry point\nNASA Earthdata (data catalog)\n\n\n\nUS Data\n\nData.gov (catalog)\nData.gov Geospatial datasets\nUS Census (NHGIS)\nNYU Spatial Data Repository\nGoogle Earth Engine datasets\nGoogle Dataset Search\nFiveThirtyEight data (GitHub)\nLos Angeles Open Data\n\n\n\nHealth and Biological Data\n\nSEER (NIH/NCI cancer surveillance)\nWorld Health Organization (GHO OData API)\nCDC Open Data\nCalifornia Health & Human Services Open Data\nCanada COVID tracking (community project)\nUniProt (proteins)\nGene Ontology\n\n\n\nNews, Media, and Text Data\n\nNew York Times APIs (specs repo)\nThe Guardian Open Platform\nGDELT Project (global news/events)\nCommon Crawl (web archive)\nWikipedia / Wikimedia APIs (MediaWiki REST API)\nThe Movie Database\n\n\n\nSocial Networks and Platforms\n\nX (Twitter) Developer Platform\nGitHub REST API\nInstagram Platform\nLinkedIn API documentation (Microsoft Learn)\nSpotify Web API\nZillow Group Data & APIs\n\n\n\nAcademic Publications and Research Data\n\nFigshare\nZenodo\nHarvard Dataverse\nElsevier Developer APIs\nOpenAlex (scholarly metadata + API)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#repeatability-vs-reproducibility-vs-replicability",
+    "href": "slides/02-version-control/JSC370-slides-02.html#repeatability-vs-reproducibility-vs-replicability",
+    "title": "JSC 370: Data Science II",
+    "section": "Repeatability vs Reproducibility vs Replicability",
+    "text": "Repeatability vs Reproducibility vs Replicability\n\nThese terms are often used interchangeably, but they are different.\nRepeatability: Generating the exact same results when using the same data by the same person.\nReproducibility: Generating the exact same results when using the same data by a different person or group. If we can’t reproduce a study, how can we replicate it?\nReplicability: Repeating a study by independently performing another study on new data."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#repeatability-vs-reproducibility-vs-replicability-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#repeatability-vs-reproducibility-vs-replicability-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Repeatability vs Reproducibility vs Replicability",
+    "text": "Repeatability vs Reproducibility vs Replicability"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducibility",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducibility",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducibility",
+    "text": "Reproducibility\nA different analyst/researcher re-performs the analysis with the\n\nsame code and\nsame data and\nobtains the same result\n\n\n⚠️ If your results are not repeatable then they will not be reproducible!"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducibility-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducibility-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducibility",
+    "text": "Reproducibility"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducibility-2",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducibility-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducibility",
+    "text": "Reproducibility"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducibility-3",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducibility-3",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducibility",
+    "text": "Reproducibility\nBarriers to doing reproducible work:\n\nPoor documentation\nManual steps\nNon-transferable tools\nIncorrect training\nTime"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-workflow",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-workflow",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Workflow",
+    "text": "Reproducible Workflow"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research",
+    "text": "Reproducible Research\nIn academia, incentives often prioritize publication. But many results are difficult to reproduce, so there’s a push to publish code, data, and the tools needed to re-run analyses."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research",
+    "text": "Reproducible Research\n\nIn computational sciences and data analysis, what is reproducibility?\nDefinition: The data and code used to make a finding are available and presented so that an independent researcher can (relatively) straightforwardly recreate the result."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-2",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research",
+    "text": "Reproducible Research\nThis still seldom happens. Two examples from Tim Vines DataSeer.ai:\n\nData availability declines rapidly with article age (reported ~17% lower odds per year in one analysis).\nReanalyses using the program STRUCTURE found a substantial fraction of published results could not be reproduced (reported ~30% in one study)."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-3",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-3",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research",
+    "text": "Reproducible Research\n\nScientific articles often include detailed methods, but they are typically insufficient to reproduce a computational analysis.\nRoger Peng and Stephanie Hicks wrote: “Reproducibility is typically thwarted by a lack of availability of the original data and computer code.”\nScientists owe it to themselves and their community to keep an explicit record of all steps in a computational analysis."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-dos",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-dos",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research Do’s",
+    "text": "Reproducible Research Do’s\n\nStart with a good question: make it focused and something you care about.\nTeach your computer to do the work from beginning to end (automation &gt; manual steps).\nUse version control.\nTrack your software environment (toolchain + package versions).\nSet a random seed for any random generation/sampling (e.g., train/test splits).\nThink about the entire pipeline (raw data -&gt; cleaning -&gt; analysis -&gt; output)."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-donts",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-donts",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research Don’ts",
+    "text": "Reproducible Research Don’ts\nDo not do things by hand. This includes:\n\nEditing spreadsheets to “clean” them (e.g., removing outliers, ad hoc QA/QC)\nManually editing tables or figures\nDownloading data by clicking around in a web browser\nSplitting data and moving it around manually\n\nIf something truly must be done by hand, document it explicitly."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-donts-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducible-research-donts-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducible Research Don’ts",
+    "text": "Reproducible Research Don’ts\n\nAvoid point-and-click or highly interactive tools when possible.\n\nThey often leave no trace of the steps.\nIf you must use them, write down the exact sequence of actions.\n\nSave the data and code that generated the output, rather than the output alone."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducibility-challenges",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducibility-challenges",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducibility Challenges",
+    "text": "Reproducibility Challenges\n\nData size\n\nBuild tools into your code to manage large datasets (chunking, efficient formats, parallelism).\nStore data in smaller chunks and write code that pulls and combines files automatically.\nWrite metadata and use tools that support data organization."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#reproducibility-challenges-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#reproducibility-challenges-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Reproducibility Challenges",
+    "text": "Reproducibility Challenges\n\nData complexity\n\nUse smaller “toy” subsets to regularly check reproducibility.\nBe explicit about training/validation/test sets.\nUse diagnostic visualizations.\n\nWorkflow complexity\n\nUse README files (and keep them updated)."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#what-is-version-control",
+    "href": "slides/02-version-control/JSC370-slides-02.html#what-is-version-control",
+    "title": "JSC 370: Data Science II",
+    "section": "What is version control?",
+    "text": "What is version control?"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#what-is-version-control-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#what-is-version-control-1",
+    "title": "JSC 370: Data Science II",
+    "section": "What is version control?",
+    "text": "What is version control?\nVersion control is the management of changes to documents and code. Changes are identified by a revision (e.g., “revision 1”, then “revision 2”, …). Each revision is associated with a timestamp and the person making the change. Revisions can be compared, restored, and sometimes merged.\n— Wikipedia (Version control)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#why-do-we-care",
+    "href": "slides/02-version-control/JSC370-slides-02.html#why-do-we-care",
+    "title": "JSC 370: Data Science II",
+    "section": "Why do we care?",
+    "text": "Why do we care?\nHave you ever…\n\nMade a change to code, realized it was a mistake, and wanted to revert?\nLost work (or only had an old backup)?\nNeeded to maintain multiple versions (e.g., “final_final_v3”)?\nWanted to compare two versions of your code to see exactly what changed?\nNeeded to prove that a particular change broke (or fixed) something?\nWanted to review the history of a file to understand why it looks like it does?"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#why-do-we-care-contd",
+    "href": "slides/02-version-control/JSC370-slides-02.html#why-do-we-care-contd",
+    "title": "JSC 370: Data Science II",
+    "section": "Why do we care? (cont’d)",
+    "text": "Why do we care? (cont’d)\nIn these cases (and many others), a version control system should make your life easier.\n\nWanted to submit a change to someone else’s code (without emailing files around)?\nWanted to share code and collaborate without overwriting each other?\nWanted to see who did what, when, and where (accountability and provenance)?\nWanted to experiment with a feature without disrupting working code?\n\n— Version Control (Atlassian)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#a-common-workflow-pattern",
+    "href": "slides/02-version-control/JSC370-slides-02.html#a-common-workflow-pattern",
+    "title": "JSC 370: Data Science II",
+    "section": "A common workflow pattern",
+    "text": "A common workflow pattern"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#git",
+    "href": "slides/02-version-control/JSC370-slides-02.html#git",
+    "title": "JSC 370: Data Science II",
+    "section": "Git",
+    "text": "Git\nGit was created by Linus Torvalds and originally described as “the stupid content tracker.”"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#why-git",
+    "href": "slides/02-version-control/JSC370-slides-02.html#why-git",
+    "title": "JSC 370: Data Science II",
+    "section": "Why Git?",
+    "text": "Why Git?\n\nDistributed architecture: you have the full history locally (you can work offline).\nEfficient branching and merging: easy to switch between branches, supporting experimentation and collaboration.\nIn this course (and likely beyond), we’ll use Git + GitHub.\nGit is the dominant version control system in practice (Stack Overflow reports very high adoption).\n\nSee: Stack Overflow discussion of survey results\n\nA great reference: Pro Git (free online)\nMore on the name: Git naming (Wikipedia)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#how-can-i-use-git",
+    "href": "slides/02-version-control/JSC370-slides-02.html#how-can-i-use-git",
+    "title": "JSC 370: Data Science II",
+    "section": "How can I use Git?",
+    "text": "How can I use Git?\nA few common ways to include Git in your workflow:\n\nCommand line (most universal)\nVS Code Source Control panel (very common for Python work)\nGitHub Desktop (beginner-friendly)\nGitKraken (feature-rich GUI)\nGitHub web interface (quick edits + reviews)\n\nMore alternatives: Git GUI clients"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#what-git-tracks",
+    "href": "slides/02-version-control/JSC370-slides-02.html#what-git-tracks",
+    "title": "JSC 370: Data Science II",
+    "section": "What Git tracks",
+    "text": "What Git tracks"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#key-terms-youll-hear-a-lot",
+    "href": "slides/02-version-control/JSC370-slides-02.html#key-terms-youll-hear-a-lot",
+    "title": "JSC 370: Data Science II",
+    "section": "Key terms you’ll hear a lot",
+    "text": "Key terms you’ll hear a lot\n\nRepository (repo): the project + its version history\nCommit: a saved snapshot with a message (and an author + timestamp)\nBranch: an independent line of development (safe experimentation)\nMerge / Pull request: integrating changes back together\nRemote: a copy of the repo hosted elsewhere (e.g., GitHub)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#git-workflow",
+    "href": "slides/02-version-control/JSC370-slides-02.html#git-workflow",
+    "title": "JSC 370: Data Science II",
+    "section": "Git workflow",
+    "text": "Git workflow"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#setting-up-the-workflow",
+    "href": "slides/02-version-control/JSC370-slides-02.html#setting-up-the-workflow",
+    "title": "JSC 370: Data Science II",
+    "section": "Setting up the workflow",
+    "text": "Setting up the workflow\n\nGo to GitHub and sign in.\nCreate a repository (name it, choose public/private as appropriate, add a README).\nClone it (copy it onto your local machine).\nMake sure Git knows who you are (git config) and that authentication works (HTTPS token or SSH key).\n\nNote: We assume Git is installed: https://git-scm.com"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#cloning-visual",
+    "href": "slides/02-version-control/JSC370-slides-02.html#cloning-visual",
+    "title": "JSC 370: Data Science II",
+    "section": "Cloning (visual)",
+    "text": "Cloning (visual)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#workflow-for-an-existing-repo",
+    "href": "slides/02-version-control/JSC370-slides-02.html#workflow-for-an-existing-repo",
+    "title": "JSC 370: Data Science II",
+    "section": "Workflow for an existing repo",
+    "text": "Workflow for an existing repo\n\nStart by syncing (if you collaborate):\n\ngit pull\n\nMake changes in your editor.\nInspect what changed:\n\ngit status\n\ngit diff\n\nStage changes (choose what will go into the next commit):\n\ngit add &lt;file&gt; (or git add .)\n\nCommit with a clear message:\n\ngit commit -m \"Explain *why* you changed it\"\n\nPush your commits to GitHub: git push"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#workflow-for-an-existing-repo-cont",
+    "href": "slides/02-version-control/JSC370-slides-02.html#workflow-for-an-existing-repo-cont",
+    "title": "JSC 370: Data Science II",
+    "section": "Workflow for an existing repo (con’t)",
+    "text": "Workflow for an existing repo (con’t)\nUndo helpers (common):\n\nUnstage a file: git restore --staged &lt;file&gt;\nDiscard local edits to a file: git restore &lt;file&gt;\n(Older syntax you may see online: git checkout -- &lt;file&gt;)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-0-introduce-yourself",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-0-introduce-yourself",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 0: Introduce yourself",
+    "text": "Hands-on 0: Introduce yourself\nIn terminal set up your Git identity (this writes to your global Git config):\ngit config --global user.name \"Your Name\"\ngit config --global user.email \"you@email.com\"\nCheck what Git thinks your settings are:\ngit config --list\n(Press q to exit the pager.)\nFor more see the config customizations on the git site"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 1: Remote repo",
+    "text": "Hands-on 1: Remote repo\nGoal: create a GitHub repo and make your first commit.\n\nCreate a new repository on GitHub (e.g., JSC370). Include a README.md.\nOn your computer, choose where you want the project folder to live. Change to that directory.\nClone the repository (copy the HTTPS/SSH URL from GitHub). Then in terminal git clone https://github.com//.git\nEdit README.md (VS Code is fine).\nStage + commit + push:\n\ngit add README.md\ngit commit -m “Edit README”\ngit push"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo-1",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 1: Remote repo",
+    "text": "Hands-on 1: Remote repo\nSome useful checks are to see what’s pending:\n- git status\n- See commit history:\ngit log --oneline --decorate --graph --all"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo-2",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 1: Remote repo",
+    "text": "Hands-on 1: Remote repo"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo-3",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-remote-repo-3",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 1: Remote repo",
+    "text": "Hands-on 1: Remote repo"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-local-first",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-local-first",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 1: Local first",
+    "text": "Hands-on 1: Local first\nThis creates a local repo (no GitHub yet), just to practice the cycle:\nmkdir -p ~/JSC370-demo\ncd ~/JSC370-demo\n\ngit init\necho \"Hello Git\" &gt; README.md\n\ngit status\ngit add README.md\ngit commit -m \"Add README\"\n\ngit log --oneline"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-connect-your-local-repo-to-github",
+    "href": "slides/02-version-control/JSC370-slides-02.html#hands-on-1-connect-your-local-repo-to-github",
+    "title": "JSC 370: Data Science II",
+    "section": "Hands-on 1: Connect your local repo to GitHub",
+    "text": "Hands-on 1: Connect your local repo to GitHub\nOn GitHub, create a new empty repo (do not add a README if you already have one locally). Then in your local project folder, add the GitHub repo as a remote named origin:\ngit remote add origin https://github.com/&lt;you&gt;/&lt;repo&gt;.git\nConfirm the remote was added:\ngit remote -v\nPush your local commits to GitHub\ngit push -u origin main\n(if your default branch is master instead of main git push -u origin master or if main doesn’t exist yet locally you can create or rename it git branch -M main then run the push command above.)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#removing-a-mistakenly-stagedtracked-file",
+    "href": "slides/02-version-control/JSC370-slides-02.html#removing-a-mistakenly-stagedtracked-file",
+    "title": "JSC 370: Data Science II",
+    "section": "Removing a mistakenly staged/tracked file",
+    "text": "Removing a mistakenly staged/tracked file\nIf you accidentally added a file you don’t want to track (example: class-notes.docx):\ngit rm --cached class-notes.docx\nThis removes it from Git tracking but not from your computer.\nThen prevent it from being tracked again using .gitignore"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#example-.gitignore",
+    "href": "slides/02-version-control/JSC370-slides-02.html#example-.gitignore",
+    "title": "JSC 370: Data Science II",
+    "section": "Example .gitignore",
+    "text": "Example .gitignore\nExample adapted from Pro Git\n# ignore all .a files\n*.a\n\n# but do track lib.a, even though you're ignoring .a files above\n!lib.a\n\n# only ignore the TODO file in the current directory, not subdir/TODO\n/TODO\n\n# ignore all files in any directory named build\nbuild/\n\n# ignore doc/notes.txt, but not doc/server/arch.txt\ndoc/*.txt\n\n# ignore all .pdf files in the doc/ directory and any of its subdirectories\ndoc/**/*.pdf"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branches-forks-pull-requests-merge-conflicts",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branches-forks-pull-requests-merge-conflicts",
+    "title": "JSC 370: Data Science II",
+    "section": "Branches, Forks, Pull Requests, Merge Conflicts",
+    "text": "Branches, Forks, Pull Requests, Merge Conflicts\nA typical flow is: branch (or fork + branch) → pull request → merge → resolve conflicts (if needed)\nThese concepts make collaboration (mostly) painless:\n\nBranches: work in parallel without breaking main\nForks: work on a copy of a repo when you don’t have write access\nPull Requests: propose + review changes before merging\nMerge conflicts: what happens when Git can’t auto-combine edits"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branch-vs-fork",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branch-vs-fork",
+    "title": "JSC 370: Data Science II",
+    "section": "Branch vs Fork",
+    "text": "Branch vs Fork\nBranch = a new line of work inside the same repository\nFork = your own copy of the entire repository under your account\nRule of thumb:\n\nWorking in a shared class/team repo → branch\nContributing to a repo you can’t write to → fork"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branch",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branch",
+    "title": "JSC 370: Data Science II",
+    "section": "Branch",
+    "text": "Branch\n\nRepo: course-repo\nYou create: student/meredith-lab2\nYou push to the same repo\nPR: student/meredith-lab2 → main\n\nBest for: teams/classes with shared access"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#fork",
+    "href": "slides/02-version-control/JSC370-slides-02.html#fork",
+    "title": "JSC 370: Data Science II",
+    "section": "Fork",
+    "text": "Fork\n\nUpstream repo: org/course-repo\nYour fork: yourname/course-repo\nYou work in your fork (often on a branch)\nPR: yourname:branch → org:main\n\nBest for: open-source external projects with no write access"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branches-what-problem-do-they-solve",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branches-what-problem-do-they-solve",
+    "title": "JSC 370: Data Science II",
+    "section": "Branches: what problem do they solve?",
+    "text": "Branches: what problem do they solve?\nWithout branches:\n\nEveryone edits main\nWork collides\nIt’s hard to experiment safely\n\nWith branches:\n\nmain stays stable\nEach feature/bugfix happens on its own branch\nChanges are merged back only when ready\n\nBranches are easy in Git: creating/switching is fast."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branch-naming-conventions",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branch-naming-conventions",
+    "title": "JSC 370: Data Science II",
+    "section": "Branch naming conventions",
+    "text": "Branch naming conventions\nIndustry-style examples: feature, bugfix, hotfix, release, documentation\n\nfeature/lab1\nbugfix/path-images\ndocs/update-syllabus\n\nTip: use short, descriptive names. Avoid temp and final2. Here are some additional conventions"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branch-naming-convention-for-the-course",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branch-naming-convention-for-the-course",
+    "title": "JSC 370: Data Science II",
+    "section": "Branch naming convention for the course",
+    "text": "Branch naming convention for the course\nCourse pattern student/&lt;name&gt;-lab1\nExample: student/meredith-lab2\nWhy this works:\n\ncommunicates who owns the branch\ncommunicates what it’s for (e.g. lab number)\navoids confusion with repo folders (the / is just naming)\n\n\n\n\n\n\n\nNote\n\n\nBranch names are labels, not file paths. Tools may group student/* branches together, but Git treats the whole string as the branch name."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#common-branch-workflow",
+    "href": "slides/02-version-control/JSC370-slides-02.html#common-branch-workflow",
+    "title": "JSC 370: Data Science II",
+    "section": "Common branch workflow",
+    "text": "Common branch workflow\n\nStart from an up-to-date main\nCreate a new branch\nMake changes and commit on the branch\nPush the branch to GitHub"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#branch-workflow",
+    "href": "slides/02-version-control/JSC370-slides-02.html#branch-workflow",
+    "title": "JSC 370: Data Science II",
+    "section": "Branch workflow",
+    "text": "Branch workflow\ngit switch main\ngit pull\n\ngit switch -c student/meredith-lab2\n# edit files...\n\ngit add .\ngit commit -m \"Add lab 2 report\"\ngit push -u origin student/meredith-lab2"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#what-do-switch-and--c-mean",
+    "href": "slides/02-version-control/JSC370-slides-02.html#what-do-switch-and--c-mean",
+    "title": "JSC 370: Data Science II",
+    "section": "What do switch and -c mean?",
+    "text": "What do switch and -c mean?\ngit switch is the Git command to move between branches\n(older ways often use git checkout for this).\n\ngit switch main\n“Move my working directory to the main branch.”\ngit switch -c student/meredith-lab2\n-c means create a new branch and switch to it immediately.\n\nSo this is equivalent to two steps:\ngit branch student/meredith-lab2\ngit switch student/meredith-lab2"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#why-do-we-start-from-main-and-pull",
+    "href": "slides/02-version-control/JSC370-slides-02.html#why-do-we-start-from-main-and-pull",
+    "title": "JSC 370: Data Science II",
+    "section": "Why do we start from main and pull?",
+    "text": "Why do we start from main and pull?\ngit switch main\ngit pull\n\nEnsures your branch starts from the latest main\nReduces merge conflicts later\nMakes your Pull Request easier to review"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#how-these-concepts-connect",
+    "href": "slides/02-version-control/JSC370-slides-02.html#how-these-concepts-connect",
+    "title": "JSC 370: Data Science II",
+    "section": "How these concepts connect",
+    "text": "How these concepts connect\n\nBranch: where you do your work safely\nCommit: save a snapshot with a message\nPush: publish your branch to GitHub\nPull Request: ask to merge your branch into main\nMerge: integrate the branch work into main\nConflict: Git needs you to decide how to combine edits"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#pull-requests-what-are-they",
+    "href": "slides/02-version-control/JSC370-slides-02.html#pull-requests-what-are-they",
+    "title": "JSC 370: Data Science II",
+    "section": "Pull Requests: what are they?",
+    "text": "Pull Requests: what are they?\nA Pull Request (PR) is:\n\na proposal to merge one branch into another (often → main)\na review space (comments, approvals, requested changes)\na record of what changed and why (discussion + diff + commits)\n\nPRs are the standard way to collaborate on GitHub."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#why-use-pull-requests",
+    "href": "slides/02-version-control/JSC370-slides-02.html#why-use-pull-requests",
+    "title": "JSC 370: Data Science II",
+    "section": "Why use Pull Requests?",
+    "text": "Why use Pull Requests?\nPRs help you:\n\ncatch bugs early (someone else reads your diff)\nenforce project standards (formatting, tests, style)\ndocument decisions (“why did we do this?”)\nreduce “surprise merges” into main"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#what-makes-a-good-pull-request",
+    "href": "slides/02-version-control/JSC370-slides-02.html#what-makes-a-good-pull-request",
+    "title": "JSC 370: Data Science II",
+    "section": "What makes a good Pull Request?",
+    "text": "What makes a good Pull Request?\n\nSmall enough to review (avoid mega-PRs)\nClear title + description\nExplains intent: what changed and why\nScreenshots/output examples when relevant\nLinks to an issue (if you use issues)\nIncludes only relevant files (no accidental large data, secrets, etc.)"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#example-pull-request-terminal-commands",
+    "href": "slides/02-version-control/JSC370-slides-02.html#example-pull-request-terminal-commands",
+    "title": "JSC 370: Data Science II",
+    "section": "Example Pull Request terminal commands",
+    "text": "Example Pull Request terminal commands\n# Start from main and get the latest changes\ngit switch main\ngit pull\n\n# Create a new branch for your lab work\ngit switch -c student/meredith-lab2\n\n#  Do your work (edit files in VS Code or any editor)\n# (example files you might create/edit)\n# - train.py\n# - requirements.txt\n# - README.md\n\n# Check what changed\ngit status\ngit diff\n\n# Stage and commit\ngit add train.py requirements.txt README.md\ngit commit -m \"Lab 2: add reproducible model training script\"\n\n# Push the branch to GitHub\ngit push -u origin student/meredith-lab2\n\n# Open a Pull Request on GitHub:\n#    student/meredith-lab2  --&gt;  main\n# After review changes are requested:\n# Make edits, then repeat add/commit/push\ngit add .\ngit commit -m \"Address PR feedback\"\ngit push"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#merging-what-does-it-mean",
+    "href": "slides/02-version-control/JSC370-slides-02.html#merging-what-does-it-mean",
+    "title": "JSC 370: Data Science II",
+    "section": "Merging: what does it mean?",
+    "text": "Merging: what does it mean?\nMerging integrates two lines of work by combining their histories:\n\nFast-forward merge: main simply moves forward (no divergence)\n3-way merge: Git creates a new merge commit that joins two lines of work\n\nEither way, the goal is the same: integrate branch work into main."
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#merge-conflicts-what-are-they",
+    "href": "slides/02-version-control/JSC370-slides-02.html#merge-conflicts-what-are-they",
+    "title": "JSC 370: Data Science II",
+    "section": "Merge conflicts: what are they?",
+    "text": "Merge conflicts: what are they?\nA merge conflict happens when:\n\ntwo branches edited the same lines in the same file, and\nGit can’t determine how to combine them safely\n\nImportant:\n\nConflicts are normal in collaboration\nThey’re not “errors” so much as “decisions Git asks humans to make”"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#when-do-conflicts-happen-most",
+    "href": "slides/02-version-control/JSC370-slides-02.html#when-do-conflicts-happen-most",
+    "title": "JSC 370: Data Science II",
+    "section": "When do conflicts happen most?",
+    "text": "When do conflicts happen most?\n\nLong-lived branches (you drift far from main)\nMany people editing the same file\nMoving/renaming files while someone else edits them"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#preventing-conflicts-best-practices",
+    "href": "slides/02-version-control/JSC370-slides-02.html#preventing-conflicts-best-practices",
+    "title": "JSC 370: Data Science II",
+    "section": "Preventing conflicts (best practices)",
+    "text": "Preventing conflicts (best practices)\n\nPull often (or merge main into your branch regularly)\nKeep PRs small and merge them sooner\nAvoid huge “format everything” commits mixed with logic changes\nCommunicate: “I’m editing slides/week2.qmd today”"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#what-a-conflict-looks-like",
+    "href": "slides/02-version-control/JSC370-slides-02.html#what-a-conflict-looks-like",
+    "title": "JSC 370: Data Science II",
+    "section": "What a conflict looks like",
+    "text": "What a conflict looks like\nGit inserts markers like this into a file:\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\nThis is the version from main\n=======\nThis is the version from your branch\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; student/meredith-lab2"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#resources",
+    "href": "slides/02-version-control/JSC370-slides-02.html#resources",
+    "title": "JSC 370: Data Science II",
+    "section": "Resources",
+    "text": "Resources\n\nGit everyday commands: man giteveryday in terminal\nGitHub’s cheat sheets: https://github.github.com/training-kit/￼\nPro Git (free online): https://git-scm.com/book￼\nGit exercises: https://gitexercises.fracz.com/￼\nGitHub Guides (YouTube): https://www.youtube.com/user/GitHubGuides￼"
+  },
+  {
+    "objectID": "slides/02-version-control/JSC370-slides-02.html#other-tools-to-explore",
+    "href": "slides/02-version-control/JSC370-slides-02.html#other-tools-to-explore",
+    "title": "JSC 370: Data Science II",
+    "section": "Other tools to explore",
+    "text": "Other tools to explore\n\nJira￼: issue/task tracking + workflow management\nGit + Jira integrations exist via many clients"
   }
 ]
