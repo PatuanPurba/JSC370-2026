@@ -1,43 +1,9 @@
 project:
   type: website
   output-dir: docs
-  resources:
-    - img/**
-    - fig/**
-    - slides/**/img/**
-    - slides/**/fig/**
-    - labs/**/img/**
-    - labs/**/fig/**
-
-website:
-  title: "JSC370"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - href: slides/index.qmd
-        text: Slides
-      - href: labs/index.qmd
-        text: Labs
-
 format:
   html:
-    theme: cosmo
-    toc: true
-  revealjs:
-    theme: simple
-    slide-number: true
-    chalkboard: false
-    incremental: false
-    center: true
-    hash: true
     relative-resources: true
-
-execute:
-  echo: true
-  warning: false
-  message: false
-  freeze: auto
-
-jupyter: python3
-  
+  revealjs:
+    relative-resources: true
+    
