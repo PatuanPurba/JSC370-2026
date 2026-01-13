@@ -1,9 +1,4 @@
 project:
   type: website
   output-dir: docs
-format:
-  html:
-    relative-resources: true
-  revealjs:
-    relative-resources: true
-    
+  
