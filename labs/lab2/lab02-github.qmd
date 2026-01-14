@@ -68,7 +68,7 @@ One of the most common tasks that people uses git for is for collaborating. Whil
 different lines of code. If this is the case, after pull/push, git will integrate
 the changes without conflicts.
 
-We will be working with the repository [https://github.com/JSC370/whoami-2025](https://github.com/JSC370/whoami-2025)
+We will be working with the repository [https://github.com/JSC370/JSC370-lab2-2026-whoami](https://github.com/JSC370/JSC370-lab2-2026-whoami)
 
 ## Step 1: Clone the repo and create a branch
 
@@ -87,7 +87,7 @@ Once you have the repository on your local machine, create a new branch for your
 
 ```sh
 cd <repository-name>
-git switch -c your-name
+git switch -c <your-name>
 ```
 
 The `-c` flag creates a new branch and switches to it. You can verify you're on your new branch by running:
@@ -173,7 +173,7 @@ the new changes you made.
 
 For more information checkout [Creating a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) on GitHub.
 
-* Submit a pull request to [https://github.com/JSC370/whoami](https://github.com/JSC370/whoami)
+* Submit a pull request to [https://github.com/JSC370/JSC370-lab2-2026-whoami](https://github.com/JSC370/JSC370-lab2-2026-whoami)
 * Add details of the pull request below (the commit id of your change (you can find this using `git log`)
 
 ```sh
