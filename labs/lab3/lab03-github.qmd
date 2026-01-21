@@ -23,6 +23,10 @@ execute:
 - Step through the EDA "checklist" presented in the class slides
 - Make exploratory graphs and maps
 
+# Deliverables
+
+- Complete the code and summaries and upload your .qmd and rendered .html to Quercus
+
 # Lab Description
 
 We will work with similar meteorological data that was presented in lecture. Recall the dataset consists of weather station readings in the contiguous US. 
@@ -113,7 +117,7 @@ pring(minT, maxT, minE, maxE)
 
 ```
 
-- Summary:
+Summary:
 - Add your summary here
 
 
@@ -121,11 +125,6 @@ pring(minT, maxT, minE, maxE)
 
 - Check that the range of elevations make sense. Google or ChatGPT is your friend here.
 - Fix any problems that arise in your checks.
-
-```{python}
-
-```
-
 
 -
 ```{python}
@@ -142,7 +141,7 @@ cold_temps = met[met['temp'] ...]
 # display data here extract lat and lon and check google
 ```
 
-- Summary
+Summary:
 
 ```{python}
 
@@ -201,8 +200,7 @@ plt.ylabel()
 plt.show()
 ```
 
-Summary:
-- Summarize time series plot.
+Summarize time series plot:
 
 ### 6d. Where is the lowest weather station?
 
@@ -233,4 +231,4 @@ ax.set_title(f'Lowest Elevation Station (Elevation: {elev} m)')
 plt.show()
 ```
 
-Summary: where is the lowest elevation station?
+Summarize where the lowest elevation station is located.
