@@ -61,7 +61,7 @@ Connect to github and read in data with pandas.
 
 ```{python}
 url = "https://raw.githubusercontent.com/JSC370/JSC370-2026/main/data/met_all_2025.gz"
-met = pd.read_csv(...)    
+met = pd.read_csv(url, compression="gzip")    
 ```
 
 ### 2. Check the memory size, dataset dimensions, and the header. How many columns, rows are there?
@@ -69,38 +69,41 @@ met = pd.read_csv(...)
 - fill in where there are ...
 
 ```{python}
-met.memory_usage(deep=True).sum() / ...
+met.memory_usage(deep=True).sum() / 1024 ** 3
 ```
 
 ```{python}
-met.shape[...]
+met.shape
 ```
 
 ```{python}
-met.head
+display(met.head)
 ```
 
 Summary:
-- add bullets with your summary
+- The dataset takes memory of 2.46 Gb
+- The dimension of dataset is (5381580, 30)
+- The dataset has 5381580 columns and 30 rows
 
 ### 3. Look at data types of the variables in the dataset.
 
 ```{python}
-met.info
+met.dtypes
 ```
 
 Summary:
-- add bullets with your summary
+- There are 23 columns that takes numerical type value while the others take object type
 
 ### 4. Take a closer look at the key variables (`temp` and `elev`). 
 
 - Are there missing data in these variables? If so, make sure they are coded correctly. 
+No, there is no missing values in here
 
 
 ```{python}
 key_vars = ['temp', 'elev']
 
-met[...].isnull().sum()
+met[key_vars].isnull().sum()
 ```
 
 
@@ -109,18 +112,22 @@ met[...].isnull().sum()
 
 ```{python}
 
-minT = met['temp']
-maxT = ...
+minT = met.loc[met["temp"].idxmin(), "temp"]
+maxT = met.loc[met["temp"].idxmax(), "temp"]
 
-minE = met['elev']
-maxE = ...
+minE = met.loc[met["elev"].idxmin(), "elev"]
+maxE = met.loc[met["elev"].idxmax(), "elev"]
 
-pring(minT, maxT, minE, maxE)
+print(minT, maxT, minE, maxE)
+print("Temperature Range:", "Min:", minT, " Max:", maxT)
+print("Elevation Range:", "Min:", minE, " Max:", maxE)
 
 ```
 
 Summary:
-- Add your summary here
+- There is unusual value in temperature. First, the lowest temperature recorded in here is -40, which may makes sense regarding the place. However, the maximum value is 999.9, which is unusually high. It may worth to take a look to this observation. Since the code only gave 
+
+- The highest elevation point in the dataset is 3680. While it still possible since the highest point in earth is over 8000 meters, we need to investigate more whether this data is just normal outlier or error in data input. 
 
 
 ### 5. Check the data against an external data source and make any other adjustments.
@@ -131,24 +138,29 @@ Summary:
 -
 ```{python}
 
-met.loc[...] = np.nan
+met.loc[met["temp"] > 65, "temp"] = np.nan
 met[['temp']].describe().round(4)
+
 ```
 
 Summary:
+- The highest point in US is around 4400 meter, which make the original value of elevation still make sense. 
+- After cleaning, we can see that the maximum temperature that still in our range is 56 Celcius. THe median of the temperature is 24 Celcius, which still make sense. However, in here, the minimum temperature still -40 Celcius
 
 ```{python}
-cold_temps = met[met['temp'] ...]
+cold_temps = met[met['temp'] == -40]
 
 # display data here extract lat and lon and check google
+display(cold_temps[["temp", "lat", "lon", "month", "year"]])
 ```
 
 Summary:
+- For observation that has temperature of -40, based on google maps, we can see that one location is land in Mexico while the other is in Florida. Based on general knowledge, we can safely assume that place in Mexico shouldn't has temperature this low. Therefore, we may safely assume that these observations are error in data input
 
 ```{python}
 
 # Fix up data here, remove implausible values
-
+met = met[met["temp"] > -20].copy()
 ```
 
 
@@ -168,14 +180,21 @@ Some ideas for steps:
 
 ```{python}
 # Subset data for the weather station with minimum elevation
-
+minE = met.loc[met["elev"].idxmin(), "elev"]
+min_elev_station = met.loc[met["elev"] == minE, :]
+display(min_elev_station)
 ```
 
 ### 6b. Histogram of temperature at minimum elevation site
 
 ```{python}
-plt.hist(...)
+plt.hist(min_elev_station["temp"].dropna(), bins=50)
+plt.xlabel("Temperature (C)")
+plt.ylabel("Count")
+plt.show()
 ```
+Summary:
+- We can see that the temperature ranging from 20 into 45, which is pretty normal.
 
 ### 6c. Create date variable and time series plot
 
@@ -188,7 +207,7 @@ plt.hist(...)
 # Create a date variable for min_elev_station
 min_elev_station = min_elev_station.copy()
 min_elev_station['date'] = pd.to_datetime(
-    min_elev_station[...]
+    min_elev_station[["year", "month", "day", "hour"]]
 )
 
 # Sort by date
@@ -196,18 +215,21 @@ min_elev_station = min_elev_station.sort_values('date')
 
 # Create line plot of temperature by date
 
-plt.plot(...)
-plt.xlabel()
-plt.ylabel()
+plt.plot(min_elev_station["date"], min_elev_station["temp"])
+plt.xlabel("Date")
+plt.ylabel("Temperature (C)")
+plt.grid(True, alpha=0.3)
+plt.xticks(rotation=45)
 plt.show()
 ```
 
 Summarize time series plot:
+- We can see that the temperature is osicillating between 20 into 40. We can also see that the lowest temperature is roughly stable in 20 Celcius. However, we can also see that overtime, the highest point of osicillation is get higher, until at some points, it reached over 45 Celcius. F
 
 ### 6d. Where is the lowest weather station?
 
 ```{python}
-station_location = min_elev_station[...].drop_duplicates()
+station_location = min_elev_station[["lat", "lon", "elev"]].drop_duplicates()
 
 lat = station_location['lat'].iloc[0]
 lon = station_location['lon'].iloc[0]
@@ -234,3 +256,4 @@ plt.show()
 ```
 
 Summarize where the lowest elevation station is located.
+- The location is a dessert in California.
