@@ -5,6 +5,8 @@ date: "January 21, 2026"
 format:
   live-html:
     toc: true
+filters:
+  - r-wasm/live
 jupyter: python3
 execute:
   enabled: false

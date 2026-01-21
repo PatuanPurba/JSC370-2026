@@ -1139,5 +1139,19 @@
     "title": "JSC 370: Data Science II",
     "section": "plotnine",
     "text": "plotnine\n\n(\n  ggplot(met_s, aes(x=\"temp\", y=\"rh\"))\n  + geom_point(alpha=0.2, size=1.0)\n  + geom_smooth(method=\"loess\", se=False)\n  + coord_cartesian(ylim=(0, 100))\n  + labs(\n      title=\"Temperature vs humidity (sample) with linear fit\",\n      x=\"Temperature (°C)\",\n      y=\"Relative humidity (%)\"\n    )\n  + theme_bw()\n)"
+  },
+  {
+    "objectID": "labs/lab3/lab03-github.html",
+    "href": "labs/lab3/lab03-github.html",
+    "title": "Lab 03 - EDA and Viz 1",
+    "section": "",
+    "text": "Read in from github and get familiar with a meteorology dataset\nPlan out how to tackle the objective question\nStep through the EDA “checklist” presented in the class slides\nMake exploratory graphs and maps"
+  },
+  {
+    "objectID": "labs/lab3/lab03-github.html#answer-research-questions",
+    "href": "labs/lab3/lab03-github.html#answer-research-questions",
+    "title": "Lab 03 - EDA and Viz 1",
+    "section": "6. Answer research questions",
+    "text": "6. Answer research questions\nRemember to keep the initial questions in mind. We want to pick out the weather station with minimum elevation and examine its temperature.\nSome ideas for steps: 1. subset the data for the weather station with minimum elevation 2. look at histograms of temperature 3. make a time series plot (need to create date variable) 4. make a map to see where it is\n\n6a. Subset minimum elevation site\n\n# Subset data for the weather station with minimum elevation\n\n\n\n6b. Histogram of temperature at minimum elevation site\n\nplt.hist(...)\n\n\n\n6c. Create date variable and time series plot\n\nLook at the time series of temperature at this location. For this we will need to create a date-time variable for the x-axis.\nSummarize any trends that you see in these time series plots.\n\n\n# Create a date variable for min_elev_station\nmin_elev_station = min_elev_station.copy()\nmin_elev_station['date'] = pd.to_datetime(\n    min_elev_station[...]\n)\n\n# Sort by date\nmin_elev_station = min_elev_station.sort_values('date')\n\n# Create line plot of temperature by date\n\nplt.plot(...)\nplt.xlabel()\nplt.ylabel()\nplt.show()\n\nSummary: - Summarize time series plot.\n\n\n6d. Where is the lowest weather station?\n\nstation_location = min_elev_station[...].drop_duplicates()\n\nlat = station_location['lat'].iloc[0]\nlon = station_location['lon'].iloc[0]\nelev = station_location['elev'].iloc[0]\n\n# make elev into GeoDataFrame for mapping\ngdf = gpd.GeoDataFrame(\n    {'elevation': [elev]},\n    geometry=gpd.points_from_xy([lon], [lat]),\n    crs='EPSG:4326'\n)\n\n# Convert to Web Mercator for basemap\ngdf = gdf.to_crs('EPSG:3857')\n\n# map\nfig, ax = plt.subplots(figsize=(10, 8))\ngdf.plot(ax=ax, color='red', markersize=300, marker='*', edgecolor='black', linewidth=2, zorder=5)\ncx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik)\nax.set_xlabel('Longitude')\nax.set_ylabel('Latitude')\nax.set_title(f'Lowest Elevation Station (Elevation: {elev} m)')\nplt.show()\n\nSummary: where is the lowest elevation station?"
   }
 ]
