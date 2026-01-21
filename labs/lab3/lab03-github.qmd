@@ -18,6 +18,7 @@ execute:
 
 # Learning Goals
 
+- Download [lab 3 here](https://github.com/JSC370/JSC370-2026/blob/main/labs/lab3/lab03-github.qmd)
 - Read in from github and get familiar with a meteorology dataset 
 - Plan out how to tackle the objective question
 - Step through the EDA "checklist" presented in the class slides
