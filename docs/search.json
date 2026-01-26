@@ -808,8 +808,8 @@
     "objectID": "slides/03-eda-viz/JSC370-slides-03.html#goals",
     "href": "slides/03-eda-viz/JSC370-slides-03.html#goals",
     "title": "JSC 370: Data Science II",
-    "section": "",
-    "text": "Load in large datasets stored locally and remotely (GitHub), check memory issues\nUnderstand what EDA is (and is not)\nBuild a repeatable EDA workflow\nMake plots that reveal structure, not just decoration\nAvoid common visualization pitfalls"
+    "section": "Goals",
+    "text": "Goals\n\nLoad in large datasets stored locally and remotely (GitHub), check memory issues\nUnderstand what EDA is (and is not)\nBuild a repeatable EDA workflow\nMake plots that reveal structure, not just decoration\nAvoid common visualization pitfalls"
   },
   {
     "objectID": "slides/03-eda-viz/JSC370-slides-03.html#data-science-pipeline",
@@ -823,7 +823,7 @@
     "href": "slides/03-eda-viz/JSC370-slides-03.html#what-is-exploratory-data-analysis",
     "title": "JSC 370: Data Science II",
     "section": "What is Exploratory Data Analysis?",
-    "text": "What is Exploratory Data Analysis?\n\n\nEDA = iterative exploration and building modeling intuition\nFocus on data distributions, missingness, relationships, anomalies\nCreate: summary stats, exploratory plots\nOutput: questions, hypotheses, and next steps"
+    "text": "What is Exploratory Data Analysis?\n\nEDA = iterative exploration and building modeling intuition\nFocus on data distributions, missingness, relationships, anomalies\nCreate: summary stats, exploratory plots\nOutput: questions, hypotheses, and next steps"
   },
   {
     "objectID": "slides/03-eda-viz/JSC370-slides-03.html#exploratory-data-analysis",
@@ -935,7 +935,7 @@
     "href": "slides/03-eda-viz/JSC370-slides-03.html#big-data-can-be-read-in-more-cautiously-1",
     "title": "JSC 370: Data Science II",
     "section": "Big data can be read in more cautiously",
-    "text": "Big data can be read in more cautiously\nChunking in pandas means reading in a file in pieces so you don’t load the whole dataset into RAM at once.\n\nurl = \"https://raw.githubusercontent.com/JSC370/JSC370-2026/main/data/met_all.gz\"\nchunks = pd.read_csv(url, compression=\"gzip\", chunksize=200_000)\nn = 0\ntemp_sum = 0.0\nfor ch in chunks:\n    temp_sum += ch[\"temp\"].sum(skipna=True)\n    n += ch[\"temp\"].notna().sum()\ntemp_sum / n\n\nnp.float64(23.590542469664527)\n\n\nThis computes the overall mean temperature without ever storing the full dataset:\n\n\ntemp_sum accumulates the sum of temps across chunks.\nn accumulates how many non-missing temps you saw.\ntemp_sum / n is the mean.\n\n\nWe’re basically doing: \\(\\bar{x} = \\frac{\\sum x_i}{\\#\\{x_i \\text{ not missing}\\}}\\)"
+    "text": "Big data can be read in more cautiously\nChunking in pandas means reading in a file in pieces so you don’t load the whole dataset into RAM at once.\n\nurl = \"https://raw.githubusercontent.com/JSC370/JSC370-2026/main/data/met_all.gz\"\nchunks = pd.read_csv(url, compression=\"gzip\", chunksize=200_000)\nn = 0\ntemp_sum = 0.0\nfor ch in chunks:\n    temp_sum += ch[\"temp\"].sum(skipna=True)\n    n += ch[\"temp\"].notna().sum()\ntemp_sum / n\n\nnp.float64(23.590542469664527)\n\n\nThis computes the overall mean temperature without ever storing the full dataset:\n\ntemp_sum accumulates the sum of temps across chunks.\nn accumulates how many non-missing temps you saw.\ntemp_sum / n is the mean.\n\nWe’re basically doing: \\(\\bar{x} = \\frac{\\sum x_i}{\\#\\{x_i \\text{ not missing}\\}}\\)"
   },
   {
     "objectID": "slides/03-eda-viz/JSC370-slides-03.html#check-the-data",
@@ -1230,5 +1230,726 @@
     "title": "Lab 1 — Setup: VS Code with Python and Quarto",
     "section": "6. Render ‘.qmd’ to ‘.html’",
     "text": "6. Render ‘.qmd’ to ‘.html’\nIn the terminal, make sure you are in the folder containing this file, then run:\nquarto render JSC370-lab-01.qmd\nThis should create an HTML file in the same folder, e.g. JSC370-lab-01.html.\nConfirm it exists:\nls -l JSC370-lab-01.html\nPrint out the output and make sure it is in this lab. Also open the HTML in your browser to confirm it looks correct."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#this-week",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#this-week",
+    "title": "JSC 370: Data Science II",
+    "section": "This week",
+    "text": "This week\n\nThis lecture presents a deeper introduction to plotnine, a Python package that implements the grammar of graphics (similar to R’s ggplot2), providing better graphics options than matplotlib’s default plots."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#this-week-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#this-week-1",
+    "title": "JSC 370: Data Science II",
+    "section": "This week",
+    "text": "This week\nWe will also dig into non-parametric regression with splines and generalized additive models (GAMs).\nA generalized additive model (GAM) predicts \\(y\\) by adding up learned smooth functions of the predictors:\n\\[\ng(\\mathbb{E}[Y \\mid X])=\\beta_0 + f_1(x_1) + f_2(x_2) + \\cdots + f_p(x_p)\n\\]\n\nNonlinear: each \\((f_j(\\cdot))\\) is a flexible curve (often a spline basis)\nRegularized: we control “wiggliness” with a penalty (bias–variance tradeoff)\nFits the ML pattern: choose flexibility by minimizing training loss + complexity penalty\nInterpretable: you can plot each learned effect \\((f_j(x_j))\\) (partial effect curves)\nGeneralized: works for continuous, binary, counts via a link \\((g(\\cdot))\\)\nMental model: like linear regression, but each coefficient is replaced by a smooth curve."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#background",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#background",
+    "title": "JSC 370: Data Science II",
+    "section": "Background",
+    "text": "Background\nplotnine is based on the grammar of graphics, the same underlying philosophy as R’s ggplot2. In the Python ecosystem, we use pandas for data manipulation (similar to R’s dplyr), and plotnine for visualization.\nThe tidyverse philosophy of readable, chainable operations translates well to Python with method chaining in pandas.\n\nimport pandas as pd\nimport numpy as np\nfrom plotnine import *\nimport warnings\nwarnings.filterwarnings('ignore')\nimport matplotlib.pyplot as plt\n# Using pygam for GAM fitting\nfrom pygam import LinearGAM, s"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#layers-pandas-and-method-chaining",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#layers-pandas-and-method-chaining",
+    "title": "JSC 370: Data Science II",
+    "section": "Layers, pandas and method chaining",
+    "text": "Layers, pandas and method chaining\n\nWe should take a step back and discuss Python’s data manipulation ecosystem.\nplotnine behaves very similarly to pandas. They share a philosophy of readable, chainable operations.\nIn pandas, operations are typically chained using method calls on DataFrames.\nEach method takes a DataFrame and returns a new DataFrame.\nMethod chaining in Python uses the . operator (similar to R’s pipe).\nYou can also use parentheses to break long chains across multiple lines."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#method-chaining-in-python",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#method-chaining-in-python",
+    "title": "JSC 370: Data Science II",
+    "section": "Method Chaining in Python",
+    "text": "Method Chaining in Python\n\nMethod chaining passes the result of one operation to the next method call.\nWe can think of it as a sequence of transformations, similar to R’s pipe."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Flights data",
+    "text": "Flights data\nTo illustrate many of today’s visualization examples we will look at the flights data from the nycflights13 package. They are all flights that departed from NYC airports (JFK, LGA, EWR) in 2013.\n\nfrom nycflights13 import flights\nprint(\"Columns:\", flights.columns.tolist())\nprint(\"Shape:\", flights.shape)\n\nColumns: ['year', 'month', 'day', 'dep_time', 'sched_dep_time', 'dep_delay', 'arr_time', 'sched_arr_time', 'arr_delay', 'carrier', 'flight', 'tailnum', 'origin', 'dest', 'air_time', 'distance', 'hour', 'minute', 'time_hour']\nShape: (336776, 19)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Flights data",
+    "text": "Flights data"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#method-chaining-in-python-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#method-chaining-in-python-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Method chaining in Python",
+    "text": "Method chaining in Python\n\nAn example using method chaining: subset the flights data to LAX, and take the mean arrival delay times by year, month, day.\nWe need to start with the data, query or boolean indexing to filter to the desired destination (LAX), groupby to prepare the groups that we want to aggregate over, then agg to take the mean.\n\n\n(flights\n .query('dest == \"LAX\"')\n .groupby(['year', 'month', 'day'])\n .agg(arr_delay=('arr_delay', lambda x: x.mean(skipna=True)))\n .reset_index())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#alternative-syntax-with-pipe",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#alternative-syntax-with-pipe",
+    "title": "JSC 370: Data Science II",
+    "section": "Alternative syntax with pipe()",
+    "text": "Alternative syntax with pipe()\nLet’s do the same thing using pandas’ pipe() method for a more functional style:\n\n(flights\n .pipe(lambda df: df[df['dest'] == 'LAX'])\n .groupby(['year', 'month', 'day'])\n .agg(arr_delay=('arr_delay', 'mean'))\n .reset_index())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#a-few-coding-style-tips",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#a-few-coding-style-tips",
+    "title": "JSC 370: Data Science II",
+    "section": "A few coding style tips",
+    "text": "A few coding style tips\n\nVariable names should use only lowercase letters, numbers, and _\nUse _ to separate words within a name (snake_case)\nMethod chains should have each method on its own line, indented\nWrap long chains in parentheses for cleaner formatting\nEach chained method should be indented for readability\n\n\nshort_flights = (flights\n    .query('air_time &lt; 60'))"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-in-more-detail",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-in-more-detail",
+    "title": "JSC 370: Data Science II",
+    "section": "Flights data in more detail",
+    "text": "Flights data in more detail\nThe nycflights13 package also provides hourly airport weather data for the three NYC airports (the origin). Let’s join the flights data with the weather data so we can look at more interesting relationships in our visualizations.\n\nweather = pd.read_csv('flights_weather.csv')\nprint(\"Columns:\", weather.columns.tolist())\nprint(\"Shape:\", weather.shape)\n\nColumns: ['origin', 'year', 'month', 'day', 'hour', 'temp', 'dewp', 'humid', 'wind_dir', 'wind_speed', 'wind_gust', 'precip', 'pressure', 'visib', 'time_hour']\nShape: (26115, 15)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-in-more-detail-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-in-more-detail-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Flights data in more detail",
+    "text": "Flights data in more detail\nLooks like we can join these datasets on year, month, day, hour and origin (which is the origin airport). We can examine the relationship between flight delays and weather at the origin airports (JFK, LGA, EWR).\nA merge with how='left' will keep all of the observations in the left DataFrame (flights) and merge with the observations in the right DataFrame (weather at origin).\n\nflights_weather = pd.merge(\n    flights,\n    weather,\n    how='left',\n    on=['year', 'month', 'day', 'hour', 'origin']\n)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-in-more-detail-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flights-data-in-more-detail-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Flights data in more detail",
+    "text": "Flights data in more detail\n\nflights_weather.head()\nprint(\"Shape:\", flights_weather.shape)\n\nShape: (336776, 29)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#daily-flights-data",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#daily-flights-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Daily flights data",
+    "text": "Daily flights data\nLet’s make a more manageable sized dataset and summarize the data by month, day, and origin airport by taking the means of the weather variables.\n\nagg_cols = ['dep_delay', 'arr_delay', 'temp', 'dewp', 'humid',\n            'wind_dir', 'wind_speed', 'wind_gust', 'precip', 'pressure', 'visib']\n\nflights_weather_day = (flights_weather\n    .groupby(['year', 'month', 'day', 'origin'])\n    .agg({col: 'mean' for col in agg_cols})\n    .reset_index())\n\nflights_weather_day.head()\nprint(\"Shape:\", flights_weather_day.shape)\n\nShape: (1095, 15)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#visualizations",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#visualizations",
+    "title": "JSC 370: Data Science II",
+    "section": "Visualizations",
+    "text": "Visualizations\nplotnine is designed on the principle of adding layers."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#layers-in-plotnine",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#layers-in-plotnine",
+    "title": "JSC 370: Data Science II",
+    "section": "Layers in plotnine",
+    "text": "Layers in plotnine\n\nWith plotnine a plot is initiated with the function ggplot()\nThe first argument of ggplot() is the dataset to use in the graph\nWe add aesthetics using aes()\nThe aes() mapping takes the x and y axes of the plot\nLayers are added to ggplot() with +\nLayers include geom_ functions such as point, lines, etc.\n\n\n(ggplot(data, aes(x='x_var', y='y_var')) +\n  geom_point())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#basic-scatterplot",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#basic-scatterplot",
+    "title": "JSC 370: Data Science II",
+    "section": "Basic scatterplot",
+    "text": "Basic scatterplot\nThe first argument of ggplot() is the dataset to use, then the aesthetics. With the + you add one or more layers.\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay')) +\n  geom_point() +\n  theme_minimal())\n\n\n\n\n\n\n\n\nAs expected, we see that if a flight has a late departure, it has a late arrival."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#another-basic-scatterplot",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#another-basic-scatterplot",
+    "title": "JSC 370: Data Science II",
+    "section": "Another basic scatterplot",
+    "text": "Another basic scatterplot\nWe can see if there is a relationship between departure delays and pressure (low pressure means clouds and precipitation, high pressure means better weather).\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#adding-to-a-basic-scatterplot",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#adding-to-a-basic-scatterplot",
+    "title": "JSC 370: Data Science II",
+    "section": "Adding to a basic scatterplot",
+    "text": "Adding to a basic scatterplot\n\ngeom_point() adds a layer of points to your plot, creating a scatterplot.\nplotnine comes with many geom functions that each add a different type of layer to a plot.\nEach geom function in plotnine takes a mapping argument.\nThis defines how variables in your dataset are mapped to visual properties.\nThe mapping argument is always paired with aes(), and the x and y arguments of aes() specify which variables to map to the x and y axes.\nOne common problem when creating plotnine graphics is to put the + in the wrong place: it has to come at the end of the line, not the start."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring by a variable - using aesthetics",
+    "text": "Coloring by a variable - using aesthetics\nYou can convey information about your data by mapping the aesthetics in your plot to the variables in your dataset. For example, you can map the colors of your points to the origin variable to reveal groupings.\nplotnine chooses colors, and adds a legend, automatically.\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay', color='origin')) +\n  geom_point() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring by a variable - using aesthetics",
+    "text": "Coloring by a variable - using aesthetics\nNote when there are a lot of classes or groups, the coloring is not distinguished well.\nThis is generally bad practice.\n\n(ggplot(flights_weather, aes(x='arr_delay', y='dep_delay', color='dest')) +\n  geom_point() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring by a variable - using aesthetics",
+    "text": "Coloring by a variable - using aesthetics\nToo many points? Take a random sample and plot again.\n\n(ggplot(flights_weather.sample(1000), aes(x='arr_delay', y='dep_delay', color='dest')) +\n  geom_point() +\n  theme_minimal() +\n  theme(legend_position='right'))"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics-3",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-by-a-variable---using-aesthetics-3",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring by a variable - using aesthetics",
+    "text": "Coloring by a variable - using aesthetics\nToo many points? Take a random sample and plot again."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#determining-point-type-using-a-variable",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#determining-point-type-using-a-variable",
+    "title": "JSC 370: Data Science II",
+    "section": "Determining point type using a variable",
+    "text": "Determining point type using a variable\nBy default plotnine uses up to 6 shapes. If there are more, some of your data is not plotted!! (At least it warns you.)\n\n(ggplot(flights_weather.sample(1000), aes(x='arr_delay', y='dep_delay', shape='dest')) +\n  geom_point())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#determining-point-type-using-a-variable-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#determining-point-type-using-a-variable-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Determining point type using a variable",
+    "text": "Determining point type using a variable\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay', shape='origin')) +\n  geom_point(alpha=0.6) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#controlling-point-transparency-using-alpha",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#controlling-point-transparency-using-alpha",
+    "title": "JSC 370: Data Science II",
+    "section": "Controlling point transparency using “alpha”",
+    "text": "Controlling point transparency using “alpha”\nThe alpha control can go in the layer that you are plotting, for example in the geom_point(alpha = 0.1) layer we can directly control the transparency of the points (0 is fully transparent, 1 is fully opaque).\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(alpha=0.4) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#manual-control-of-aesthetics",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#manual-control-of-aesthetics",
+    "title": "JSC 370: Data Science II",
+    "section": "Manual control of aesthetics",
+    "text": "Manual control of aesthetics\nIf we control aesthetics manually in the layer such as geom_point() (i.e. outside aes()), they become fixed constants for that geom, not variables mapped from the data.\nOne more important detail in plotnine: if you write aes(color='blue'), that’s a mapping (to the literal string “blue”), not a fixed aesthetic, so you’ll often get an odd legend. Fixed values should be outside aes(), but coloring by a variable (such as a group) should be inside aes().\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay')) +\n  geom_point(color='blue', alpha=0.5) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#summary-of-aesthetics",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#summary-of-aesthetics",
+    "title": "JSC 370: Data Science II",
+    "section": "Summary of aesthetics",
+    "text": "Summary of aesthetics\nThe various aesthetics of aes:\n\n\n\nCode\nDescription\n\n\n\n\nx\nposition on x-axis\n\n\ny\nposition on y-axis\n\n\nshape\nshape\n\n\ncolor\ncolor of element borders\n\n\nfill\ncolor inside elements\n\n\nsize\nsize\n\n\nalpha\ntransparency\n\n\nlinetype\ntype of line"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#facets-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#facets-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Facets 1",
+    "text": "Facets 1\nFacets are particularly useful for categorical variables:\n\n(ggplot(flights_weather_day, aes(x='wind_speed', y='dep_delay')) +\n  geom_point(alpha=0.5) +\n  facet_wrap('~origin', nrow=1) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#facets-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#facets-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Facets 2",
+    "text": "Facets 2\nOr you can facet on two variables:\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay')) +\n  geom_point(alpha=0.3, size=0.5) +\n  facet_grid('month~origin') +\n  theme_minimal() +\n  theme(figure_size=(12, 16)))"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#geometric-objects-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#geometric-objects-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Geometric Objects 1",
+    "text": "Geometric Objects 1\nGeometric objects are used to control the type of plot you draw. Let’s plot a smoothed line fitted to the scatterplot data between pressure and departure delay."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#geometric-objects-1-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#geometric-objects-1-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Geometric Objects 1",
+    "text": "Geometric Objects 1"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#geometric-objects-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#geometric-objects-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Geometric Objects 2",
+    "text": "Geometric Objects 2\nNote that not every aesthetic works with every geom function.\nFor example, linetype is an aesthetic mapping that controls the pattern used to draw lines (solid, dashed, dotted, etc.).\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay', linetype='origin')) +\n  geom_smooth(se=False) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#geoms---reference",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#geoms---reference",
+    "title": "JSC 370: Data Science II",
+    "section": "Geoms - Reference",
+    "text": "Geoms - Reference\nplotnine provides many geoms, mirroring ggplot2’s functionality. See https://plotnine.readthedocs.io/ for documentation.\nHere is a nice plotnine guide\nAnd cheatsheet (front) and cheatsheet (back)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#multiple-geoms-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#multiple-geoms-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Multiple Geoms 1",
+    "text": "Multiple Geoms 1\nTo display multiple geoms in the same plot, add multiple geom functions to ggplot(), for example geom_point and geom_smooth"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#multiple-geoms-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#multiple-geoms-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Multiple Geoms 2",
+    "text": "Multiple Geoms 2\nIf you place mappings in a geom function, plotnine will use these mappings to extend or overwrite the global mappings for that layer only. This makes it possible to display different aesthetics in different layers.\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(aes(color='origin'), alpha=0.5) +\n  geom_smooth() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#multiple-geoms-3",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#multiple-geoms-3",
+    "title": "JSC 370: Data Science II",
+    "section": "Multiple Geoms 3",
+    "text": "Multiple Geoms 3\nYou can use the same idea to specify different data for each layer. Here, our smooth line displays just a subset of the dataset, the flights departing from JFK. The local data argument in geom_smooth() overrides the global data argument in ggplot() for that layer only.\n\njfk_data = flights_weather_day.query('origin == \"JFK\"')\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(aes(color='origin'), alpha=0.5) +\n  geom_smooth(data=jfk_data, se=False, color='black') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#statistical-transformations---e.g.-bar-charts",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#statistical-transformations---e.g.-bar-charts",
+    "title": "JSC 370: Data Science II",
+    "section": "Statistical Transformations - e.g. Bar charts",
+    "text": "Statistical Transformations - e.g. Bar charts\nLet’s make a bar chart of the number of flights at each origin airport in 2013. The algorithm uses a built-in statistical transformation, called a “stat”, to calculate the counts.\n\n(ggplot(flights_weather, aes(x='origin')) +\n  geom_bar() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#bar-charts-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#bar-charts-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Bar charts 2",
+    "text": "Bar charts 2\nYou can override the statistic a geom uses to construct its plot. e.g., if we want to plot proportions, rather than counts:\n\n(ggplot(flights_weather, aes(x='origin', y='..prop..', group=1)) +\n  geom_bar() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring barcharts",
+    "text": "Coloring barcharts\nYou can color a bar chart using either the color aesthetic (only does the outline), or, more usefully, fill:\n\n(ggplot(flights_weather, aes(x='origin', fill='origin')) +\n  geom_bar() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring barcharts",
+    "text": "Coloring barcharts\nMore interestingly, you can fill by another variable. Let’s first subset our data to look at the destination airports with a lot of flights (more than 10,000 flights)\n\nflights_weather_ss = (flights_weather\n    .groupby('dest')\n    .filter(lambda x: len(x) &gt; 10000))\n\n(ggplot(flights_weather_ss, aes(x='origin', fill='dest')) +\n  geom_bar() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts-2",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts-2",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring barcharts",
+    "text": "Coloring barcharts\nThe position='dodge' places overlapping objects directly beside one another. This makes it easier to compare individual values.\n\n(ggplot(flights_weather_ss, aes(x='origin', fill='dest')) +\n  geom_bar(position='dodge') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts-3",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coloring-barcharts-3",
+    "title": "JSC 370: Data Science II",
+    "section": "Coloring barcharts",
+    "text": "Coloring barcharts\nThe position='dodge' places overlapping objects directly beside one another. This makes it easier to compare individual values.\n\n(ggplot(flights_weather_ss, aes(x='origin', fill='dest')) +\n  geom_bar(position='dodge') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#statistical-transformations---another-example",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#statistical-transformations---another-example",
+    "title": "JSC 370: Data Science II",
+    "section": "Statistical transformations - another example",
+    "text": "Statistical transformations - another example\nYou might want to draw greater attention to the statistical transformation in your code. For example, you might use stat_summary(), which summarizes the y values for each unique x value.\nHere we plot the median delay with IQR (25th-75th quantiles) as bars.\n\n(ggplot(flights_weather_ss, aes(x='dest', y='dep_delay')) +\n  stat_summary(fun_y=np.median,\n               fun_ymin=lambda x: np.percentile(x.dropna(), 25),\n               fun_ymax=lambda x: np.percentile(x.dropna(), 75)) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coordinate-systems",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coordinate-systems",
+    "title": "JSC 370: Data Science II",
+    "section": "Coordinate systems",
+    "text": "Coordinate systems\nCoordinate systems are one of the more complicated corners of plotnine. To start with something simple, here’s how to flip axes:\n\n# Unflipped\n(ggplot(flights_weather_day, aes(x='origin', y='dep_delay')) +\n  geom_boxplot() +\n  theme_minimal())\n\n\n\n\n\n\n\n\n\n# Flipped\n(ggplot(flights_weather_day, aes(x='origin', y='dep_delay')) +\n  geom_boxplot() +\n  coord_flip() +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#adding-labels",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#adding-labels",
+    "title": "JSC 370: Data Science II",
+    "section": "Adding labels",
+    "text": "Adding labels\nYou can make nicer axes and add titles with the labs layer\nAlso showing a minimal theme that removes the background grey theme_bw()\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(alpha=0.3) +\n  geom_smooth() +\n  labs(\n    x='Atmospheric Pressure, millibars',\n    y='Departure Delay, minutes',\n    title='Association between weather and flight departure delays'\n  ) +\n  theme_bw())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#color-ramps",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#color-ramps",
+    "title": "JSC 370: Data Science II",
+    "section": "Color ramps",
+    "text": "Color ramps\nIf you add a continuous variable in your color aesthetic, it will create a color ramp. Here we apply color with the variable temp.\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(aes(color='temp'), alpha=0.6) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#color-palettes",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#color-palettes",
+    "title": "JSC 370: Data Science II",
+    "section": "Color palettes",
+    "text": "Color palettes\nYou can define your own color ramp or use one of the palettes. Here we manually change the color palette with scale_color_gradient.\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(aes(color='temp'), alpha=0.6) +\n  scale_color_gradient(low='blue', high='red') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#color-palettes-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#color-palettes-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Color palettes",
+    "text": "Color palettes\nYou can get as detailed as you would like for the color ramp.\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(aes(color='temp'), alpha=0.6) +\n  scale_color_gradientn(colors=['#999999', '#E69F00', '#56B4E9', '#009E73', '#F0E442', '#0072B2', '#D55E00', '#CC79A7']) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#summary-r-to-python-translation",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#summary-r-to-python-translation",
+    "title": "JSC 370: Data Science II",
+    "section": "Summary: R to Python Translation",
+    "text": "Summary: R to Python Translation\n\n\n\nR (tidyverse/ggplot2)\nPython (pandas/plotnine)\n\n\n\n\nlibrary(ggplot2)\nfrom plotnine import *\n\n\n%&gt;% or |&gt;\nMethod chaining with .\n\n\nfilter()\n.query() or boolean indexing\n\n\ngroup_by()\n.groupby()\n\n\nsummarize()\n.agg()\n\n\nleft_join()\npd.merge(how='left')\n\n\naes(x = var)\naes(x='var')"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#what-is-geom_smooth-actually-doing",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#what-is-geom_smooth-actually-doing",
+    "title": "JSC 370: Data Science II",
+    "section": "What is geom_smooth() actually doing?",
+    "text": "What is geom_smooth() actually doing?\nWhen we use geom_smooth() in plotnine, we’re fitting a smooth regression line to our data.\n\nBy default, geom_smooth() uses LOWESS (Locally Weighted Scatterplot Smoothing) for small datasets\nFor larger datasets, it uses a GAM (Generalized Additive Model)\nThe smooth line adapts to the local structure of the data\n\nThis raises a question: How do we model non-linear relationships?"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#the-problem-with-linear-models",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#the-problem-with-linear-models",
+    "title": "JSC 370: Data Science II",
+    "section": "The Problem with Linear Models",
+    "text": "The Problem with Linear Models\nAs we know, a linear model tries to fit the best straight line through the data.\n\\[y = \\beta_0 + \\beta_1 x + \\epsilon\\]\n\nThis works well when the relationship is actually linear\nBut many real-world relationships are non-linear\nForcing a straight line through curved data gives poor predictions"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#motivating-example-co₂-data",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#motivating-example-co₂-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Motivating Example: CO₂ Data",
+    "text": "Motivating Example: CO₂ Data\nLet’s look at atmospheric CO\\(_2\\) measurements from Mauna Loa, Hawaii (collected since 1958).\n\n# Load CO2 data\nimport pandas as pd\n\nurl = \"https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv\"\n\nco2 = pd.read_csv(url, comment=\"#\")  # ignores the metadata header\nco2 = co2.rename(columns={\"average\": \"co2\"})\nco2[\"month_year\"] = pd.to_datetime(co2[[\"year\", \"month\"]].assign(day=1))\n\nco2.head()\n\n\n\n\n\n\n\n\nyear\nmonth\ndecimal date\nco2\ndeseasonalized\nndays\nsdev\nunc\nmonth_year\n\n\n\n\n0\n1958\n3\n1958.2027\n315.71\n314.44\n-1\n-9.99\n-0.99\n1958-03-01\n\n\n1\n1958\n4\n1958.2877\n317.45\n315.16\n-1\n-9.99\n-0.99\n1958-04-01\n\n\n2\n1958\n5\n1958.3699\n317.51\n314.69\n-1\n-9.99\n-0.99\n1958-05-01\n\n\n3\n1958\n6\n1958.4548\n317.27\n315.15\n-1\n-9.99\n-0.99\n1958-06-01\n\n\n4\n1958\n7\n1958.5370\n315.87\n315.20\n-1\n-9.99\n-0.99\n1958-07-01"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#linear-vs-smooth-fit",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#linear-vs-smooth-fit",
+    "title": "JSC 370: Data Science II",
+    "section": "Linear vs Smooth Fit",
+    "text": "Linear vs Smooth Fit\n\n(ggplot(co2, aes(x='decimal date', y='co2')) +\n  geom_point(alpha=0.3, size=0.5) +\n  geom_smooth(method='lm', color='red', se=False) +\n  geom_smooth(method='lowess', color='blue', se=False) +\n  labs(x='Year', y='CO2 (ppm)',\n       title='Atmospheric CO2 at Mauna Loa') +\n  theme_minimal())\n\n\n\n\n\n\n\n\nThe linear model misses the curvature and seasonal cycles!"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#zooming-in-2025-data",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#zooming-in-2025-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Zooming in: 2025 Data",
+    "text": "Zooming in: 2025 Data\n\nco2_2025 = co2[co2['year'] == 2025].copy()\n\n\n(ggplot(co2_2025, aes(x='decimal date', y='co2')) +\n  geom_point(size=2) +\n  geom_smooth(method='lm', color='red', se=False) +\n  geom_smooth(method='lowess', color='blue', se=False) +\n  labs(x='Year', y='CO2 (ppm)',\n       title='CO2 in 2025: Linear vs Smooth') +\n  theme_minimal())\n\n\n\n\n\n\n\n\nThe smooth line captures the seasonal pattern that the linear model completely misses."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-regression-a-first-attempt",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-regression-a-first-attempt",
+    "title": "JSC 370: Data Science II",
+    "section": "Polynomial Regression: A First Attempt",
+    "text": "Polynomial Regression: A First Attempt\nOne approach to modeling non-linearity is polynomial regression:\n\\[y = \\beta_0 + \\beta_1 x + \\beta_2 x^2 + \\beta_3 x^3 + \\ldots + \\epsilon\\]\n\nfrom sklearn.preprocessing import PolynomialFeatures\nfrom sklearn.linear_model import LinearRegression\n\n# Fit polynomial regression (degree 3)\nX = co2_2025[['month']].values\ny = co2_2025['co2'].values\n\npoly = PolynomialFeatures(degree=3)\nX_poly = poly.fit_transform(X)\nmodel = LinearRegression().fit(X_poly, y)\n\nco2_2025['poly_pred'] = model.predict(X_poly)\nprint(f\"Coefficients: {model.intercept_:.2f} + {model.coef_[1]:.2f}x + {model.coef_[2]:.2f}x² + {model.coef_[3]:.2f}x³\")\n\nCoefficients: 421.40 + 5.00x + -0.90x² + 0.04x³"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-fit-visualization",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-fit-visualization",
+    "title": "JSC 370: Data Science II",
+    "section": "Polynomial Fit Visualization",
+    "text": "Polynomial Fit Visualization\n\n(ggplot(co2_2025, aes(x='month')) +\n  geom_point(aes(y='co2'), size=2) +\n  geom_line(aes(y='poly_pred'), color='red', size=1) +\n  labs(x='Month', y='CO2 (ppm)',\n       title='Polynomial Regression (degree 3)') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#problems-with-polynomial-regression",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#problems-with-polynomial-regression",
+    "title": "JSC 370: Data Science II",
+    "section": "Problems with Polynomial Regression",
+    "text": "Problems with Polynomial Regression\n\nGlobal behavior: Changing one coefficient affects the entire curve\nInstability at boundaries: Polynomials can behave wildly at the edges (Runge’s phenomenon)\nPoor extrapolation: Predictions outside the data range are unreliable\nChoice of degree: How do we choose the right polynomial degree?\n\nWe need something more flexible and local. This motivates using splines."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#why-splines",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#why-splines",
+    "title": "JSC 370: Data Science II",
+    "section": "Why Splines?",
+    "text": "Why Splines?\n\nPolynomial regression: models non-linearity but has global effects\nSplines: model structure in the mean function using piecewise polynomials\n\nGeneral setup:\n\\[Z(s) = f(s) + \\epsilon, \\quad \\epsilon \\sim N(0, \\sigma^2 I)\\]\n\nGoal: estimate a smooth function \\(f(s)\\) that captures the trend\nBenefits:\n\nFlexible, nonparametric modeling of trends\nStill yields prediction errors (statistical smoothing)\nNaturally extended to generalized additive models (GAMs)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#basis-functions-intuition",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#basis-functions-intuition",
+    "title": "JSC 370: Data Science II",
+    "section": "Basis Functions: Intuition",
+    "text": "Basis Functions: Intuition\nA basis is a set of simple functions \\(\\{b_j(x)\\}\\) that can be combined (with coefficients \\(\\beta_j\\)) to approximate more complex functions \\(f(x)\\):\n\\[f(x) = \\sum_{j=1}^k \\beta_j b_j(x)\\]\n\nExample: polynomial basis \\(b_1(x) = 1, \\quad b_2(x) = x, \\quad b_3(x) = x^2, \\ldots\\)\nAnalogy: like combining Lego blocks to build different shapes — basis functions are the blocks, coefficients \\(\\beta_j\\) are how much of each block we use\nThe regression coefficients \\(\\beta_j\\) control the contribution of each basis function"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#basis-functions-polynomial-example",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#basis-functions-polynomial-example",
+    "title": "JSC 370: Data Science II",
+    "section": "Basis Functions: Polynomial Example",
+    "text": "Basis Functions: Polynomial Example\nRepresent a complicated function \\(f(x)\\) as a linear combination of simpler basis functions:\n\\[f(x) = \\sum_{j=1}^k \\beta_j b_j(x)\\]\nExample: polynomial basis in 1-D:\n\\[y_i = \\beta_0 + \\beta_1 x_i + \\beta_2 x_i^2 + \\beta_3 x_i^3 + \\beta_4 x_i^4 + \\epsilon_i\\]\nBasis functions:\n\\[b_1(x) = 1, \\quad b_2(x) = x, \\quad b_3(x) = x^2, \\quad b_4(x) = x^3, \\quad b_5(x) = x^4\\]"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#basis-functions-matrix-form",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#basis-functions-matrix-form",
+    "title": "JSC 370: Data Science II",
+    "section": "Basis Functions: Matrix Form",
+    "text": "Basis Functions: Matrix Form\nCollect basis functions into a basis matrix \\(\\mathbf{B}\\):\n\\[\\mathbf{f} = \\mathbf{B}\\boldsymbol{\\beta}\\]\nExample (polynomial basis):\n\\[\\begin{bmatrix} f(x_1) \\\\ f(x_2) \\\\ \\vdots \\\\ f(x_n) \\end{bmatrix} = \\begin{bmatrix} 1 & x_1 & x_1^2 & x_1^3 & x_1^4 \\\\ 1 & x_2 & x_2^2 & x_2^3 & x_2^4 \\\\ \\vdots & \\vdots & \\vdots & \\vdots & \\vdots \\\\ 1 & x_n & x_n^2 & x_n^3 & x_n^4 \\end{bmatrix} \\begin{bmatrix} \\beta_0 \\\\ \\beta_1 \\\\ \\beta_2 \\\\ \\beta_3 \\\\ \\beta_4 \\end{bmatrix}\\]"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-basis-visualization",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-basis-visualization",
+    "title": "JSC 370: Data Science II",
+    "section": "Polynomial Basis Visualization",
+    "text": "Polynomial Basis Visualization\n\nThe basis functions are each multiplied by \\(\\beta_j\\) and then summed to give the final curve \\(f(x)\\)."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-basis-co₂-example",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-basis-co₂-example",
+    "title": "JSC 370: Data Science II",
+    "section": "Polynomial Basis: CO₂ Example",
+    "text": "Polynomial Basis: CO₂ Example\n\n\n\n\n\nMonthly CO₂ data fit with a polynomial basis, each colored curve is a basis function scaled by its coefficient."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-basis-recap",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#polynomial-basis-recap",
+    "title": "JSC 370: Data Science II",
+    "section": "Polynomial Basis Recap",
+    "text": "Polynomial Basis Recap\n\nA function \\(f(x)\\) can be written as a weighted sum of polynomial basis functions:\n\n\\[f(x) = \\sum_{j=0}^p \\beta_j x^j\\]\n\nThe coefficients \\(\\beta_j\\) control the shape of the curve\nPolynomials provide flexibility, but they can behave poorly:\n\nHigh-order polynomials become unstable (“wiggly”)\nPoor fit near boundaries (Runge’s phenomenon)\n\nThis motivates using splines: piecewise polynomials joined smoothly at knots"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#splines-concepts-types",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#splines-concepts-types",
+    "title": "JSC 370: Data Science II",
+    "section": "Splines: Concepts & Types",
+    "text": "Splines: Concepts & Types\nA spline is a function made up of piecewise polynomials:\n\nDefined between knots (points where polynomial pieces join)\nJoined smoothly (continuous first and second derivatives)\n\nAdvantages over high-order polynomials:\n\nFlexible but stable (avoids oscillations at boundaries)\nLocal control: changing one knot only affects the nearby region\n\nGeneral form:\n\\[f(x) = \\sum_{j=1}^K \\beta_j b_j(x), \\quad \\text{where } b_j(x) \\text{ are spline basis functions}\\]"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#types-of-splines",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#types-of-splines",
+    "title": "JSC 370: Data Science II",
+    "section": "Types of Splines",
+    "text": "Types of Splines\n\nCubic splines: piecewise cubic polynomials joined smoothly\nNatural splines: cubic splines with linear constraints at the boundaries (reduces edge wiggles)\nB-splines: basis representation of splines using local polynomial pieces\nSmoothing splines: knots at every observation, with a penalty \\(\\lambda\\) to control wiggliness\nCyclic splines: cubic splines with connected ends (for periodic data like seasons)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#cubic-splines-example",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#cubic-splines-example",
+    "title": "JSC 370: Data Science II",
+    "section": "Cubic Splines Example",
+    "text": "Cubic Splines Example\n\nChoosing the number and placement of knots controls smoothness:\n\nFew knots \\(\\rightarrow\\) smoother curve\nMany knots \\(\\rightarrow\\) wiggly curve"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#visualizing-b-spline-basis-functions",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#visualizing-b-spline-basis-functions",
+    "title": "JSC 370: Data Science II",
+    "section": "Visualizing B-spline Basis Functions",
+    "text": "Visualizing B-spline Basis Functions\n\nfrom scipy.interpolate import BSpline\n\n# Create B-spline basis functions\nx = np.linspace(0, 1, 100)\nknots = [0, 0, 0, 0, 0.25, 0.5, 0.75, 1, 1, 1, 1]\ndegree = 3\n\nbasis_df = pd.DataFrame({'x': x})\nfor i in range(len(knots) - degree - 1):\n    coeffs = np.zeros(len(knots) - degree - 1)\n    coeffs[i] = 1\n    spline = BSpline(knots, coeffs, degree)\n    basis_df[f'B{i}'] = spline(x)\n\nbasis_long = basis_df.melt(id_vars='x', var_name='basis', value_name='y')\n\n(ggplot(basis_long, aes(x='x', y='y', color='basis')) +\n  geom_line(size=1) +\n  labs(x='x', y='Basis function value',\n       title='B-spline Basis Functions (degree 3)') +\n  theme_minimal())\n\n\n\n\n\n\n\n\nEach B-spline basis function is non-zero only over a limited range — this gives local control."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-concept",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-concept",
+    "title": "JSC 370: Data Science II",
+    "section": "Smoothing Splines: Concept",
+    "text": "Smoothing Splines: Concept\nGoal: Fit a smooth curve \\(f(t)\\) through noisy data \\((t_i, y_i)\\).\nWe want to balance:\n\nGoodness of fit: match the data closely\nSmoothness: avoid overly wiggly functions\n\nDefine an objective function:\n\\[\\text{RSS}(f) + \\lambda J(f)\\]\nwhere:\n\\[\\text{RSS}(f) = \\sum_i (y_i - f(t_i))^2, \\quad J(f) = \\int (f''(t))^2 \\, dt\\]\n\n\\(\\lambda \\geq 0\\) is the smoothness parameter\n\nSmall \\(\\lambda\\): fit the data very closely (wiggly curve)\nLarge \\(\\lambda\\): force \\(f\\) to be smoother (nearly linear)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-optimization",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-optimization",
+    "title": "JSC 370: Data Science II",
+    "section": "Smoothing Splines: Optimization",
+    "text": "Smoothing Splines: Optimization\nWe minimize the penalized residual sum of squares:\n\\[\\min_f \\left\\{ \\sum_i (y_i - f(t_i))^2 + \\lambda \\int (f''(t))^2 \\, dt \\right\\}\\]\nThis is a trade-off between:\n\n\\(\\sum_i (y_i - f(t_i))^2\\) = data fidelity\n\\(\\int (f''(t))^2 dt\\) = roughness penalty\n\nSolution: a natural cubic spline with knots at each unique \\(t_i\\).\nThe “best” curve is obtained by penalizing the wiggliness of the spline."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-basis-representation",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-basis-representation",
+    "title": "JSC 370: Data Science II",
+    "section": "Smoothing Splines: Basis Representation",
+    "text": "Smoothing Splines: Basis Representation\nRepresent \\(f(t)\\) using spline basis functions:\n\\[f(t) = \\sum_{j=1}^K \\beta_j b_j(t)\\]\nLet \\(B\\) be the basis matrix, \\(S\\) the penalty matrix:\n\\[B_{ij} = b_j(t_i), \\quad S_{jk} = \\int b_j''(t) b_k''(t) \\, dt\\]\nThe optimization problem becomes:\n\\[\\min_\\beta \\; (y - B\\beta)^\\top (y - B\\beta) + \\lambda \\beta^\\top S \\beta\\]\nSolution:\n\\[\\hat\\beta = (B^\\top B + \\lambda S)^{-1} B^\\top y\\]"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-co₂-example",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#smoothing-splines-co₂-example",
+    "title": "JSC 370: Data Science II",
+    "section": "Smoothing Splines: CO₂ Example",
+    "text": "Smoothing Splines: CO₂ Example\n\n\n\n\n\nA smoothing spline fit to the CO₂ data captures both the long-term trend and seasonal cycles."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#effect-of-the-smoothing-parameter-lambda",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#effect-of-the-smoothing-parameter-lambda",
+    "title": "JSC 370: Data Science II",
+    "section": "Effect of the Smoothing Parameter \\(\\lambda\\)",
+    "text": "Effect of the Smoothing Parameter \\(\\lambda\\)\n\n\nLeft (\\(\\lambda\\) very small = 1e-4): spline is very wiggly, almost interpolates the noise\nMiddle (\\(\\lambda = 1\\)): good balance between smoothness and fit\nRight (\\(\\lambda\\) very large = 1000): curve is almost straight (linear trend)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#knots-vs.-penalty-parameter-lambda",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#knots-vs.-penalty-parameter-lambda",
+    "title": "JSC 370: Data Science II",
+    "section": "Knots vs. Penalty Parameter \\(\\lambda\\)",
+    "text": "Knots vs. Penalty Parameter \\(\\lambda\\)\nIn smoothing splines:\n\nA knot is placed at each observation \\(t_i\\)\nThis gives the spline the potential to fit the data exactly\n\nThe penalty parameter \\(\\lambda\\) controls how much we use that flexibility:\n\n\\(\\lambda \\to 0\\): little penalty → spline interpolates the data (very wiggly)\n\\(\\lambda \\to \\infty\\): heavy penalty → spline approaches a straight line\n\nInterpretation:\n\nKnots: define the “vocabulary” of possible wiggles\n\\(\\lambda\\): decides how much of that vocabulary is actually used"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#knots-vs.-lambda-visualization",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#knots-vs.-lambda-visualization",
+    "title": "JSC 370: Data Science II",
+    "section": "Knots vs. \\(\\lambda\\): Visualization",
+    "text": "Knots vs. \\(\\lambda\\): Visualization\n\n\nSmall \\(\\lambda\\): all knots are active (blue), spline wiggles to fit data closely\nModerate \\(\\lambda\\): only some knots are active, others are suppressed (grey), leading to a smoother curve\nLarge \\(\\lambda\\): only a few key knots remain active, spline is very smooth"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#types-of-1-d-splines-summary",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#types-of-1-d-splines-summary",
+    "title": "JSC 370: Data Science II",
+    "section": "Types of 1-D Splines: Summary",
+    "text": "Types of 1-D Splines: Summary\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nCubic splines\nPiecewise cubic polynomials joined smoothly\n\n\nCyclic splines\nCubic splines with connected ends (for periodic data)\n\n\nB-splines\nBasis splines with other polynomial orders\n\n\nCardinal splines\nKnot placement is always a certain distance apart\n\n\nNatural splines\nLinear constraints at boundaries\n\n\nSmoothing splines\nKnots at every point, controlled by \\(\\lambda\\)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#from-splines-to-gams",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#from-splines-to-gams",
+    "title": "JSC 370: Data Science II",
+    "section": "From Splines to GAMs",
+    "text": "From Splines to GAMs\nA Generalized Additive Model (GAM) extends this idea:\n\\[y = \\beta_0 + f_1(x_1) + f_2(x_2) + \\ldots + f_p(x_p) + \\epsilon\\]\nWhere each \\(f_j\\) is a smooth function (typically a spline).\nKey advantages:\n\nEach predictor can have its own non-linear relationship\nThe effects are additive (easy to interpret)\nAutomatic smoothness selection via penalization"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#gams-in-python",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#gams-in-python",
+    "title": "JSC 370: Data Science II",
+    "section": "GAMs in Python",
+    "text": "GAMs in Python\nIn Python, we can fit GAMs using statsmodels or pygam.\nHere we use pygam function LinearGAM\nRead more here\n\n# Prepare data\nX = co2_2025[['decimal date']].values\ny = co2_2025['co2'].values\n\n# Fit GAM with smoothing spline (pygam)\ngam = LinearGAM(s(0, n_splines=10)).fit(X, y)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#gam-summary",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#gam-summary",
+    "title": "JSC 370: Data Science II",
+    "section": "GAM Summary",
+    "text": "GAM Summary\n\nprint(gam.summary())\n\nLinearGAM                                                                                                 \n=============================================== ==========================================================\nDistribution:                        NormalDist Effective DoF:                                      4.0838\nLink Function:                     IdentityLink Log Likelihood:                                   -13.6117\nNumber of Samples:                           12 AIC:                                               37.3911\n                                                AICc:                                               47.847\n                                                GCV:                                                1.9142\n                                                Scale:                                              0.8918\n                                                Pseudo R-Squared:                                    0.847\n==========================================================================================================\nFeature Function                  Lambda               Rank         EDoF         P &gt; x        Sig. Code   \n================================= ==================== ============ ============ ============ ============\ns(0)                              [0.6]                10           4.1          1.45e-02     *           \nintercept                                              1            0.0          1.11e-16     ***         \n==========================================================================================================\nSignificance codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nWARNING: Fitting splines and a linear function to a feature introduces a model identifiability problem\n         which can cause p-values to appear significant when they are not.\n\nWARNING: p-values calculated in this manner behave correctly for un-penalized models or models with\n         known smoothing parameters, but when smoothing parameters have been estimated, the p-values\n         are typically lower than they should be, meaning that the tests reject the null too readily.\nNone"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#gam-predictions",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#gam-predictions",
+    "title": "JSC 370: Data Science II",
+    "section": "GAM Predictions",
+    "text": "GAM Predictions\n\nco2_2025['gam_pred'] = gam.predict(X)\n\n(ggplot(co2_2025, aes(x='decimal date')) +\n  geom_point(aes(y='co2'), size=2) +\n  geom_line(aes(y='gam_pred'), color='blue', size=1) +\n  labs(x='Year', y='CO2 (ppm)',\n       title='GAM Fit to 2025 CO2 Data') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#fitting-gam-to-full-dataset",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#fitting-gam-to-full-dataset",
+    "title": "JSC 370: Data Science II",
+    "section": "Fitting GAM to Full Dataset",
+    "text": "Fitting GAM to Full Dataset\nLet’s fit a GAM to capture both the long-term trend and seasonal cycles:\n\n# Prepare full dataset\nX_full = co2[['decimal date', 'month']].values\ny_full = co2['co2'].values\n\n# Fit GAM with two smooth terms\n# s(0) for long-term trend, s(1) for seasonal (cyclic)\n\ngam_full = LinearGAM(s(0, n_splines=20) + s(1, n_splines=12)).fit(X_full, y_full)\nprint(gam_full.summary())\n\nLinearGAM                                                                                                 \n=============================================== ==========================================================\nDistribution:                        NormalDist Effective DoF:                                      21.573\nLink Function:                     IdentityLink Log Likelihood:                                  -502.9597\nNumber of Samples:                          814 AIC:                                             1051.0655\n                                                AICc:                                            1052.4119\n                                                GCV:                                                0.2172\n                                                Scale:                                              0.4548\n                                                Pseudo R-Squared:                                   0.9998\n==========================================================================================================\nFeature Function                  Lambda               Rank         EDoF         P &gt; x        Sig. Code   \n================================= ==================== ============ ============ ============ ============\ns(0)                              [0.6]                20           14.0         1.11e-16     ***         \ns(1)                              [0.6]                12           7.6          1.11e-16     ***         \nintercept                                              1            0.0          1.11e-16     ***         \n==========================================================================================================\nSignificance codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nWARNING: Fitting splines and a linear function to a feature introduces a model identifiability problem\n         which can cause p-values to appear significant when they are not.\n\nWARNING: p-values calculated in this manner behave correctly for un-penalized models or models with\n         known smoothing parameters, but when smoothing parameters have been estimated, the p-values\n         are typically lower than they should be, meaning that the tests reject the null too readily.\nNone"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#full-gam-visualization",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#full-gam-visualization",
+    "title": "JSC 370: Data Science II",
+    "section": "Full GAM Visualization",
+    "text": "Full GAM Visualization\n\nco2['gam_pred'] = gam_full.predict(X_full)\n\n(ggplot(co2, aes(x='decimal date')) +\n  geom_point(aes(y='co2'), alpha=0.3, size=0.5) +\n  geom_line(aes(y='gam_pred'), color='blue', size=0.8) +\n  labs(x='Year', y='CO2 (ppm)',\n       title='GAM Fit: Long-term Trend + Seasonal Cycles') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#partial-effects",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#partial-effects",
+    "title": "JSC 370: Data Science II",
+    "section": "Partial Effects",
+    "text": "Partial Effects\nGAMs allow us to visualize each smooth term separately:\n\nfig, axes = plt.subplots(1, 2, figsize=(12, 4))\n\n# Plot partial effect of decimal.date (long-term trend)\nXX = gam_full.generate_X_grid(term=0, n=100)\naxes[0].plot(XX[:, 0], gam_full.partial_dependence(term=0, X=XX))\naxes[0].set_xlabel('Year')\naxes[0].set_ylabel('Partial Effect')\naxes[0].set_title('Long-term Trend')\n\n# Plot partial effect of month (seasonal)\nXX = gam_full.generate_X_grid(term=1, n=12)\naxes[1].plot(XX[:, 1], gam_full.partial_dependence(term=1, X=XX))\naxes[1].set_xlabel('Month')\naxes[1].set_ylabel('Partial Effect')\naxes[1].set_title('Seasonal Effect')\n\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#connecting-geom_smooth-to-gams",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#connecting-geom_smooth-to-gams",
+    "title": "JSC 370: Data Science II",
+    "section": "Connecting geom_smooth() to GAMs",
+    "text": "Connecting geom_smooth() to GAMs\nWhen you use geom_smooth() in plotnine:\n\nIt’s using similar smoothing techniques under the hood\nThe method parameter controls the smoothing approach:\n\n'lm': Linear regression\n'lowess': Local regression (default for small data)\n'gam': Generalized Additive Model (R’s ggplot2)\n\nThe smooth adapts to your data automatically\n\n\n# These are conceptually similar:\ngeom_smooth()  # Automatic smoothing\ngeom_smooth(method='lowess')  # Local regression\n# In R: geom_smooth(method='gam')  # GAM smoothing"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#key-gam-concepts",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#key-gam-concepts",
+    "title": "JSC 370: Data Science II",
+    "section": "Key GAM Concepts",
+    "text": "Key GAM Concepts\n\n\n\nConcept\nDescription\n\n\n\n\nSpline\nPiecewise polynomial with smooth connections\n\n\nKnots\nPoints where polynomial pieces connect\n\n\nBasis functions\nBuilding blocks combined to form the smooth\n\n\nPenalization\nControls wiggliness, prevents overfitting\n\n\nEDF\nEffective degrees of freedom (complexity measure)"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#when-to-use-gams",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#when-to-use-gams",
+    "title": "JSC 370: Data Science II",
+    "section": "When to Use GAMs",
+    "text": "When to Use GAMs\nGAMs are useful when:\n\nYou expect non-linear relationships but don’t know the exact form\nYou want interpretable models (can visualize each smooth)\nYou have enough data to estimate smooth functions reliably\nYou want to capture seasonal patterns or trends\n\nCautions:\n\nGAMs can overfit with too many knots\nHigher EDF = more complex model = potential overfitting\nAlways validate on held-out data!"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#summary-smooth-regression",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#summary-smooth-regression",
+    "title": "JSC 370: Data Science II",
+    "section": "Summary: Smooth Regression",
+    "text": "Summary: Smooth Regression\n\nLinear models assume straight-line relationships\nPolynomial regression allows curves but has limitations\nSplines are piecewise polynomials joined at knots\nGAMs use splines to model each predictor flexibly\ngeom_smooth() uses these techniques under the hood\nIn Python: use pygam or statsmodels for GAM fitting"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#python-libraries-for-gams",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#python-libraries-for-gams",
+    "title": "JSC 370: Data Science II",
+    "section": "Python Libraries for GAMs",
+    "text": "Python Libraries for GAMs\n\n\n\nLibrary\nDescription\n\n\n\n\npygam\nPure Python GAM implementation, easy to use\n\n\nstatsmodels\nGLMGam class for GAMs\n\n\nscikit-learn\nSpline transformers for feature engineering\n\n\nscipy\nLow-level spline interpolation"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#references",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#references",
+    "title": "JSC 370: Data Science II",
+    "section": "References",
+    "text": "References\n\nWood, S.N. (2017). Generalized Additive Models: An Introduction with R\nHastie, T. & Tibshirani, R. (1990). Generalized Additive Models\npygam documentation: https://pygam.readthedocs.io/\nplotnine documentation: https://plotnine.readthedocs.io/"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#gams-as-a-machine-learning-model",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#gams-as-a-machine-learning-model",
+    "title": "JSC 370: Data Science II",
+    "section": "GAMs as a “machine learning” model",
+    "text": "GAMs as a “machine learning” model\nA generalized additive model (GAM) predicts (y) by adding up learned smooth functions of the predictors:\n\\[\ng(\\mathbb{E}[Y \\mid X])=\\beta_0 + f_1(x_1) + f_2(x_2) + \\cdots + f_p(x_p)\n\\]\n\nNonlinear: each (f_j()) is a flexible curve (often a spline basis)\nRegularized: we control “wiggliness” with a penalty (bias–variance tradeoff)\nFits the ML pattern: choose flexibility by minimizing training loss + complexity penalty\nInterpretable: you can plot each learned effect (f_j(x_j)) (partial effect curves)\nGeneralized: works for continuous, binary, counts via a link (g())\n\nMental model: like linear regression, but each coefficient is replaced by a smooth curve."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#mapping-flight-routes",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#mapping-flight-routes",
+    "title": "JSC 370: Data Science II",
+    "section": "Mapping Flight Routes",
+    "text": "Mapping Flight Routes\nThe nycflights13 package also includes airport coordinates. We can merge these in with flights to map where are the popular NYC destinations.\n\nfrom nycflights13 import airports\n\nflight_routes = (flights\n    .groupby(['origin', 'dest'])\n    .size()\n    .reset_index(name='n_flights'))\n\nairports[['faa', 'name', 'lat', 'lon']].head()\n\n\n\n\n\n\n\n\nfaa\nname\nlat\nlon\n\n\n\n\n0\n04G\nLansdowne Airport\n41.130472\n-80.619583\n\n\n1\n06A\nMoton Field Municipal Airport\n32.460572\n-85.680028\n\n\n2\n06C\nSchaumburg Regional\n41.989341\n-88.101243\n\n\n3\n06N\nRandall Airport\n41.431912\n-74.391561\n\n\n4\n09J\nJekyll Island Airport\n31.074472\n-81.427778"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flight-routes-data",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flight-routes-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Flight Routes Data",
+    "text": "Flight Routes Data\nMerge flight routes with geospatial information (latitude and longitude)\n\nflight_routes_geo = (flight_routes\n    .merge(airports[['faa', 'lat', 'lon']],\n           left_on='dest', right_on='faa', how='inner')\n    .rename(columns={'lat': 'dest_lat', 'lon': 'dest_lon'})\n    .drop(columns=['faa'])\n    .merge(airports[['faa', 'lat', 'lon']],\n           left_on='origin', right_on='faa', how='inner')\n    .rename(columns={'lat': 'origin_lat', 'lon': 'origin_lon'})\n    .drop(columns=['faa']))\n\nprint(f\"Routes mapped: {len(flight_routes_geo)}\")\nflight_routes_geo.head()\n\nRoutes mapped: 217\n\n\n\n\n\n\n\n\n\norigin\ndest\nn_flights\ndest_lat\ndest_lon\norigin_lat\norigin_lon\n\n\n\n\n0\nEWR\nALB\n439\n42.748267\n-73.801692\n40.6925\n-74.168667\n\n\n1\nEWR\nANC\n8\n61.174361\n-149.996361\n40.6925\n-74.168667\n\n\n2\nEWR\nATL\n5022\n33.636719\n-84.428067\n40.6925\n-74.168667\n\n\n3\nEWR\nAUS\n968\n30.194528\n-97.669889\n40.6925\n-74.168667\n\n\n4\nEWR\nAVL\n265\n35.436194\n-82.541806\n40.6925\n-74.168667"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flight-routes-map-with-basemap",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flight-routes-map-with-basemap",
+    "title": "JSC 370: Data Science II",
+    "section": "Flight Routes Map (with Basemap)",
+    "text": "Flight Routes Map (with Basemap)\n\nimport matplotlib.pyplot as plt\nimport contextily as ctx\n\nfig, ax = plt.subplots(figsize=(12, 8))\n\n# Set map extent first (in lat/lon)\nax.set_xlim(-130, -65)\nax.set_ylim(22, 52)\n\n# Add basemap - using CRS for lat/lon coordinates\nctx.add_basemap(ax, crs='EPSG:4326', source=ctx.providers.CartoDB.Positron)\n\n# Plot flight routes as lines (alpha based on number of flights)\nmax_flights = flight_routes_geo['n_flights'].max()\nfor _, row in flight_routes_geo.iterrows():\n    alpha = min(0.1 + 0.5 * (row['n_flights'] / max_flights), 0.6)\n    ax.plot([row['origin_lon'], row['dest_lon']],\n            [row['origin_lat'], row['dest_lat']],\n            color='steelblue', alpha=alpha, linewidth=0.5)\n\n# Plot destination airports\nax.scatter(flight_routes_geo['dest_lon'], flight_routes_geo['dest_lat'],\n           s=flight_routes_geo['n_flights']/100, c='coral', alpha=0.7,\n           edgecolors='darkred', linewidths=0.5, label='Destinations', zorder=4)\n\n# Plot NYC origin airports (get coords from airports data)\nnyc_airports = airports[airports['faa'].isin(['JFK', 'LGA', 'EWR'])]\nfor _, row in nyc_airports.iterrows():\n    ax.scatter(row['lon'], row['lat'], s=200, c='lime', marker='*',\n               edgecolors='darkgreen', linewidths=1, zorder=5)\n    ax.annotate(row['faa'], (row['lon'], row['lat']), xytext=(5, 5),\n                textcoords='offset points', fontsize=8, fontweight='bold', color='darkgreen')\n\nax.set_xlabel('Longitude')\nax.set_ylabel('Latitude')\nax.set_title('Flight Routes from NYC Airports (2013)', fontsize=14)\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#basemap-options",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#basemap-options",
+    "title": "JSC 370: Data Science II",
+    "section": "Basemap Options",
+    "text": "Basemap Options\nThe contextily library provides several basemap tile providers:\n\nctx.providers.CartoDB.Positron      # light gray, minimal labels\nctx.providers.CartoDB.PositronNoLabels\nctx.providers.Stamen.TonerLite      # black and white\n\n# Terrain/satellite\nctx.providers.Stamen.Terrain        # terrain with labels\nctx.providers.Esri.WorldImagery     # satellite imagery\n\n# Standard map styles\nctx.providers.OpenStreetMap.Mapnik  # standard OSM\nctx.providers.CartoDB.Voyager       # colorful, detailed\n\nUse crs='EPSG:4326' when your data is in latitude/longitude coordinates."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coordinate-flip-on-barplot",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coordinate-flip-on-barplot",
+    "title": "JSC 370: Data Science II",
+    "section": "Coordinate flip on barplot",
+    "text": "Coordinate flip on barplot\nLet’s look at the top destinations from the NYC airports\n\n# Aggregate by destination\ntop_dests = (flight_routes\n    .groupby('dest')['n_flights']\n    .sum()\n    .sort_values(ascending=False)\n    .head(15)\n    .reset_index())\n\n(ggplot(top_dests, aes(x='reorder(dest, n_flights)', y='n_flights')) +\n  geom_bar(stat='identity', fill='steelblue') +\n  coord_flip() +\n  labs(x='Destination', y='Number of Flights',\n       title='Top 15 Destinations from NYC') +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#flight-routes-map",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#flight-routes-map",
+    "title": "JSC 370: Data Science II",
+    "section": "Flight Routes Map",
+    "text": "Flight Routes Map\nLike we saw last week, we can make a basic map we can use matplotlib and contixtily (basemap).\n\nimport matplotlib.pyplot as plt\nimport contextily as ctx\n\nfig, ax = plt.subplots(figsize=(12, 8))\n\n# Set map extent\nax.set_xlim(-130, -65)\nax.set_ylim(22, 52)\n\n# Add basemap \nctx.add_basemap(ax, crs='EPSG:4326', source=ctx.providers.CartoDB.Positron)\n\n# Plot flight routes as lines (alpha based on number of flights)\nmax_flights = flight_routes_geo['n_flights'].max()\nfor _, row in flight_routes_geo.iterrows():\n    alpha = min(0.1 + 0.5 * (row['n_flights'] / max_flights), 0.6)\n    ax.plot([row['origin_lon'], row['dest_lon']],\n            [row['origin_lat'], row['dest_lat']],\n            color='steelblue', alpha=alpha, linewidth=0.5)\n\n# Plot destination airports (coords of airport destinations)\nax.scatter(flight_routes_geo['dest_lon'], flight_routes_geo['dest_lat'],\n           s=flight_routes_geo['n_flights']/100, c='coral', alpha=0.7,\n           edgecolors='darkred', linewidths=0.5, label='Destinations', zorder=4)\n\n# Plot NYC origin airports (use coords of NYC airports origin)\nnyc_airports = airports[airports['faa'].isin(['JFK', 'LGA', 'EWR'])]\nfor _, row in nyc_airports.iterrows():\n    ax.scatter(row['lon'], row['lat'], s=200, c='lime', marker='*',\n               edgecolors='darkgreen', linewidths=1, zorder=5)\n    ax.annotate(row['faa'], (row['lon'], row['lat']), xytext=(5, 5),\n                textcoords='offset points', fontsize=8, fontweight='bold', color='darkgreen')\n\nax.set_xlabel('Longitude')\nax.set_ylabel('Latitude')\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#visualizations-with-plotnine",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#visualizations-with-plotnine",
+    "title": "JSC 370: Data Science II",
+    "section": "Visualizations with plotnine",
+    "text": "Visualizations with plotnine\nplotnine is designed on the principle of adding layers."
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#adding-labels-and-themes",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#adding-labels-and-themes",
+    "title": "JSC 370: Data Science II",
+    "section": "Adding labels and themes",
+    "text": "Adding labels and themes\nYou can make nicer axes and add titles with the labs layer\nAlso showing a minimal theme that removes the background grey theme_bw() (has a plot border) or theme_minimal() (no plot border, lighter and sparser grid lines)\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(alpha=0.3) +\n  geom_smooth() +\n  labs(\n    x='Atmospheric Pressure, millibars',\n    y='Departure Delay, minutes',\n    title='Association between weather and flight departure delays'\n  ) +\n  theme_bw())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#shape-of-points",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#shape-of-points",
+    "title": "JSC 370: Data Science II",
+    "section": "Shape of points",
+    "text": "Shape of points\nBy default plotnine uses up to 6 shapes with shape= in the aes() aesthetics. If there are more, some of your data is not plotted!! (At least it warns you.)\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay', shape='origin')) +\n  geom_point(alpha=0.6) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#controlling-transparency-using-alpha",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#controlling-transparency-using-alpha",
+    "title": "JSC 370: Data Science II",
+    "section": "Controlling transparency using “alpha”",
+    "text": "Controlling transparency using “alpha”\nThe alpha control can go in the layer that you are plotting, for example in the geom_point(alpha = ) layer we can directly control the transparency of the points (0 is fully transparent, 1 is fully opaque).\n\n(ggplot(flights_weather_day, aes(x='pressure', y='dep_delay')) +\n  geom_point(alpha=0.4) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#points-shape",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#points-shape",
+    "title": "JSC 370: Data Science II",
+    "section": "Points shape",
+    "text": "Points shape\nBy default plotnine uses up to 6 shapes with shape= in the aes() aesthetics. If there are more, some of your data is not plotted!! (At least it warns you.)\n\n(ggplot(flights_weather_day, aes(x='arr_delay', y='dep_delay', shape='origin')) +\n  geom_point(alpha=0.6) +\n  theme_minimal())"
+  },
+  {
+    "objectID": "slides/04-viz-ml1/JSC370-slides-04.html#coordinate-systems-1",
+    "href": "slides/04-viz-ml1/JSC370-slides-04.html#coordinate-systems-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Coordinate systems",
+    "text": "Coordinate systems\nThe “easy” ones you’ll use a lot\ncoord_flip() swaps x and y after the plot is built. Great for boxplots/bar charts to make labels readable.\ncoord_cartesian(xlim=..., ylim=...) zooms without dropping data (unlike hard limits on scales).\ncoord_fixed(ratio=1) forces equal aspect ratio (useful for geometry or maps).\nWhere it gets tricky\n\nStats + coords interactions: some geoms/stats compute first, then coords transform. Most of the time that’s fine, but it can surprise you when you expect “compute in the new coordinate system.”\nLimits behavior:\n\nscale_*_continuous(limits=...) can drop data before statistics are computed.\ncoord_cartesian(...) usually keeps the data and just zooms the view.\nNon-Cartesian coords (if you use them): e.g., coord_polar() changes the whole geometry, so not every plot makes sense there."
   }
 ]

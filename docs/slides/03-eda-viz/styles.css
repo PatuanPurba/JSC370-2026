@@ -1,6 +1,6 @@
 /* Make overall slide text a bit smaller */
 :root {
-  --r-main-font-size: 34px; /* try 26–30px */
+  --r-main-font-size: 38px; /* try 26–30px */
 }
 
 /* Optional: make code slightly smaller too */
