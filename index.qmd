@@ -25,7 +25,7 @@ This course serves as the second in a series of courses on data science. We will
 | **Week 1** | January 5 [(lecture)](slides/01-introduction/JSC370-slides-01.html) <br> January 7 ([lab](labs/JSC370-lab-01.html)) not in person this week only! | Introduction to Data Science tools: Python, Quarto, VS Code | **Lab 1** |
 | **Week 2** | January 12 [(lecture)](slides/02-version-control/JSC370-slides-02.html) <br> January 14 ([lab](labs/lab2/lab02-github.html)) | Version Control & Reproducible Research, Git/GitHub | **Lab 2** |
 | **Week 3** | January 19 [(lecture)](slides/03-eda-viz/JSC370-slides-03.html) <br> January 21 [(lab)](labs/lab3/lab03-github.html) | Exploratory Data Analysis & Data Viz 1 | **Lab 3** |
-| **Week 4** | January 26 (lecture) <br> January 28 (lab) | Data Viz 2 & ML 1 | **[HW1](homework/hw1_2026.pdf)**, **Lab 4** |
+| **Week 4** | January 26 [(lecture)](slides/04-viz-ml1/JSC370-slides-04.html) <br> January 28 (lab) | Data Viz 2 & ML 1 | **[HW1](homework/hw1_2026.pdf)**, **Lab 4** |
 | **Week 5** | February 2 (lecture) <br> February 4 (lab) | Regular expressions; data scraping; using APIs | **Lab 5** |
 | **Week 6** | February 9 (lecture) <br> February 11 (lab) | Text mining and LLMs | **HW2**, **Lab 6** |
 | **Week 7** | February 16 | Reading Week |  |

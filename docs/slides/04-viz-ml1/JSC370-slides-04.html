@@ -1,0 +1,2704 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <title>JSC 370: Data Science II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link rel="stylesheet" href="styles.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">JSC 370: Data Science II</h1>
+  <p class="subtitle">Week 4: More Data Visualization and ML 1</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="this-week" class="slide level2">
+<h2>This week</h2>
+
+<img data-src="img/ggplot2.png" class="quarto-figure quarto-figure-center r-stretch" style="width:25.0%"><p>This lecture presents a deeper introduction to <code>plotnine</code>, a Python package that implements the grammar of graphics (similar to R’s <code>ggplot2</code>), providing better graphics options than matplotlib’s default plots.</p>
+</section>
+<section id="this-week-1" class="slide level2">
+<h2>This week</h2>
+<p>We will also dig into non-parametric regression with splines and generalized additive models (GAMs).</p>
+<p>A <strong>generalized additive model (GAM)</strong> predicts <span class="math inline">\(y\)</span> by adding up <strong>learned smooth functions</strong> of the predictors:</p>
+<p><span class="math display">\[
+g(\mathbb{E}[Y \mid X])=\beta_0 + s_1(x_1) + s_2(x_2) + \cdots + s_p(x_p)
+\]</span></p>
+<ul>
+<li class="fragment"><strong>Nonlinear</strong>: each <span class="math inline">\(s_j(\cdot)\)</span> is a flexible curve (often a spline)</li>
+<li class="fragment"><strong>Regularized</strong>: we control “wiggliness” with a <strong>penalty</strong> (bias–variance tradeoff)</li>
+<li class="fragment"><strong>Fits the ML pattern</strong>: choose flexibility by minimizing <em>training loss + complexity penalty</em></li>
+<li class="fragment"><strong>Interpretable</strong>: you can plot each learned effect <span class="math inline">\(s_j(x_j)\)</span> (partial effect curves)</li>
+<li class="fragment"><strong>Generalized</strong>: works for continuous, binary, counts via a link <span class="math inline">\(g(\cdot)\)</span></li>
+<li class="fragment"><strong>Mental model:</strong> like linear regression, but each coefficient is replaced by a smooth curve.</li>
+</ul>
+</section>
+<section id="background" class="slide level2">
+<h2>Background</h2>
+<p><code>plotnine</code> is based on the grammar of graphics, the same underlying philosophy as R’s <code>ggplot2</code>. In the Python ecosystem, we use <code>pandas</code> for data manipulation (similar to R’s <code>dplyr</code>), and <code>plotnine</code> for visualization.</p>
+<p>The tidyverse philosophy of readable, chainable operations translates well to Python with method chaining in pandas.</p>
+</section>
+<section id="layers-pandas-and-method-chaining" class="slide level2">
+<h2>Layers, pandas and method chaining</h2>
+<ul>
+<li class="fragment">We should take a step back and discuss Python’s data manipulation ecosystem.</li>
+<li class="fragment"><code>plotnine</code> behaves very similarly to <code>pandas</code>. They share a philosophy of readable, chainable operations.</li>
+<li class="fragment">In pandas, operations are typically chained using method calls on DataFrames.</li>
+<li class="fragment">Each method takes a DataFrame and returns a new DataFrame.</li>
+<li class="fragment">Method chaining in Python uses the <code>.</code> operator (similar to R’s pipe).</li>
+<li class="fragment">You can also use parentheses to break long chains across multiple lines.</li>
+</ul>
+</section>
+<section id="flights-data" class="slide level2">
+<h2>Flights data</h2>
+<p>To illustrate many of today’s visualization examples we will look at the <code>flights</code> data from the <code>nycflights13</code> package. They are all flights that departed from NYC airports (JFK, LGA, EWR) in 2013.</p>
+<div id="f730868d" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> nycflights13 <span class="im">import</span> flights</span>
+<span id="cb1-2"><a></a><span class="bu">print</span>(<span class="st">"Columns:"</span>, flights.columns.tolist())</span>
+<span id="cb1-3"><a></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, flights.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Columns: ['year', 'month', 'day', 'dep_time', 'sched_dep_time', 'dep_delay', 'arr_time', 'sched_arr_time', 'arr_delay', 'carrier', 'flight', 'tailnum', 'origin', 'dest', 'air_time', 'distance', 'hour', 'minute', 'time_hour']
+Shape: (336776, 19)</code></pre>
+</div>
+</div>
+</section>
+<section id="method-chaining-in-python" class="slide level2">
+<h2>Method chaining in Python</h2>
+<ul>
+<li class="fragment"><p>An example using method chaining: subset the flights data to LAX, and take the mean arrival delay times by year, month, day.</p></li>
+<li class="fragment"><p>We need to start with the data, <code>query</code> or boolean indexing to filter to the desired destination (LAX), <code>groupby</code> to prepare the groups that we want to aggregate over, then <code>agg</code> to take the mean.</p></li>
+</ul>
+<div id="d2e5814c" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>(flights</span>
+<span id="cb3-2"><a></a> .query(<span class="st">'dest == "LAX"'</span>)</span>
+<span id="cb3-3"><a></a> .groupby([<span class="st">'year'</span>, <span class="st">'month'</span>, <span class="st">'day'</span>])</span>
+<span id="cb3-4"><a></a> .agg(arr_delay<span class="op">=</span>(<span class="st">'arr_delay'</span>, <span class="kw">lambda</span> x: x.mean(skipna<span class="op">=</span><span class="va">True</span>)))</span>
+<span id="cb3-5"><a></a> .reset_index())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">month</th>
+<th data-quarto-table-cell-role="th">day</th>
+<th data-quarto-table-cell-role="th">arr_delay</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2013</td>
+<td>1</td>
+<td>1</td>
+<td>7.743590</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2013</td>
+<td>1</td>
+<td>2</td>
+<td>-7.414634</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2013</td>
+<td>1</td>
+<td>3</td>
+<td>-28.725000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2013</td>
+<td>1</td>
+<td>4</td>
+<td>-25.125000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2013</td>
+<td>1</td>
+<td>5</td>
+<td>-3.142857</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">360</th>
+<td>2013</td>
+<td>12</td>
+<td>27</td>
+<td>-29.957447</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">361</th>
+<td>2013</td>
+<td>12</td>
+<td>28</td>
+<td>-15.650000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">362</th>
+<td>2013</td>
+<td>12</td>
+<td>29</td>
+<td>8.355556</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">363</th>
+<td>2013</td>
+<td>12</td>
+<td>30</td>
+<td>-6.000000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">364</th>
+<td>2013</td>
+<td>12</td>
+<td>31</td>
+<td>6.230769</td>
+</tr>
+</tbody>
+</table>
+
+<p>365 rows × 4 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="alternative-syntax-with-pipe" class="slide level2">
+<h2>Alternative syntax with pipe()</h2>
+<p>Let’s do the same thing using pandas’ <code>pipe()</code> method for a more functional style:</p>
+<div id="111bf17b" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>(flights</span>
+<span id="cb4-2"><a></a> .pipe(<span class="kw">lambda</span> df: df[df[<span class="st">'dest'</span>] <span class="op">==</span> <span class="st">'LAX'</span>])</span>
+<span id="cb4-3"><a></a> .groupby([<span class="st">'year'</span>, <span class="st">'month'</span>, <span class="st">'day'</span>])</span>
+<span id="cb4-4"><a></a> .agg(arr_delay<span class="op">=</span>(<span class="st">'arr_delay'</span>, <span class="st">'mean'</span>))</span>
+<span id="cb4-5"><a></a> .reset_index())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">month</th>
+<th data-quarto-table-cell-role="th">day</th>
+<th data-quarto-table-cell-role="th">arr_delay</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2013</td>
+<td>1</td>
+<td>1</td>
+<td>7.743590</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2013</td>
+<td>1</td>
+<td>2</td>
+<td>-7.414634</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2013</td>
+<td>1</td>
+<td>3</td>
+<td>-28.725000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2013</td>
+<td>1</td>
+<td>4</td>
+<td>-25.125000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2013</td>
+<td>1</td>
+<td>5</td>
+<td>-3.142857</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">...</th>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">360</th>
+<td>2013</td>
+<td>12</td>
+<td>27</td>
+<td>-29.957447</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">361</th>
+<td>2013</td>
+<td>12</td>
+<td>28</td>
+<td>-15.650000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">362</th>
+<td>2013</td>
+<td>12</td>
+<td>29</td>
+<td>8.355556</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">363</th>
+<td>2013</td>
+<td>12</td>
+<td>30</td>
+<td>-6.000000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">364</th>
+<td>2013</td>
+<td>12</td>
+<td>31</td>
+<td>6.230769</td>
+</tr>
+</tbody>
+</table>
+
+<p>365 rows × 4 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="a-few-coding-style-tips" class="slide level2">
+<h2>A few coding style tips</h2>
+<ul>
+<li class="fragment">Variable names should use only lowercase letters, numbers, and _</li>
+<li class="fragment">Use _ to separate words within a name (snake_case)</li>
+<li class="fragment">Method chains should have each method on its own line, indented</li>
+<li class="fragment">Wrap long chains in parentheses for cleaner formatting</li>
+<li class="fragment">Each chained method should be indented for readability</li>
+</ul>
+<p>Example:</p>
+<div id="36171173" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>short_flights <span class="op">=</span> (flights</span>
+<span id="cb5-2"><a></a>    .query(<span class="st">'air_time &lt; 60'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="flights-data-in-more-detail" class="slide level2">
+<h2>Flights data in more detail</h2>
+<p>The <code>nycflights13</code> package also provides hourly airport weather data for the three NYC airports (the origin). Let’s join the flights data with the <code>weather</code> data so we can look at more interesting relationships in our visualizations.</p>
+<div id="524ac9f3" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>weather <span class="op">=</span> pd.read_csv(<span class="st">'flights_weather.csv'</span>)</span>
+<span id="cb6-2"><a></a><span class="bu">print</span>(<span class="st">"Columns:"</span>, weather.columns.tolist())</span>
+<span id="cb6-3"><a></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, weather.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Columns: ['origin', 'year', 'month', 'day', 'hour', 'temp', 'dewp', 'humid', 'wind_dir', 'wind_speed', 'wind_gust', 'precip', 'pressure', 'visib', 'time_hour']
+Shape: (26115, 15)</code></pre>
+</div>
+</div>
+</section>
+<section id="flights-data-in-more-detail-1" class="slide level2">
+<h2>Flights data in more detail</h2>
+<p>Looks like we can join these datasets on year, month, day, hour and origin (which is the origin airport). We can examine the relationship between flight delays and weather at the origin airports (JFK, LGA, EWR).</p>
+<p>A <code>merge</code> with <code>how='left'</code> will keep all of the observations in the left DataFrame (flights) and merge with the observations in the right DataFrame (weather at origin).</p>
+<div id="bef99173" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>flights_weather <span class="op">=</span> pd.merge(</span>
+<span id="cb8-2"><a></a>    flights,</span>
+<span id="cb8-3"><a></a>    weather,</span>
+<span id="cb8-4"><a></a>    how<span class="op">=</span><span class="st">'left'</span>,</span>
+<span id="cb8-5"><a></a>    on<span class="op">=</span>[<span class="st">'year'</span>, <span class="st">'month'</span>, <span class="st">'day'</span>, <span class="st">'hour'</span>, <span class="st">'origin'</span>]</span>
+<span id="cb8-6"><a></a>)</span>
+<span id="cb8-7"><a></a></span>
+<span id="cb8-8"><a></a>flights_weather.head()</span>
+<span id="cb8-9"><a></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, flights_weather.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape: (336776, 29)</code></pre>
+</div>
+</div>
+</section>
+<section id="daily-flights-data" class="slide level2">
+<h2>Daily flights data</h2>
+<p>Let’s make a more manageable sized dataset and summarize the data by month, day, and origin airport by taking the means of the weather variables.</p>
+<div id="c1e7800c" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>agg_cols <span class="op">=</span> [<span class="st">'dep_delay'</span>, <span class="st">'arr_delay'</span>, <span class="st">'temp'</span>, <span class="st">'dewp'</span>, <span class="st">'humid'</span>,</span>
+<span id="cb10-2"><a></a>            <span class="st">'wind_dir'</span>, <span class="st">'wind_speed'</span>, <span class="st">'wind_gust'</span>, <span class="st">'precip'</span>, <span class="st">'pressure'</span>, <span class="st">'visib'</span>]</span>
+<span id="cb10-3"><a></a></span>
+<span id="cb10-4"><a></a>flights_weather_day <span class="op">=</span> (flights_weather</span>
+<span id="cb10-5"><a></a>    .groupby([<span class="st">'year'</span>, <span class="st">'month'</span>, <span class="st">'day'</span>, <span class="st">'origin'</span>])</span>
+<span id="cb10-6"><a></a>    .agg({col: <span class="st">'mean'</span> <span class="cf">for</span> col <span class="kw">in</span> agg_cols})</span>
+<span id="cb10-7"><a></a>    .reset_index())</span>
+<span id="cb10-8"><a></a></span>
+<span id="cb10-9"><a></a>flights_weather_day.head()</span>
+<span id="cb10-10"><a></a><span class="bu">print</span>(<span class="st">"Shape:"</span>, flights_weather_day.shape)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Shape: (1095, 15)</code></pre>
+</div>
+</div>
+</section>
+<section id="mapping-flight-routes" class="slide level2">
+<h2>Mapping Flight Routes</h2>
+<p>The <code>nycflights13</code> package also includes airport coordinates. We can merge these in with <code>flights</code> to map where are the popular NYC destinations.</p>
+<div id="d88bb9de" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a><span class="im">from</span> nycflights13 <span class="im">import</span> airports</span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a><span class="co"># get routes by origin (EWR, JFK, LGA) and destination, count the number of flights per</span></span>
+<span id="cb12-4"><a></a></span>
+<span id="cb12-5"><a></a>flight_routes <span class="op">=</span> (flights</span>
+<span id="cb12-6"><a></a>    .groupby([<span class="st">'origin'</span>, <span class="st">'dest'</span>])</span>
+<span id="cb12-7"><a></a>    .size()</span>
+<span id="cb12-8"><a></a>    .reset_index(name<span class="op">=</span><span class="st">'n_flights'</span>))</span>
+<span id="cb12-9"><a></a></span>
+<span id="cb12-10"><a></a><span class="co"># extract geospatial and merging info about the airports</span></span>
+<span id="cb12-11"><a></a>airports[[<span class="st">'faa'</span>, <span class="st">'name'</span>, <span class="st">'lat'</span>, <span class="st">'lon'</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">faa</th>
+<th data-quarto-table-cell-role="th">name</th>
+<th data-quarto-table-cell-role="th">lat</th>
+<th data-quarto-table-cell-role="th">lon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>04G</td>
+<td>Lansdowne Airport</td>
+<td>41.130472</td>
+<td>-80.619583</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>06A</td>
+<td>Moton Field Municipal Airport</td>
+<td>32.460572</td>
+<td>-85.680028</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>06C</td>
+<td>Schaumburg Regional</td>
+<td>41.989341</td>
+<td>-88.101243</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>06N</td>
+<td>Randall Airport</td>
+<td>41.431912</td>
+<td>-74.391561</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>09J</td>
+<td>Jekyll Island Airport</td>
+<td>31.074472</td>
+<td>-81.427778</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="flight-routes-data" class="slide level2">
+<h2>Flight Routes Data</h2>
+<p>Merge flight routes with geospatial information (latitude and longitude) by <code>origin</code> (it is the <code>faa</code> column in airports) and rename to have <code>dest_lat</code>, <code>dest_lon</code> along with <code>origin_lat</code> and <code>origin_lon</code></p>
+<div id="44f51bbd" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>flight_routes_geo <span class="op">=</span> (flight_routes</span>
+<span id="cb13-2"><a></a>    .merge(airports[[<span class="st">'faa'</span>, <span class="st">'lat'</span>, <span class="st">'lon'</span>]],</span>
+<span id="cb13-3"><a></a>           left_on<span class="op">=</span><span class="st">'dest'</span>, right_on<span class="op">=</span><span class="st">'faa'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb13-4"><a></a>    .rename(columns<span class="op">=</span>{<span class="st">'lat'</span>: <span class="st">'dest_lat'</span>, <span class="st">'lon'</span>: <span class="st">'dest_lon'</span>})</span>
+<span id="cb13-5"><a></a>    .drop(columns<span class="op">=</span>[<span class="st">'faa'</span>])</span>
+<span id="cb13-6"><a></a>    .merge(airports[[<span class="st">'faa'</span>, <span class="st">'lat'</span>, <span class="st">'lon'</span>]],</span>
+<span id="cb13-7"><a></a>           left_on<span class="op">=</span><span class="st">'origin'</span>, right_on<span class="op">=</span><span class="st">'faa'</span>, how<span class="op">=</span><span class="st">'inner'</span>)</span>
+<span id="cb13-8"><a></a>    .rename(columns<span class="op">=</span>{<span class="st">'lat'</span>: <span class="st">'origin_lat'</span>, <span class="st">'lon'</span>: <span class="st">'origin_lon'</span>})</span>
+<span id="cb13-9"><a></a>    .drop(columns<span class="op">=</span>[<span class="st">'faa'</span>]))</span>
+<span id="cb13-10"><a></a></span>
+<span id="cb13-11"><a></a><span class="bu">print</span>(<span class="ss">f"Routes mapped: </span><span class="sc">{</span><span class="bu">len</span>(flight_routes_geo)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-12"><a></a>flight_routes_geo.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Routes mapped: 217</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">origin</th>
+<th data-quarto-table-cell-role="th">dest</th>
+<th data-quarto-table-cell-role="th">n_flights</th>
+<th data-quarto-table-cell-role="th">dest_lat</th>
+<th data-quarto-table-cell-role="th">dest_lon</th>
+<th data-quarto-table-cell-role="th">origin_lat</th>
+<th data-quarto-table-cell-role="th">origin_lon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>EWR</td>
+<td>ALB</td>
+<td>439</td>
+<td>42.748267</td>
+<td>-73.801692</td>
+<td>40.6925</td>
+<td>-74.168667</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>EWR</td>
+<td>ANC</td>
+<td>8</td>
+<td>61.174361</td>
+<td>-149.996361</td>
+<td>40.6925</td>
+<td>-74.168667</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>EWR</td>
+<td>ATL</td>
+<td>5022</td>
+<td>33.636719</td>
+<td>-84.428067</td>
+<td>40.6925</td>
+<td>-74.168667</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>EWR</td>
+<td>AUS</td>
+<td>968</td>
+<td>30.194528</td>
+<td>-97.669889</td>
+<td>40.6925</td>
+<td>-74.168667</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>EWR</td>
+<td>AVL</td>
+<td>265</td>
+<td>35.436194</td>
+<td>-82.541806</td>
+<td>40.6925</td>
+<td>-74.168667</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="flight-routes-map" class="slide level2">
+<h2>Flight Routes Map</h2>
+<p>Like we saw last week, we can make a basic map we can use <code>matplotlib</code> and <code>contixtily</code> (basemap).</p>
+<div id="906b919a" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a></a><span class="im">import</span> contextily <span class="im">as</span> ctx</span>
+<span id="cb15-3"><a></a></span>
+<span id="cb15-4"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb15-5"><a></a></span>
+<span id="cb15-6"><a></a><span class="co"># Set map extent</span></span>
+<span id="cb15-7"><a></a>ax.set_xlim(<span class="op">-</span><span class="dv">130</span>, <span class="op">-</span><span class="dv">65</span>)</span>
+<span id="cb15-8"><a></a>ax.set_ylim(<span class="dv">22</span>, <span class="dv">52</span>)</span>
+<span id="cb15-9"><a></a></span>
+<span id="cb15-10"><a></a><span class="co"># Add basemap </span></span>
+<span id="cb15-11"><a></a>ctx.add_basemap(ax, crs<span class="op">=</span><span class="st">'EPSG:4326'</span>, source<span class="op">=</span>ctx.providers.CartoDB.Positron)</span>
+<span id="cb15-12"><a></a></span>
+<span id="cb15-13"><a></a><span class="co"># Plot flight routes as lines (alpha based on number of flights)</span></span>
+<span id="cb15-14"><a></a>max_flights <span class="op">=</span> flight_routes_geo[<span class="st">'n_flights'</span>].<span class="bu">max</span>()</span>
+<span id="cb15-15"><a></a><span class="cf">for</span> _, row <span class="kw">in</span> flight_routes_geo.iterrows():</span>
+<span id="cb15-16"><a></a>    alpha <span class="op">=</span> <span class="bu">min</span>(<span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> (row[<span class="st">'n_flights'</span>] <span class="op">/</span> max_flights), <span class="fl">0.6</span>)</span>
+<span id="cb15-17"><a></a>    ax.plot([row[<span class="st">'origin_lon'</span>], row[<span class="st">'dest_lon'</span>]],</span>
+<span id="cb15-18"><a></a>            [row[<span class="st">'origin_lat'</span>], row[<span class="st">'dest_lat'</span>]],</span>
+<span id="cb15-19"><a></a>            color<span class="op">=</span><span class="st">'steelblue'</span>, alpha<span class="op">=</span>alpha, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb15-20"><a></a></span>
+<span id="cb15-21"><a></a><span class="co"># Plot destination airports (coords of airport destinations)</span></span>
+<span id="cb15-22"><a></a>ax.scatter(flight_routes_geo[<span class="st">'dest_lon'</span>], flight_routes_geo[<span class="st">'dest_lat'</span>],</span>
+<span id="cb15-23"><a></a>           s<span class="op">=</span>flight_routes_geo[<span class="st">'n_flights'</span>]<span class="op">/</span><span class="dv">100</span>, c<span class="op">=</span><span class="st">'coral'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>,</span>
+<span id="cb15-24"><a></a>           edgecolors<span class="op">=</span><span class="st">'darkred'</span>, linewidths<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'Destinations'</span>, zorder<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb15-25"><a></a></span>
+<span id="cb15-26"><a></a><span class="co"># Plot NYC origin airports (use coords of NYC airports origin)</span></span>
+<span id="cb15-27"><a></a>nyc_airports <span class="op">=</span> airports[airports[<span class="st">'faa'</span>].isin([<span class="st">'JFK'</span>, <span class="st">'LGA'</span>, <span class="st">'EWR'</span>])]</span>
+<span id="cb15-28"><a></a><span class="cf">for</span> _, row <span class="kw">in</span> nyc_airports.iterrows():</span>
+<span id="cb15-29"><a></a>    ax.scatter(row[<span class="st">'lon'</span>], row[<span class="st">'lat'</span>], s<span class="op">=</span><span class="dv">200</span>, c<span class="op">=</span><span class="st">'lime'</span>, marker<span class="op">=</span><span class="st">'*'</span>,</span>
+<span id="cb15-30"><a></a>               edgecolors<span class="op">=</span><span class="st">'darkgreen'</span>, linewidths<span class="op">=</span><span class="dv">1</span>, zorder<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb15-31"><a></a>    ax.annotate(row[<span class="st">'faa'</span>], (row[<span class="st">'lon'</span>], row[<span class="st">'lat'</span>]), xytext<span class="op">=</span>(<span class="dv">5</span>, <span class="dv">5</span>),</span>
+<span id="cb15-32"><a></a>                textcoords<span class="op">=</span><span class="st">'offset points'</span>, fontsize<span class="op">=</span><span class="dv">8</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>, color<span class="op">=</span><span class="st">'darkgreen'</span>)</span>
+<span id="cb15-33"><a></a></span>
+<span id="cb15-34"><a></a>ax.set_xlabel(<span class="st">'Longitude'</span>)</span>
+<span id="cb15-35"><a></a>ax.set_ylabel(<span class="st">'Latitude'</span>)</span>
+<span id="cb15-36"><a></a>plt.tight_layout()</span>
+<span id="cb15-37"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-12-output-1.png" class="quarto-figure quarto-figure-center" width="1142" height="758"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="basemap-options" class="slide level2">
+<h2>Basemap Options</h2>
+<p>The <code>contextily</code> library provides several basemap tile providers:</p>
+<div id="dbe3c054" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>ctx.providers.CartoDB.Positron      <span class="co"># light gray, minimal labels</span></span>
+<span id="cb16-2"><a></a>ctx.providers.CartoDB.PositronNoLabels</span>
+<span id="cb16-3"><a></a>ctx.providers.Stamen.TonerLite      <span class="co"># black and white</span></span>
+<span id="cb16-4"><a></a></span>
+<span id="cb16-5"><a></a><span class="co"># Terrain/satellite</span></span>
+<span id="cb16-6"><a></a>ctx.providers.Stamen.Terrain        <span class="co"># terrain with labels</span></span>
+<span id="cb16-7"><a></a>ctx.providers.Esri.WorldImagery     <span class="co"># satellite imagery</span></span>
+<span id="cb16-8"><a></a></span>
+<span id="cb16-9"><a></a><span class="co"># Standard map styles</span></span>
+<span id="cb16-10"><a></a>ctx.providers.OpenStreetMap.Mapnik  <span class="co"># standard OSM</span></span>
+<span id="cb16-11"><a></a>ctx.providers.CartoDB.Voyager       <span class="co"># colorful, detailed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Use <code>crs='EPSG:4326'</code> when your data is in latitude/longitude coordinates.</p>
+</section>
+<section id="visualizations-with-plotnine" class="slide level2">
+<h2>Visualizations with <code>plotnine</code></h2>
+<p><code>plotnine</code> is designed on the principle of adding layers.</p>
+
+<img data-src="img/layers.png" class="quarto-figure quarto-figure-center r-stretch" style="width:40.0%"></section>
+<section id="layers-in-plotnine" class="slide level2">
+<h2>Layers in <code>plotnine</code></h2>
+<ul>
+<li class="fragment">With <code>plotnine</code> a plot is initiated with the function <code>ggplot()</code></li>
+<li class="fragment">The first argument of <code>ggplot()</code> is the dataset to use in the graph</li>
+<li class="fragment">We add aesthetics using <code>aes()</code></li>
+<li class="fragment">The <code>aes()</code> mapping takes the x and y axes of the plot</li>
+<li class="fragment">Layers are added to <code>ggplot()</code> with <code>+</code></li>
+<li class="fragment">Layers include <code>geom_</code> functions such as point, lines, etc.</li>
+</ul>
+<div id="e8a6ef89" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a>(ggplot(data, aes(x<span class="op">=</span><span class="st">'x_var'</span>, y<span class="op">=</span><span class="st">'y_var'</span>)) <span class="op">+</span></span>
+<span id="cb17-2"><a></a>  geom_point())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="basic-scatterplot" class="slide level2">
+<h2>Basic scatterplot</h2>
+<p>The first argument of <code>ggplot()</code> is the dataset to use, then the aesthetics. With the <code>+</code> you add one or more layers.</p>
+<div id="40962acd" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb18-2"><a></a>  geom_point() <span class="op">+</span></span>
+<span id="cb18-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-15-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As expected, we see that if a flight has a late departure, it has a late arrival.</p>
+</section>
+<section id="another-basic-scatterplot" class="slide level2">
+<h2>Another basic scatterplot</h2>
+<p>We can see if there is a relationship between departure delays and pressure (low pressure means clouds and precipitation, high pressure means better weather).</p>
+<div id="1eef1de2" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb19-2"><a></a>  geom_point() <span class="op">+</span></span>
+<span id="cb19-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-16-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="controlling-transparency-using-alpha" class="slide level2">
+<h2>Controlling transparency using “alpha”</h2>
+<p>The alpha control can go in the layer that you are plotting, for example in the <code>geom_point(alpha = )</code> layer we can directly control the transparency of the points (0 is fully transparent, 1 is fully opaque).</p>
+<div id="9e3d52cc" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb20-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.4</span>) <span class="op">+</span></span>
+<span id="cb20-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-17-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="adding-labels-and-themes" class="slide level2">
+<h2>Adding labels and themes</h2>
+<p>You can make nicer axes and add titles with the <code>labs</code> layer</p>
+<p>Also showing a minimal theme that removes the background grey <code>theme_bw()</code> (has a plot border) or <code>theme_minimal()</code> (no plot border, lighter and sparser grid lines)</p>
+<div id="5888baa6" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb21-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb21-3"><a></a>  geom_smooth() <span class="op">+</span></span>
+<span id="cb21-4"><a></a>  labs(</span>
+<span id="cb21-5"><a></a>    x<span class="op">=</span><span class="st">'Atmospheric Pressure, millibars'</span>,</span>
+<span id="cb21-6"><a></a>    y<span class="op">=</span><span class="st">'Departure Delay, minutes'</span>,</span>
+<span id="cb21-7"><a></a>    title<span class="op">=</span><span class="st">'Association between weather and flight departure delays'</span></span>
+<span id="cb21-8"><a></a>  ) <span class="op">+</span></span>
+<span id="cb21-9"><a></a>  theme_bw())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-18-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coloring-by-a-variable---using-aesthetics" class="slide level2">
+<h2>Coloring by a variable - using aesthetics</h2>
+<p>You can convey information about your data by mapping the aesthetics in your plot to the variables in your dataset. For example, you can map the colors of your points to the <code>origin</code> variable to reveal groupings.</p>
+<p><code>plotnine</code> chooses colors, and adds a legend, automatically.</p>
+<div id="5b64dff6" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>, color<span class="op">=</span><span class="st">'origin'</span>)) <span class="op">+</span></span>
+<span id="cb22-2"><a></a>  geom_point() <span class="op">+</span></span>
+<span id="cb22-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-19-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coloring-by-a-variable---using-aesthetics-1" class="slide level2">
+<h2>Coloring by a variable - using aesthetics</h2>
+<p>Note when there are a lot of classes or groups, the coloring is not distinguished well.</p>
+<p>This is generally bad practice.</p>
+<div id="61339116" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>(ggplot(flights_weather, aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>, color<span class="op">=</span><span class="st">'dest'</span>)) <span class="op">+</span></span>
+<span id="cb23-2"><a></a>  geom_point() <span class="op">+</span></span>
+<span id="cb23-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-20-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coloring-by-a-variable---using-aesthetics-2" class="slide level2">
+<h2>Coloring by a variable - using aesthetics</h2>
+<p>Too many points? Take a random sample and plot again.</p>
+<div id="48b66e65" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>(ggplot(flights_weather.sample(<span class="dv">1000</span>), aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>, color<span class="op">=</span><span class="st">'dest'</span>)) <span class="op">+</span></span>
+<span id="cb24-2"><a></a>  geom_point() <span class="op">+</span></span>
+<span id="cb24-3"><a></a>  theme_minimal() <span class="op">+</span></span>
+<span id="cb24-4"><a></a>  theme(legend_position<span class="op">=</span><span class="st">'right'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-21-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="points-shape" class="slide level2">
+<h2>Points shape</h2>
+<p>By default <code>plotnine</code> uses up to 6 shapes with <code>shape=</code> in the <code>aes()</code> aesthetics. If there are more, some of your data is not plotted!! (At least it warns you.)</p>
+<div id="9dc5a662" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>, shape<span class="op">=</span><span class="st">'origin'</span>)) <span class="op">+</span></span>
+<span id="cb25-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb25-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-22-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="manual-control-of-aesthetics" class="slide level2">
+<h2>Manual control of aesthetics</h2>
+<p>If we control aesthetics manually in the layer such as <code>geom_point()</code> (i.e.&nbsp;outside <code>aes()</code>), they become fixed constants for that geom, not variables mapped from the data.</p>
+<p>One more important detail in <code>plotnine</code>: if you write <code>aes(color='blue')</code>, that’s a mapping (to the literal string “blue”), not a fixed aesthetic, so you’ll often get an odd legend. Fixed values should be outside <code>aes()</code>, but coloring by a variable (such as a group) should be inside <code>aes()</code>.</p>
+<div id="e7fa3275" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb26-2"><a></a>  geom_point(color<span class="op">=</span><span class="st">'blue'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb26-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-23-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-of-aesthetics" class="slide level2">
+<h2>Summary of aesthetics</h2>
+<p>The various aesthetics of <code>aes</code>:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>x</td>
+<td>position on x-axis</td>
+</tr>
+<tr class="even">
+<td>y</td>
+<td>position on y-axis</td>
+</tr>
+<tr class="odd">
+<td>shape</td>
+<td>shape</td>
+</tr>
+<tr class="even">
+<td>color</td>
+<td>color of element borders</td>
+</tr>
+<tr class="odd">
+<td>fill</td>
+<td>color inside elements</td>
+</tr>
+<tr class="even">
+<td>size</td>
+<td>size</td>
+</tr>
+<tr class="odd">
+<td>alpha</td>
+<td>transparency</td>
+</tr>
+<tr class="even">
+<td>linetype</td>
+<td>type of line</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="facets-1" class="slide level2">
+<h2>Facets 1</h2>
+<p>Facets are particularly useful for categorical variables:</p>
+<div id="0f779444" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'wind_speed'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb27-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb27-3"><a></a>  facet_wrap(<span class="st">'~origin'</span>, nrow<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb27-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-24-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="facets-2" class="slide level2">
+<h2>Facets 2</h2>
+<p>Or you can facet on two variables:</p>
+<div id="0bd469d7" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'arr_delay'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb28-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.3</span>, size<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb28-3"><a></a>  facet_grid(<span class="st">'month~origin'</span>) <span class="op">+</span></span>
+<span id="cb28-4"><a></a>  theme_minimal() <span class="op">+</span></span>
+<span id="cb28-5"><a></a>  theme(figure_size<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">16</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-25-output-1.png" class="quarto-figure quarto-figure-center" width="1152" height="1536"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note this plot is probably too large and busy for practical use, but it gives you the idea what is possible with faceting.</p>
+</section>
+<section id="geometric-objects-1" class="slide level2">
+<h2>Geometric Objects 1</h2>
+<p>Geometric objects are used to control the type of plot you draw. Let’s plot a smoothed line fitted to the scatterplot data between pressure and departure delay.</p>
+<div id="9818f9bd" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb29-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb29-3"><a></a>  geom_smooth() <span class="op">+</span></span>
+<span id="cb29-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-26-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="geometric-objects-2" class="slide level2">
+<h2>Geometric Objects 2</h2>
+<p>Note that not every aesthetic works with every geom function.</p>
+<p>For example, <code>linetype</code> is an aesthetic mapping that controls the pattern used to draw lines (solid, dashed, dotted, etc.).</p>
+<div id="4b325626" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>, linetype<span class="op">=</span><span class="st">'origin'</span>)) <span class="op">+</span></span>
+<span id="cb30-2"><a></a>  geom_smooth(se<span class="op">=</span><span class="va">False</span>) <span class="op">+</span></span>
+<span id="cb30-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-27-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="geoms---reference" class="slide level2">
+<h2>Geoms - Reference</h2>
+<p><code>plotnine</code> provides many geoms, mirroring ggplot2’s functionality. See https://plotnine.readthedocs.io/ for documentation.</p>
+<p>Here is a nice <code>plotnine</code> <a href="https://plotnine.org/guide/introduction.html">guide</a></p>
+<p>And <a href="https://jeroenjanssens.com/img/plotnine-cheatsheet-1.png">cheatsheet (front)</a> and <a href="https://jeroenjanssens.com/img/plotnine-cheatsheet-2.png">cheatsheet (back)</a></p>
+
+<img data-src="img/geoms.png" class="quarto-figure quarto-figure-center r-stretch" style="width:40.0%"></section>
+<section id="multiple-geoms-1" class="slide level2">
+<h2>Multiple Geoms 1</h2>
+<p>To display multiple geoms in the same plot, add multiple <code>geom</code> functions to <code>ggplot()</code>, for example <code>geom_point</code> and <code>geom_smooth</code></p>
+<div id="b1bcac26" class="cell" data-execution_count="27">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-28-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="multiple-geoms-2" class="slide level2">
+<h2>Multiple Geoms 2</h2>
+<p>If you place mappings in a <code>geom</code> function, <code>plotnine</code> will use these mappings to extend or overwrite the global mappings for that layer only. This makes it possible to display different aesthetics in different layers.</p>
+<div id="9c2bb53e" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb31-2"><a></a>  geom_point(aes(color<span class="op">=</span><span class="st">'origin'</span>), alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb31-3"><a></a>  geom_smooth() <span class="op">+</span></span>
+<span id="cb31-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-29-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="multiple-geoms-3" class="slide level2">
+<h2>Multiple Geoms 3</h2>
+<p>You can use the same idea to specify different data for each layer. Here, our smooth line displays just a subset of the dataset, the flights departing from JFK. The local data argument in <code>geom_smooth()</code> overrides the global data argument in <code>ggplot()</code> for that layer only.</p>
+<div id="edbd8cd4" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>jfk_data <span class="op">=</span> flights_weather_day.query(<span class="st">'origin == "JFK"'</span>)</span>
+<span id="cb32-2"><a></a></span>
+<span id="cb32-3"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb32-4"><a></a>  geom_point(aes(color<span class="op">=</span><span class="st">'origin'</span>), alpha<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb32-5"><a></a>  geom_smooth(data<span class="op">=</span>jfk_data, se<span class="op">=</span><span class="va">False</span>, color<span class="op">=</span><span class="st">'black'</span>) <span class="op">+</span></span>
+<span id="cb32-6"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-30-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="multiple-geoms-4" class="slide level2">
+<h2>Multiple Geoms 4</h2>
+<p>We can layer the points with <code>geom_point</code> and error bars on the <code>geom_smooth</code>.</p>
+<p>We can add <code>color</code> and <code>linetype</code> by origin airport.</p>
+<div id="6e9a840f" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>, linetype<span class="op">=</span><span class="st">'origin'</span>,color<span class="op">=</span><span class="st">'origin'</span>)) <span class="op">+</span></span>
+<span id="cb33-2"><a></a>  geom_smooth(se<span class="op">=</span><span class="va">True</span>) <span class="op">+</span></span>
+<span id="cb33-3"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb33-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-31-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="statistical-transformations---e.g.-bar-charts" class="slide level2">
+<h2>Statistical Transformations - e.g.&nbsp;Bar charts</h2>
+<p>Let’s make a bar chart of the number of flights at each origin airport in 2013. The algorithm uses a built-in statistical transformation, called a “stat”, to calculate the counts.</p>
+<div id="a086f11b" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a>(ggplot(flights_weather, aes(x<span class="op">=</span><span class="st">'origin'</span>)) <span class="op">+</span></span>
+<span id="cb34-2"><a></a>  geom_bar() <span class="op">+</span></span>
+<span id="cb34-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-32-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bar-charts-2" class="slide level2">
+<h2>Bar charts 2</h2>
+<p>You can override the statistic a <code>geom</code> uses to construct its plot. e.g., if we want to plot proportions, rather than counts:</p>
+<div id="b8dd149b" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a></a>(ggplot(flights_weather, aes(x<span class="op">=</span><span class="st">'origin'</span>, y<span class="op">=</span><span class="st">'..prop..'</span>, group<span class="op">=</span><span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb35-2"><a></a>  geom_bar() <span class="op">+</span></span>
+<span id="cb35-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-33-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coloring-barcharts" class="slide level2">
+<h2>Coloring barcharts</h2>
+<p>You can color a bar chart using either the <code>color</code> aesthetic (only does the outline), or, more usefully, <code>fill</code>:</p>
+<div id="eb8a79c9" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>(ggplot(flights_weather, aes(x<span class="op">=</span><span class="st">'origin'</span>, fill<span class="op">=</span><span class="st">'origin'</span>)) <span class="op">+</span></span>
+<span id="cb36-2"><a></a>  geom_bar() <span class="op">+</span></span>
+<span id="cb36-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-34-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coloring-barcharts-1" class="slide level2">
+<h2>Coloring barcharts</h2>
+<p>More interestingly, you can fill by another variable. Let’s first subset our data to look at the destination airports with a lot of flights (more than 10,000 flights)</p>
+<div id="5c0beaaf" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a>flights_weather_ss <span class="op">=</span> (flights_weather</span>
+<span id="cb37-2"><a></a>    .groupby(<span class="st">'dest'</span>)</span>
+<span id="cb37-3"><a></a>    .<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="bu">len</span>(x) <span class="op">&gt;</span> <span class="dv">10000</span>))</span>
+<span id="cb37-4"><a></a></span>
+<span id="cb37-5"><a></a>(ggplot(flights_weather_ss, aes(x<span class="op">=</span><span class="st">'origin'</span>, fill<span class="op">=</span><span class="st">'dest'</span>)) <span class="op">+</span></span>
+<span id="cb37-6"><a></a>  geom_bar() <span class="op">+</span></span>
+<span id="cb37-7"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-35-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coloring-barcharts-2" class="slide level2">
+<h2>Coloring barcharts</h2>
+<p>The <code>position='dodge'</code> places overlapping objects directly beside one another. This makes it easier to compare individual values.</p>
+<div id="f68ef1f3" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>(ggplot(flights_weather_ss, aes(x<span class="op">=</span><span class="st">'origin'</span>, fill<span class="op">=</span><span class="st">'dest'</span>)) <span class="op">+</span></span>
+<span id="cb38-2"><a></a>  geom_bar(position<span class="op">=</span><span class="st">'dodge'</span>) <span class="op">+</span></span>
+<span id="cb38-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-36-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="statistical-transformations---another-example" class="slide level2">
+<h2>Statistical transformations - another example</h2>
+<p>You might want to draw greater attention to the statistical transformation in your code. For example, you might use <code>stat_summary()</code>, which summarizes the y values for each unique x value.</p>
+<p>Here we plot the median delay with IQR (25th-75th quantiles) as bars.</p>
+<div id="139fe242" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a>(ggplot(flights_weather_ss, aes(x<span class="op">=</span><span class="st">'dest'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb39-2"><a></a>  stat_summary(fun_y<span class="op">=</span>np.median,</span>
+<span id="cb39-3"><a></a>               fun_ymin<span class="op">=</span><span class="kw">lambda</span> x: np.percentile(x.dropna(), <span class="dv">25</span>),</span>
+<span id="cb39-4"><a></a>               fun_ymax<span class="op">=</span><span class="kw">lambda</span> x: np.percentile(x.dropna(), <span class="dv">75</span>)) <span class="op">+</span></span>
+<span id="cb39-5"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-37-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coordinate-systems" class="slide level2">
+<h2>Coordinate systems</h2>
+<p>Coordinate systems are one of the more complicated corners of plotnine. To start with something simple, here’s how to flip axes:</p>
+<div id="8917cf20" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a><span class="co"># Unflipped</span></span>
+<span id="cb40-2"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'origin'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb40-3"><a></a>  geom_boxplot() <span class="op">+</span></span>
+<span id="cb40-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-38-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="7ff2db06" class="cell" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a><span class="co"># Flipped</span></span>
+<span id="cb41-2"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'origin'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb41-3"><a></a>  geom_boxplot() <span class="op">+</span></span>
+<span id="cb41-4"><a></a>  coord_flip() <span class="op">+</span></span>
+<span id="cb41-5"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-39-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coordinate-flip-the-statistical-transformation-plot" class="slide level2">
+<h2>Coordinate flip the statistical transformation plot</h2>
+<div id="d1a3ffaa" class="cell" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a>(ggplot(flights_weather_ss, aes(x<span class="op">=</span><span class="st">'dest'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb42-2"><a></a>  stat_summary(fun_y<span class="op">=</span>np.median,</span>
+<span id="cb42-3"><a></a>               fun_ymin<span class="op">=</span><span class="kw">lambda</span> x: np.percentile(x.dropna(), <span class="dv">25</span>),</span>
+<span id="cb42-4"><a></a>               fun_ymax<span class="op">=</span><span class="kw">lambda</span> x: np.percentile(x.dropna(), <span class="dv">75</span>)) <span class="op">+</span></span>
+<span id="cb42-5"><a></a>  coord_flip() <span class="op">+</span></span>
+<span id="cb42-6"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-40-output-1.png" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coordinate-flip-on-barplot" class="slide level2">
+<h2>Coordinate flip on barplot</h2>
+<p>Let’s look at the top destinations from the NYC airports</p>
+<div id="c1e4d8de" class="cell" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a></a><span class="co"># Aggregate by destination</span></span>
+<span id="cb43-2"><a></a>top_dests <span class="op">=</span> (flight_routes</span>
+<span id="cb43-3"><a></a>    .groupby(<span class="st">'dest'</span>)[<span class="st">'n_flights'</span>]</span>
+<span id="cb43-4"><a></a>    .<span class="bu">sum</span>()</span>
+<span id="cb43-5"><a></a>    .sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb43-6"><a></a>    .head(<span class="dv">15</span>)</span>
+<span id="cb43-7"><a></a>    .reset_index())</span>
+<span id="cb43-8"><a></a></span>
+<span id="cb43-9"><a></a>(ggplot(top_dests, aes(x<span class="op">=</span><span class="st">'reorder(dest, n_flights)'</span>, y<span class="op">=</span><span class="st">'n_flights'</span>)) <span class="op">+</span></span>
+<span id="cb43-10"><a></a>  geom_bar(stat<span class="op">=</span><span class="st">'identity'</span>, fill<span class="op">=</span><span class="st">'steelblue'</span>) <span class="op">+</span></span>
+<span id="cb43-11"><a></a>  coord_flip() <span class="op">+</span></span>
+<span id="cb43-12"><a></a>  labs(x<span class="op">=</span><span class="st">'Destination'</span>, y<span class="op">=</span><span class="st">'Number of Flights'</span>,</span>
+<span id="cb43-13"><a></a>       title<span class="op">=</span><span class="st">'Top 15 Destinations from NYC'</span>) <span class="op">+</span></span>
+<span id="cb43-14"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-41-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="coordinate-systems-1" class="slide level2">
+<h2>Coordinate systems</h2>
+<p>The “easy” ones you’ll use a lot</p>
+<p><code>coord_flip()</code> swaps x and y after the plot is built. Great for boxplots/bar charts to make labels readable.</p>
+<p><code>coord_cartesian(xlim=..., ylim=...)</code> zooms without dropping data (unlike hard limits on scales).</p>
+<p><code>coord_fixed(ratio=1)</code> forces equal aspect ratio (useful for geometry or maps).</p>
+<p>Where it gets tricky</p>
+<ul>
+<li class="fragment"><p>Stats + coords interactions: some geoms/stats compute first, then coords transform. Most of the time that’s fine, but it can surprise you when you expect “compute in the new coordinate system.”</p></li>
+<li class="fragment"><p>Limits behavior:</p>
+<ul>
+<li class="fragment"><code>scale_*_continuous(limits=...)</code> can drop data before statistics are computed.</li>
+<li class="fragment"><code>coord_cartesian(...)</code> usually keeps the data and just zooms the view.</li>
+<li class="fragment">Non-Cartesian coords (if you use them): e.g., <code>coord_polar()</code> changes the whole geometry, so not every plot makes sense there.</li>
+</ul></li>
+</ul>
+</section>
+<section id="color-ramps" class="slide level2">
+<h2>Color ramps</h2>
+<p>If you add a <strong>continuous</strong> variable in your color aesthetic, it will create a color ramp. Here we apply color with the variable <code>temp</code>.</p>
+<div id="21d45996" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb44-2"><a></a>  geom_point(aes(color<span class="op">=</span><span class="st">'temp'</span>), alpha<span class="op">=</span><span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb44-3"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-42-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="color-palettes" class="slide level2">
+<h2>Color palettes</h2>
+<p>You can define your own color ramp or use one of the palettes. Here we manually change the color palette with <code>scale_color_gradient</code>.</p>
+<div id="ea3614f8" class="cell" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb45-2"><a></a>  geom_point(aes(color<span class="op">=</span><span class="st">'temp'</span>), alpha<span class="op">=</span><span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb45-3"><a></a>  scale_color_gradient(low<span class="op">=</span><span class="st">'blue'</span>, high<span class="op">=</span><span class="st">'red'</span>) <span class="op">+</span></span>
+<span id="cb45-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-43-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="color-palettes-1" class="slide level2">
+<h2>Color palettes</h2>
+<p>You can get as detailed as you would like for the color ramp.</p>
+<div id="1bfb9752" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a></a>(ggplot(flights_weather_day, aes(x<span class="op">=</span><span class="st">'pressure'</span>, y<span class="op">=</span><span class="st">'dep_delay'</span>)) <span class="op">+</span></span>
+<span id="cb46-2"><a></a>  geom_point(aes(color<span class="op">=</span><span class="st">'temp'</span>), alpha<span class="op">=</span><span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb46-3"><a></a>  scale_color_gradientn(colors<span class="op">=</span>[<span class="st">'#999999'</span>, <span class="st">'#E69F00'</span>, <span class="st">'#56B4E9'</span>, <span class="st">'#009E73'</span>, <span class="st">'#F0E442'</span>, <span class="st">'#0072B2'</span>, <span class="st">'#D55E00'</span>, <span class="st">'#CC79A7'</span>]) <span class="op">+</span></span>
+<span id="cb46-4"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-44-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-r-to-python-translation" class="slide level2">
+<h2>Summary: R to Python Translation</h2>
+<p>For those of you who have used tidyverse and ggplot in R and want to compare to Python’s pandas/plotnine:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>R (tidyverse/ggplot2)</th>
+<th>Python (pandas/plotnine)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>library(ggplot2)</code></td>
+<td><code>from plotnine import *</code></td>
+</tr>
+<tr class="even">
+<td><code>%&gt;%</code> or <code>|&gt;</code></td>
+<td>Method chaining with <code>.</code></td>
+</tr>
+<tr class="odd">
+<td><code>filter()</code></td>
+<td><code>.query()</code> or boolean indexing</td>
+</tr>
+<tr class="even">
+<td><code>group_by()</code></td>
+<td><code>.groupby()</code></td>
+</tr>
+<tr class="odd">
+<td><code>summarize()</code></td>
+<td><code>.agg()</code></td>
+</tr>
+<tr class="even">
+<td><code>left_join()</code></td>
+<td><code>pd.merge(how='left')</code></td>
+</tr>
+<tr class="odd">
+<td><code>aes(x = var)</code></td>
+<td><code>aes(x='var')</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="smooth-regression-and-gams" class="slide level2">
+<h2>Smooth Regression and GAMs</h2>
+</section>
+<section id="what-is-geom_smooth-actually-doing" class="slide level2">
+<h2>What is <code>geom_smooth()</code> actually doing?</h2>
+<p>When we use <code>geom_smooth()</code> in plotnine, we’re fitting a <strong>smooth regression</strong> line to our data.</p>
+<ul>
+<li class="fragment">By default, <code>geom_smooth()</code> uses LOWESS (Locally Weighted Scatterplot Smoothing) for small datasets</li>
+<li class="fragment">For larger datasets, it uses a <strong>GAM</strong> (Generalized Additive Model)</li>
+<li class="fragment">The smooth line adapts to the local structure of the data</li>
+</ul>
+<p>This raises a question: <strong>How do we model non-linear relationships?</strong></p>
+</section>
+<section id="the-problem-with-linear-models" class="slide level2">
+<h2>The Problem with Linear Models</h2>
+<p>As we know, a linear model tries to fit the best straight line through the data.</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1 x + \epsilon\]</span></p>
+<ul>
+<li class="fragment">This works well when the relationship is actually linear</li>
+<li class="fragment">But many real-world relationships are <strong>non-linear</strong></li>
+<li class="fragment">Forcing a straight line through curved data gives poor predictions</li>
+</ul>
+</section>
+<section id="motivating-example-co₂-data" class="slide level2">
+<h2>Motivating Example: CO₂ Data</h2>
+<p>Let’s look at atmospheric CO<span class="math inline">\(_2\)</span> measurements from Mauna Loa, Hawaii (collected since 1958).</p>
+<div id="1c1f2687" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a></a><span class="co"># Load CO2 data</span></span>
+<span id="cb47-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb47-3"><a></a></span>
+<span id="cb47-4"><a></a>url <span class="op">=</span> <span class="st">"https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv"</span></span>
+<span id="cb47-5"><a></a></span>
+<span id="cb47-6"><a></a>co2 <span class="op">=</span> pd.read_csv(url, comment<span class="op">=</span><span class="st">"#"</span>)  <span class="co"># ignores the metadata header</span></span>
+<span id="cb47-7"><a></a>co2 <span class="op">=</span> co2.rename(columns<span class="op">=</span>{<span class="st">"average"</span>: <span class="st">"co2"</span>})</span>
+<span id="cb47-8"><a></a>co2[<span class="st">"month_year"</span>] <span class="op">=</span> pd.to_datetime(co2[[<span class="st">"year"</span>, <span class="st">"month"</span>]].assign(day<span class="op">=</span><span class="dv">1</span>))</span>
+<span id="cb47-9"><a></a></span>
+<span id="cb47-10"><a></a>co2.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">year</th>
+<th data-quarto-table-cell-role="th">month</th>
+<th data-quarto-table-cell-role="th">decimal date</th>
+<th data-quarto-table-cell-role="th">co2</th>
+<th data-quarto-table-cell-role="th">deseasonalized</th>
+<th data-quarto-table-cell-role="th">ndays</th>
+<th data-quarto-table-cell-role="th">sdev</th>
+<th data-quarto-table-cell-role="th">unc</th>
+<th data-quarto-table-cell-role="th">month_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1958</td>
+<td>3</td>
+<td>1958.2027</td>
+<td>315.71</td>
+<td>314.44</td>
+<td>-1</td>
+<td>-9.99</td>
+<td>-0.99</td>
+<td>1958-03-01</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1958</td>
+<td>4</td>
+<td>1958.2877</td>
+<td>317.45</td>
+<td>315.16</td>
+<td>-1</td>
+<td>-9.99</td>
+<td>-0.99</td>
+<td>1958-04-01</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1958</td>
+<td>5</td>
+<td>1958.3699</td>
+<td>317.51</td>
+<td>314.69</td>
+<td>-1</td>
+<td>-9.99</td>
+<td>-0.99</td>
+<td>1958-05-01</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>1958</td>
+<td>6</td>
+<td>1958.4548</td>
+<td>317.27</td>
+<td>315.15</td>
+<td>-1</td>
+<td>-9.99</td>
+<td>-0.99</td>
+<td>1958-06-01</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>1958</td>
+<td>7</td>
+<td>1958.5370</td>
+<td>315.87</td>
+<td>315.20</td>
+<td>-1</td>
+<td>-9.99</td>
+<td>-0.99</td>
+<td>1958-07-01</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="linear-vs-smooth-fit" class="slide level2">
+<h2>Linear vs Smooth Fit</h2>
+<div id="f597f7a3" class="cell" data-execution_count="45">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a></a>(ggplot(co2, aes(x<span class="op">=</span><span class="st">'decimal date'</span>, y<span class="op">=</span><span class="st">'co2'</span>)) <span class="op">+</span></span>
+<span id="cb48-2"><a></a>  geom_point(alpha<span class="op">=</span><span class="fl">0.3</span>, size<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb48-3"><a></a>  geom_smooth(method<span class="op">=</span><span class="st">'lm'</span>, color<span class="op">=</span><span class="st">'red'</span>, se<span class="op">=</span><span class="va">False</span>) <span class="op">+</span></span>
+<span id="cb48-4"><a></a>  geom_smooth(method<span class="op">=</span><span class="st">'lowess'</span>, color<span class="op">=</span><span class="st">'blue'</span>, se<span class="op">=</span><span class="va">False</span>) <span class="op">+</span></span>
+<span id="cb48-5"><a></a>  labs(x<span class="op">=</span><span class="st">'Year'</span>, y<span class="op">=</span><span class="st">'CO2 (ppm)'</span>,</span>
+<span id="cb48-6"><a></a>       title<span class="op">=</span><span class="st">'Atmospheric CO2 at Mauna Loa'</span>) <span class="op">+</span></span>
+<span id="cb48-7"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-46-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The linear model misses the curvature and seasonal cycles!</p>
+</section>
+<section id="zooming-in-2025-data" class="slide level2">
+<h2>Zooming in: 2025 Data</h2>
+<div id="142c235f" class="cell" data-execution_count="46">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a></a>co2_2025 <span class="op">=</span> co2[co2[<span class="st">'year'</span>] <span class="op">==</span> <span class="dv">2025</span>].copy()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="5b5ec6ec" class="cell" data-execution_count="47">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a></a>(ggplot(co2_2025, aes(x<span class="op">=</span><span class="st">'decimal date'</span>, y<span class="op">=</span><span class="st">'co2'</span>)) <span class="op">+</span></span>
+<span id="cb50-2"><a></a>  geom_point(size<span class="op">=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb50-3"><a></a>  geom_smooth(method<span class="op">=</span><span class="st">'lm'</span>, color<span class="op">=</span><span class="st">'red'</span>, se<span class="op">=</span><span class="va">False</span>) <span class="op">+</span></span>
+<span id="cb50-4"><a></a>  geom_smooth(method<span class="op">=</span><span class="st">'lowess'</span>, color<span class="op">=</span><span class="st">'blue'</span>, se<span class="op">=</span><span class="va">False</span>) <span class="op">+</span></span>
+<span id="cb50-5"><a></a>  labs(x<span class="op">=</span><span class="st">'Year'</span>, y<span class="op">=</span><span class="st">'CO2 (ppm)'</span>,</span>
+<span id="cb50-6"><a></a>       title<span class="op">=</span><span class="st">'CO2 in 2025: Linear vs Smooth'</span>) <span class="op">+</span></span>
+<span id="cb50-7"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-48-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The smooth line captures the seasonal pattern that the linear model completely misses.</p>
+</section>
+<section id="polynomial-regression-a-first-attempt" class="slide level2">
+<h2>Polynomial Regression: A First Attempt</h2>
+<p>One approach to modeling non-linearity is <strong>polynomial regression</strong>:</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \ldots + \epsilon\]</span></p>
+<div id="9d539159" class="cell" data-execution_count="48">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
+<span id="cb51-2"><a></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb51-3"><a></a></span>
+<span id="cb51-4"><a></a><span class="co"># Fit polynomial regression (degree 3)</span></span>
+<span id="cb51-5"><a></a>X <span class="op">=</span> co2_2025[[<span class="st">'month'</span>]].values</span>
+<span id="cb51-6"><a></a>y <span class="op">=</span> co2_2025[<span class="st">'co2'</span>].values</span>
+<span id="cb51-7"><a></a></span>
+<span id="cb51-8"><a></a>poly <span class="op">=</span> PolynomialFeatures(degree<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb51-9"><a></a>X_poly <span class="op">=</span> poly.fit_transform(X)</span>
+<span id="cb51-10"><a></a>model <span class="op">=</span> LinearRegression().fit(X_poly, y)</span>
+<span id="cb51-11"><a></a></span>
+<span id="cb51-12"><a></a>co2_2025[<span class="st">'poly_pred'</span>] <span class="op">=</span> model.predict(X_poly)</span>
+<span id="cb51-13"><a></a><span class="bu">print</span>(<span class="ss">f"Coefficients: </span><span class="sc">{</span>model<span class="sc">.</span>intercept_<span class="sc">:.2f}</span><span class="ss"> + </span><span class="sc">{</span>model<span class="sc">.</span>coef_[<span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">x + </span><span class="sc">{</span>model<span class="sc">.</span>coef_[<span class="dv">2</span>]<span class="sc">:.2f}</span><span class="ss">x² + </span><span class="sc">{</span>model<span class="sc">.</span>coef_[<span class="dv">3</span>]<span class="sc">:.2f}</span><span class="ss">x³"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coefficients: 421.40 + 5.00x + -0.90x² + 0.04x³</code></pre>
+</div>
+</div>
+</section>
+<section id="polynomial-fit-visualization" class="slide level2">
+<h2>Polynomial Fit Visualization</h2>
+<div id="3cc45f1b" class="cell" data-execution_count="49">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a></a>(ggplot(co2_2025, aes(x<span class="op">=</span><span class="st">'month'</span>)) <span class="op">+</span></span>
+<span id="cb53-2"><a></a>  geom_point(aes(y<span class="op">=</span><span class="st">'co2'</span>), size<span class="op">=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb53-3"><a></a>  geom_line(aes(y<span class="op">=</span><span class="st">'poly_pred'</span>), color<span class="op">=</span><span class="st">'red'</span>, size<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb53-4"><a></a>  labs(x<span class="op">=</span><span class="st">'Month'</span>, y<span class="op">=</span><span class="st">'CO2 (ppm)'</span>,</span>
+<span id="cb53-5"><a></a>       title<span class="op">=</span><span class="st">'Polynomial Regression (degree 3)'</span>) <span class="op">+</span></span>
+<span id="cb53-6"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-50-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="problems-with-polynomial-regression" class="slide level2">
+<h2>Problems with Polynomial Regression</h2>
+<ul>
+<li class="fragment"><strong>Global behavior</strong>: Changing one coefficient affects the entire curve</li>
+<li class="fragment"><strong>Instability at boundaries</strong>: Polynomials can behave wildly at the edges (Runge’s phenomenon)</li>
+<li class="fragment"><strong>Poor extrapolation</strong>: Predictions outside the data range are unreliable</li>
+<li class="fragment"><strong>Choice of degree</strong>: How do we choose the right polynomial degree?</li>
+</ul>
+<p>We need something more <strong>flexible</strong> and <strong>local</strong>. This motivates using <strong>splines</strong>.</p>
+</section>
+<section id="why-splines" class="slide level2">
+<h2>Why Splines?</h2>
+<ul>
+<li class="fragment"><strong>Polynomial regression</strong>: models non-linearity but has global effects</li>
+<li class="fragment"><strong>Splines</strong>: model structure in the <strong>mean function</strong> using piecewise polynomials</li>
+</ul>
+<p>General setup:</p>
+<p><span class="math display">\[y = f(x) + \epsilon, \quad \epsilon \sim N(0, \sigma^2 I)\]</span></p>
+<ul>
+<li class="fragment">Goal: estimate a smooth function <span class="math inline">\(f(x)\)</span> that captures the trend</li>
+<li class="fragment">Benefits:
+<ul>
+<li class="fragment">Flexible, nonparametric modeling of trends</li>
+<li class="fragment">Still yields prediction errors (statistical smoothing)</li>
+<li class="fragment">Naturally extended to generalized additive models (GAMs)</li>
+</ul></li>
+</ul>
+</section>
+<section id="basis-functions-intuition" class="slide level2">
+<h2>Basis Functions: Intuition</h2>
+<p>A <strong>basis</strong> is a set of simple functions <span class="math inline">\(\{b_j(x)\}\)</span> that can be combined (with coefficients <span class="math inline">\(\beta_j\)</span>) to approximate more complex functions <span class="math inline">\(f(x)\)</span>:</p>
+<p><span class="math display">\[f(x) = \sum_{j=1}^k \beta_j b_j(x)\]</span></p>
+<ul>
+<li class="fragment"><p>Example: polynomial basis <span class="math inline">\(b_1(x) = 1, \quad b_2(x) = x, \quad b_3(x) = x^2, \ldots\)</span></p></li>
+<li class="fragment"><p><strong>Analogy</strong>: like combining Lego blocks to build different shapes — basis functions are the blocks, coefficients <span class="math inline">\(\beta_j\)</span> are how much of each block we use</p></li>
+<li class="fragment"><p>The regression coefficients <span class="math inline">\(\beta_j\)</span> control the contribution of each basis function</p></li>
+</ul>
+</section>
+<section id="basis-functions-polynomial-example" class="slide level2">
+<h2>Basis Functions: Polynomial Example</h2>
+<p>Represent a complicated function <span class="math inline">\(f(x)\)</span> as a linear combination of simpler <strong>basis functions</strong>:</p>
+<p><span class="math display">\[f(x) = \sum_{j=1}^k \beta_j b_j(x)\]</span></p>
+<p>Example: polynomial basis in 1-D:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3 + \beta_4 x_i^4 + \epsilon_i\]</span></p>
+<p>Basis functions:</p>
+<p><span class="math display">\[b_1(x) = 1, \quad b_2(x) = x, \quad b_3(x) = x^2, \quad b_4(x) = x^3, \quad b_5(x) = x^4\]</span></p>
+</section>
+<section id="basis-functions-matrix-form" class="slide level2">
+<h2>Basis Functions: Matrix Form</h2>
+<p>Collect basis functions into a <strong>basis matrix</strong> <span class="math inline">\(\mathbf{B}\)</span>:</p>
+<p><span class="math display">\[\mathbf{f} = \mathbf{B}\boldsymbol{\beta}\]</span></p>
+<p>Example (polynomial basis):</p>
+<p><span class="math display">\[\begin{bmatrix} f(x_1) \\ f(x_2) \\ \vdots \\ f(x_n) \end{bmatrix} = \begin{bmatrix} 1 &amp; x_1 &amp; x_1^2 &amp; x_1^3 &amp; x_1^4 \\ 1 &amp; x_2 &amp; x_2^2 &amp; x_2^3 &amp; x_2^4 \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ 1 &amp; x_n &amp; x_n^2 &amp; x_n^3 &amp; x_n^4 \end{bmatrix} \begin{bmatrix} \beta_0 \\ \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \end{bmatrix}\]</span></p>
+</section>
+<section id="polynomial-basis-visualization" class="slide level2">
+<h2>Polynomial Basis Visualization</h2>
+
+<img data-src="img/bases-fig2.png" class="quarto-figure quarto-figure-center r-stretch"><p>The basis functions are each multiplied by <span class="math inline">\(\beta_j\)</span> and then summed to give the final curve <span class="math inline">\(f(x)\)</span>.</p>
+</section>
+<section id="polynomial-basis-co₂-example" class="slide level2">
+<h2>Polynomial Basis: CO₂ Example</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><embed data-src="img/PolyBasis.pdf" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<p>Monthly CO₂ data fit with a polynomial basis, each colored curve is a basis function scaled by its coefficient.</p>
+</section>
+<section id="polynomial-basis-recap" class="slide level2">
+<h2>Polynomial Basis Recap</h2>
+<ul>
+<li class="fragment">A function <span class="math inline">\(f(x)\)</span> can be written as a weighted sum of polynomial basis functions:</li>
+</ul>
+<p><span class="math display">\[f(x) = \sum_{j=0}^p \beta_j x^j\]</span></p>
+<ul>
+<li class="fragment"><p>The coefficients <span class="math inline">\(\beta_j\)</span> control the shape of the curve</p></li>
+<li class="fragment"><p>Polynomials provide flexibility, but they can behave poorly:</p>
+<ul>
+<li class="fragment">High-order polynomials become unstable (“wiggly”)</li>
+<li class="fragment">Poor fit near boundaries (Runge’s phenomenon)</li>
+</ul></li>
+<li class="fragment"><p>This motivates using <strong>splines</strong>: piecewise polynomials joined smoothly at <strong>knots</strong></p></li>
+</ul>
+</section>
+<section id="splines-concepts-types" class="slide level2">
+<h2>Splines: Concepts &amp; Types</h2>
+<p>A <strong>spline</strong> is a function made up of <strong>piecewise polynomials</strong>:</p>
+<ul>
+<li class="fragment">Defined between <strong>knots</strong> (points where polynomial pieces join)</li>
+<li class="fragment">Joined smoothly (continuous first and second derivatives)</li>
+</ul>
+<p>Advantages over high-order polynomials:</p>
+<ul>
+<li class="fragment">Flexible but stable (avoids oscillations at boundaries)</li>
+<li class="fragment"><strong>Local control</strong>: changing one knot only affects the nearby region</li>
+</ul>
+<p>General form:</p>
+<p><span class="math display">\[f(x) = \sum_{j=1}^K \beta_j b_j(x), \quad \text{where } b_j(x) \text{ are spline basis functions}\]</span></p>
+</section>
+<section id="types-of-splines" class="slide level2">
+<h2>Types of Splines</h2>
+<ul>
+<li class="fragment"><strong>Cubic splines</strong>: piecewise cubic polynomials joined smoothly</li>
+<li class="fragment"><strong>Natural splines</strong>: cubic splines with linear constraints at the boundaries (reduces edge wiggles)</li>
+<li class="fragment"><strong>B-splines</strong>: basis representation of splines using local polynomial pieces</li>
+<li class="fragment"><strong>Smoothing splines</strong>: knots at every observation, with a penalty <span class="math inline">\(\lambda\)</span> to control wiggliness</li>
+<li class="fragment"><strong>Cyclic splines</strong>: cubic splines with connected ends (for periodic data like seasons)</li>
+</ul>
+</section>
+<section id="cubic-splines-example" class="slide level2">
+<h2>Cubic Splines Example</h2>
+
+<img data-src="img/cubic-spline.png" class="quarto-figure quarto-figure-center r-stretch" style="width:70.0%"><p>Choosing the number and placement of knots controls smoothness:</p>
+<ul>
+<li class="fragment">Few knots <span class="math inline">\(\rightarrow\)</span> smoother curve</li>
+<li class="fragment">Many knots <span class="math inline">\(\rightarrow\)</span> wiggly curve</li>
+</ul>
+</section>
+<section id="visualizing-b-spline-basis-functions" class="slide level2">
+<h2>Visualizing B-spline Basis Functions</h2>
+<div id="608b914d" class="cell" data-execution_count="50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> BSpline</span>
+<span id="cb54-2"><a></a></span>
+<span id="cb54-3"><a></a><span class="co"># Create B-spline basis functions</span></span>
+<span id="cb54-4"><a></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb54-5"><a></a>knots <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>]</span>
+<span id="cb54-6"><a></a>degree <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb54-7"><a></a></span>
+<span id="cb54-8"><a></a>basis_df <span class="op">=</span> pd.DataFrame({<span class="st">'x'</span>: x})</span>
+<span id="cb54-9"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(knots) <span class="op">-</span> degree <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb54-10"><a></a>    coeffs <span class="op">=</span> np.zeros(<span class="bu">len</span>(knots) <span class="op">-</span> degree <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb54-11"><a></a>    coeffs[i] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb54-12"><a></a>    spline <span class="op">=</span> BSpline(knots, coeffs, degree)</span>
+<span id="cb54-13"><a></a>    basis_df[<span class="ss">f'B</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">'</span>] <span class="op">=</span> spline(x)</span>
+<span id="cb54-14"><a></a></span>
+<span id="cb54-15"><a></a>basis_long <span class="op">=</span> basis_df.melt(id_vars<span class="op">=</span><span class="st">'x'</span>, var_name<span class="op">=</span><span class="st">'basis'</span>, value_name<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb54-16"><a></a></span>
+<span id="cb54-17"><a></a>(ggplot(basis_long, aes(x<span class="op">=</span><span class="st">'x'</span>, y<span class="op">=</span><span class="st">'y'</span>, color<span class="op">=</span><span class="st">'basis'</span>)) <span class="op">+</span></span>
+<span id="cb54-18"><a></a>  geom_line(size<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb54-19"><a></a>  labs(x<span class="op">=</span><span class="st">'x'</span>, y<span class="op">=</span><span class="st">'Basis function value'</span>,</span>
+<span id="cb54-20"><a></a>       title<span class="op">=</span><span class="st">'B-spline Basis Functions (degree 3)'</span>) <span class="op">+</span></span>
+<span id="cb54-21"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-51-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Each B-spline basis function is non-zero only over a limited range — this gives <strong>local control</strong>.</p>
+</section>
+<section id="smoothing-splines-concept" class="slide level2">
+<h2>Smoothing Splines: Concept</h2>
+<p>Goal: Fit a smooth curve <span class="math inline">\(f(x)\)</span> through noisy data <span class="math inline">\((x_i, y_i)\)</span>.</p>
+<p>We want to balance:</p>
+<ul>
+<li class="fragment"><strong>Goodness of fit</strong>: match the data closely</li>
+<li class="fragment"><strong>Smoothness</strong>: avoid overly wiggly functions</li>
+</ul>
+<p>Define an objective function:</p>
+<p><span class="math display">\[\text{RSS}(f) + \lambda J(f)\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[\text{RSS}(f) = \sum_i (y_i - f(x_i))^2, \quad J(f) = \int (f''(x))^2 \, dx\]</span></p>
+<ul>
+<li class="fragment"><span class="math inline">\(\lambda \geq 0\)</span> is the <strong>smoothness parameter</strong>
+<ul>
+<li class="fragment">Small <span class="math inline">\(\lambda\)</span>: fit the data very closely (wiggly curve)</li>
+<li class="fragment">Large <span class="math inline">\(\lambda\)</span>: force <span class="math inline">\(f\)</span> to be smoother (nearly linear)</li>
+</ul></li>
+</ul>
+</section>
+<section id="smoothing-splines-optimization" class="slide level2">
+<h2>Smoothing Splines: Optimization</h2>
+<p>We minimize the penalized residual sum of squares:</p>
+<p><span class="math display">\[\min_f \left\{ \sum_i (y_i - f(x_i))^2 + \lambda \int (f''(x))^2 \, dx \right\}\]</span></p>
+<p>This is a trade-off between:</p>
+<ul>
+<li class="fragment"><span class="math inline">\(\sum_i (y_i - f(x_i))^2\)</span> = <strong>data fidelity</strong> (how well the curve fits the observed points)</li>
+<li class="fragment"><span class="math inline">\(\int (f''(x))^2 \, dx\)</span> = <strong>roughness penalty</strong> (penalizes curvature/wiggliness)</li>
+</ul>
+<p>Solution: a <strong>natural cubic spline</strong> with knots at each unique <span class="math inline">\(x_i\)</span>.</p>
+<p>The “best” curve is obtained by penalizing the wiggliness of the spline.</p>
+</section>
+<section id="smoothing-splines-basis-representation" class="slide level2">
+<h2>Smoothing Splines: Basis Representation</h2>
+<p>Represent <span class="math inline">\(f(x)\)</span> using spline basis functions:</p>
+<p><span class="math display">\[f(x) = \sum_{j=1}^K \beta_j b_j(x)\]</span></p>
+<p>Let <span class="math inline">\(\mathbf{B}\)</span> be the basis matrix and <span class="math inline">\(\mathbf{S}\)</span> be the penalty matrix:</p>
+<p><span class="math display">\[B_{ij} = b_j(x_i), \quad S_{jk} = \int b_j''(x) \, b_k''(x) \, dx\]</span></p>
+<p>The optimization problem becomes:</p>
+<p><span class="math display">\[\min_\beta \; (\mathbf{y} - \mathbf{B}\boldsymbol{\beta})^\top (\mathbf{y} - \mathbf{B}\boldsymbol{\beta}) + \lambda \boldsymbol{\beta}^\top \mathbf{S} \boldsymbol{\beta}\]</span></p>
+<p>Solution (penalized least squares):</p>
+<p><span class="math display">\[\hat{\boldsymbol{\beta}} = (\mathbf{B}^\top \mathbf{B} + \lambda \mathbf{S})^{-1} \mathbf{B}^\top \mathbf{y}\]</span></p>
+</section>
+<section id="smoothing-splines-co₂-example" class="slide level2">
+<h2>Smoothing Splines: CO₂ Example</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><embed data-src="img/GamCO2.pdf" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<p>A smoothing spline fit to the CO₂ data captures both the long-term trend and seasonal cycles.</p>
+</section>
+<section id="effect-of-the-smoothing-parameter-lambda" class="slide level2">
+<h2>Effect of the Smoothing Parameter <span class="math inline">\(\lambda\)</span></h2>
+
+<img data-src="img/smooth-lambda.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li class="fragment"><strong>Left</strong> (<span class="math inline">\(\lambda\)</span> very small = 1e-4): spline is very wiggly, almost interpolates the noise</li>
+<li class="fragment"><strong>Middle</strong> (<span class="math inline">\(\lambda = 1\)</span>): good balance between smoothness and fit</li>
+<li class="fragment"><strong>Right</strong> (<span class="math inline">\(\lambda\)</span> very large = 1000): curve is almost straight (linear trend)</li>
+</ul>
+</section>
+<section id="knots-vs.-penalty-parameter-lambda" class="slide level2">
+<h2>Knots vs.&nbsp;Penalty Parameter <span class="math inline">\(\lambda\)</span></h2>
+<p>In smoothing splines:</p>
+<ul>
+<li class="fragment">A knot is placed at each observation <span class="math inline">\(x_i\)</span></li>
+<li class="fragment">This gives the spline the potential to fit the data exactly</li>
+</ul>
+<p>The penalty parameter <span class="math inline">\(\lambda\)</span> controls how much we use that flexibility:</p>
+<ul>
+<li class="fragment"><span class="math inline">\(\lambda \to 0\)</span>: little penalty → spline interpolates the data (very wiggly)</li>
+<li class="fragment"><span class="math inline">\(\lambda \to \infty\)</span>: heavy penalty → spline approaches a straight line</li>
+</ul>
+<p>Interpretation:</p>
+<ul>
+<li class="fragment"><strong>Knots</strong>: define the “vocabulary” of possible wiggles</li>
+<li class="fragment"><strong><span class="math inline">\(\lambda\)</span></strong>: decides how much of that vocabulary is actually used</li>
+</ul>
+</section>
+<section id="knots-vs.-lambda-visualization" class="slide level2">
+<h2>Knots vs.&nbsp;<span class="math inline">\(\lambda\)</span>: Visualization</h2>
+
+<img data-src="img/smooth-knots.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li class="fragment"><strong>Small <span class="math inline">\(\lambda\)</span></strong>: all knots are active (blue), spline wiggles to fit data closely</li>
+<li class="fragment"><strong>Moderate <span class="math inline">\(\lambda\)</span></strong>: only some knots are active, others are suppressed (grey), leading to a smoother curve</li>
+<li class="fragment"><strong>Large <span class="math inline">\(\lambda\)</span></strong>: only a few key knots remain active, spline is very smooth</li>
+</ul>
+</section>
+<section id="types-of-1-d-splines-summary" class="slide level2">
+<h2>Types of 1-D Splines: Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 68%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Cubic splines</strong></td>
+<td>Piecewise cubic polynomials with smooth joins at knots</td>
+</tr>
+<tr class="even">
+<td><strong>Natural cubic splines</strong></td>
+<td>Cubic splines with boundary constraints (linear tails beyond boundary knots)</td>
+</tr>
+<tr class="odd">
+<td><strong>Periodic/Cyclic splines</strong></td>
+<td>Enforce wrap-around continuity (function and derivatives match at endpoints)</td>
+</tr>
+<tr class="even">
+<td><strong>B-splines</strong></td>
+<td>A numerically stable basis representation for polynomial splines (local support)</td>
+</tr>
+<tr class="odd">
+<td><strong>Regression splines</strong></td>
+<td>Finite set of knots; fit spline coefficients by least squares</td>
+</tr>
+<tr class="even">
+<td><strong>Smoothing/penalized splines</strong></td>
+<td>Knots at every point, add a roughness penalty <span class="math inline">\(\lambda\)</span> to control fit-smoothness</td>
+</tr>
+<tr class="odd">
+<td><strong>Cardinal splines</strong></td>
+<td>Knot placement is always a certain distance apart (common in grid settings)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="from-splines-to-gams" class="slide level2">
+<h2>From Splines to GAMs</h2>
+<p>A <strong>Generalized Additive Model (GAM)</strong> extends splines to multiple predictors. It is a regression model where predictors enter through a spline. GAMs can have a combination of splines and linear terms.</p>
+<p><span class="math display">\[y = \beta_0 + s_1(x_1) + s_2(x_2) + \ldots + s_p(x_p) + \epsilon\]</span></p>
+<p>Where each <span class="math inline">\(s_j(x_j)\)</span> is a <strong>smooth function</strong> (typically a penalized cubic spline) of predictor <span class="math inline">\(x_j\)</span>.</p>
+<p>Key advantages:</p>
+<ul>
+<li class="fragment">Each predictor can have its own non-linear relationship with the response</li>
+<li class="fragment">The effects are <strong>additive</strong> — total effect is the sum of individual smooth effects</li>
+<li class="fragment"><strong>Automatic smoothness selection</strong> — each <span class="math inline">\(s_j\)</span> has its own penalty <span class="math inline">\(\lambda_j\)</span></li>
+<li class="fragment"><strong>Interpretable</strong> — you can plot each <span class="math inline">\(s_j(x_j)\)</span> to see how predictor <span class="math inline">\(j\)</span> affects <span class="math inline">\(y\)</span></li>
+</ul>
+</section>
+<section id="gams-in-python" class="slide level2">
+<h2>GAMs in Python</h2>
+<p>In Python, we can fit GAMs using <code>statsmodels</code> or <code>pygam</code>.</p>
+<p>Here we use <code>pygam</code> function <code>LinearGAM</code></p>
+<p>Read more <a href="https://pygam.readthedocs.io/en/latest/notebooks/tour_of_pygam.html">here</a></p>
+<div id="695a1d76" class="cell" data-execution_count="51">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a></a><span class="co"># Prepare data</span></span>
+<span id="cb55-2"><a></a>X <span class="op">=</span> co2_2025[[<span class="st">'decimal date'</span>]].values</span>
+<span id="cb55-3"><a></a>y <span class="op">=</span> co2_2025[<span class="st">'co2'</span>].values</span>
+<span id="cb55-4"><a></a></span>
+<span id="cb55-5"><a></a><span class="co"># Fit GAM with smoothing spline (pygam)</span></span>
+<span id="cb55-6"><a></a>gam <span class="op">=</span> LinearGAM(s(<span class="dv">0</span>, n_splines<span class="op">=</span><span class="dv">10</span>)).fit(X, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="gam-summary" class="slide level2">
+<h2>GAM Summary</h2>
+<div id="d490aa6d" class="cell" data-execution_count="52">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a></a>gam.summary()</span>
+<span id="cb56-2"><a></a>  </span>
+<span id="cb56-3"><a></a><span class="bu">print</span>(gam.terms)</span>
+<span id="cb56-4"><a></a><span class="bu">print</span>(gam.coef_[:<span class="dv">11</span>])  <span class="co"># fitted coefficients</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LinearGAM                                                                                                 
+=============================================== ==========================================================
+Distribution:                        NormalDist Effective DoF:                                      4.0838
+Link Function:                     IdentityLink Log Likelihood:                                   -13.6117
+Number of Samples:                           12 AIC:                                               37.3911
+                                                AICc:                                               47.847
+                                                GCV:                                                1.9142
+                                                Scale:                                              0.8918
+                                                Pseudo R-Squared:                                    0.847
+==========================================================================================================
+Feature Function                  Lambda               Rank         EDoF         P &gt; x        Sig. Code   
+================================= ==================== ============ ============ ============ ============
+s(0)                              [0.6]                10           4.1          1.45e-02     *           
+intercept                                              1            0.0          1.11e-16     ***         
+==========================================================================================================
+Significance codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+WARNING: Fitting splines and a linear function to a feature introduces a model identifiability problem
+         which can cause p-values to appear significant when they are not.
+
+WARNING: p-values calculated in this manner behave correctly for un-penalized models or models with
+         known smoothing parameters, but when smoothing parameters have been estimated, the p-values
+         are typically lower than they should be, meaning that the tests reject the null too readily.
+s(0) + intercept
+[ 36.58068341  38.26196477  39.94449927  41.23700237  40.90631244
+  38.83656747  36.99855708  37.08258697  38.46904898  40.03810926
+ 388.35533059]</code></pre>
+</div>
+</div>
+</section>
+<section id="interpreting-gam-summary" class="slide level2">
+<h2>Interpreting GAM Summary</h2>
+<p>In <code>pygam</code> output:</p>
+<ul>
+<li class="fragment"><code>s(k)</code> represents a smooth function of predictor column k in your X matrix</li>
+<li class="fragment"><code>f(k)</code> represents a factor/categorical term (discrete levels)</li>
+</ul>
+<p><strong>Note on notation:</strong> In pygam, <code>s()</code> denotes smooth terms. This matches our mathematical notation <span class="math inline">\(s_j(x_j)\)</span> for GAM smooth functions.</p>
+<p><strong>EDoF (effective degrees of freedom)</strong> tells you “what shape did the model learn?”</p>
+<ul>
+<li class="fragment">edf <span class="math inline">\(\approx\)</span> 1: the term is essentially linear (heavily penalized)</li>
+<li class="fragment">edf 2–4: mild curvature</li>
+<li class="fragment">edf large: more wiggle/complexity (less penalized)</li>
+</ul>
+<p><strong>Lambda</strong> (<span class="math inline">\(\lambda\)</span>) is the smoothing penalty — larger values = smoother curves</p>
+</section>
+<section id="interpreting-gam-coefficients" class="slide level2">
+<h2>Interpreting GAM Coefficients</h2>
+<p>The output of gam.coef_[:] gives us the rank 10 spline basis weights (for s(0)): 36.58, 38.26, 39.94, 41.24, 40.91, 38.84, 37.00, 37.08, 38.47, 40.04</p>
+<p>These are the beta weights <span class="math display">\[s(x) = \sum_{j=1}^{10} \beta_j B_j(x)\]</span></p>
+<p>And the intercept: 388.35533059</p>
+<p>So the prediction is <span class="math inline">\(\hat{y} = \beta_0 + s(x)\)</span> and the individual <span class="math inline">\(\beta_j\)</span> values are usually not interpretable by themselves; the interpretable object is the curve <span class="math inline">\(s(x)\)</span>.</p>
+</section>
+<section id="gam-predictions" class="slide level2">
+<h2>GAM Predictions</h2>
+<div id="cbcd947e" class="cell" data-execution_count="53">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a></a>co2_2025[<span class="st">'gam_pred'</span>] <span class="op">=</span> gam.predict(X)</span>
+<span id="cb58-2"><a></a></span>
+<span id="cb58-3"><a></a>(ggplot(co2_2025, aes(x<span class="op">=</span><span class="st">'decimal date'</span>)) <span class="op">+</span></span>
+<span id="cb58-4"><a></a>  geom_point(aes(y<span class="op">=</span><span class="st">'co2'</span>), size<span class="op">=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb58-5"><a></a>  geom_line(aes(y<span class="op">=</span><span class="st">'gam_pred'</span>), color<span class="op">=</span><span class="st">'blue'</span>, size<span class="op">=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb58-6"><a></a>  labs(x<span class="op">=</span><span class="st">'Year'</span>, y<span class="op">=</span><span class="st">'CO2 (ppm)'</span>,</span>
+<span id="cb58-7"><a></a>       title<span class="op">=</span><span class="st">'GAM Fit to 2025 CO2 Data'</span>) <span class="op">+</span></span>
+<span id="cb58-8"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-54-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fitting-gam-to-full-dataset" class="slide level2">
+<h2>Fitting GAM to Full Dataset</h2>
+<p>Let’s fit a GAM to capture both the <strong>long-term trend</strong> and <strong>seasonal cycles</strong>:</p>
+<div id="135a5705" class="cell" data-execution_count="54">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a></a><span class="co"># Prepare full dataset</span></span>
+<span id="cb59-2"><a></a>X_full <span class="op">=</span> co2[[<span class="st">'decimal date'</span>, <span class="st">'month'</span>]].values</span>
+<span id="cb59-3"><a></a>y_full <span class="op">=</span> co2[<span class="st">'co2'</span>].values</span>
+<span id="cb59-4"><a></a></span>
+<span id="cb59-5"><a></a><span class="co"># Fit GAM with two smooth terms</span></span>
+<span id="cb59-6"><a></a><span class="co"># s(0) for long-term trend, s(1) for seasonal (cyclic)</span></span>
+<span id="cb59-7"><a></a></span>
+<span id="cb59-8"><a></a>gam_full <span class="op">=</span> LinearGAM(s(<span class="dv">0</span>, n_splines<span class="op">=</span><span class="dv">20</span>) <span class="op">+</span> s(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">12</span>)).fit(X_full, y_full)</span>
+<span id="cb59-9"><a></a><span class="bu">print</span>(gam_full.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LinearGAM                                                                                                 
+=============================================== ==========================================================
+Distribution:                        NormalDist Effective DoF:                                      21.573
+Link Function:                     IdentityLink Log Likelihood:                                  -502.9597
+Number of Samples:                          814 AIC:                                             1051.0655
+                                                AICc:                                            1052.4119
+                                                GCV:                                                0.2172
+                                                Scale:                                              0.4548
+                                                Pseudo R-Squared:                                   0.9998
+==========================================================================================================
+Feature Function                  Lambda               Rank         EDoF         P &gt; x        Sig. Code   
+================================= ==================== ============ ============ ============ ============
+s(0)                              [0.6]                20           14.0         1.11e-16     ***         
+s(1)                              [0.6]                12           7.6          1.11e-16     ***         
+intercept                                              1            0.0          1.11e-16     ***         
+==========================================================================================================
+Significance codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+WARNING: Fitting splines and a linear function to a feature introduces a model identifiability problem
+         which can cause p-values to appear significant when they are not.
+
+WARNING: p-values calculated in this manner behave correctly for un-penalized models or models with
+         known smoothing parameters, but when smoothing parameters have been estimated, the p-values
+         are typically lower than they should be, meaning that the tests reject the null too readily.
+None</code></pre>
+</div>
+</div>
+</section>
+<section id="full-gam-visualization" class="slide level2">
+<h2>Full GAM Visualization</h2>
+<div id="52a27665" class="cell" data-execution_count="55">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a></a>co2[<span class="st">'gam_pred'</span>] <span class="op">=</span> gam_full.predict(X_full)</span>
+<span id="cb61-2"><a></a></span>
+<span id="cb61-3"><a></a>(ggplot(co2, aes(x<span class="op">=</span><span class="st">'decimal date'</span>)) <span class="op">+</span></span>
+<span id="cb61-4"><a></a>  geom_point(aes(y<span class="op">=</span><span class="st">'co2'</span>), alpha<span class="op">=</span><span class="fl">0.3</span>, size<span class="op">=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb61-5"><a></a>  geom_line(aes(y<span class="op">=</span><span class="st">'gam_pred'</span>), color<span class="op">=</span><span class="st">'blue'</span>, size<span class="op">=</span><span class="fl">0.8</span>) <span class="op">+</span></span>
+<span id="cb61-6"><a></a>  labs(x<span class="op">=</span><span class="st">'Year'</span>, y<span class="op">=</span><span class="st">'CO2 (ppm)'</span>,</span>
+<span id="cb61-7"><a></a>       title<span class="op">=</span><span class="st">'GAM Fit: Long-term Trend + Seasonal Cycles'</span>) <span class="op">+</span></span>
+<span id="cb61-8"><a></a>  theme_minimal())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-56-output-1.png" class="quarto-figure quarto-figure-center" width="960" height="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="partial-effects" class="slide level2">
+<h2>Partial Effects</h2>
+<p>GAMs allow us to visualize each smooth term separately:</p>
+<div id="02c8be65" class="cell" data-execution_count="56">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb62-2"><a></a></span>
+<span id="cb62-3"><a></a><span class="co"># Plot partial effect of decimal.date (long-term trend)</span></span>
+<span id="cb62-4"><a></a>XX <span class="op">=</span> gam_full.generate_X_grid(term<span class="op">=</span><span class="dv">0</span>, n<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb62-5"><a></a>axes[<span class="dv">0</span>].plot(XX[:, <span class="dv">0</span>], gam_full.partial_dependence(term<span class="op">=</span><span class="dv">0</span>, X<span class="op">=</span>XX))</span>
+<span id="cb62-6"><a></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Year'</span>)</span>
+<span id="cb62-7"><a></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Partial Effect'</span>)</span>
+<span id="cb62-8"><a></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Long-term Trend'</span>)</span>
+<span id="cb62-9"><a></a></span>
+<span id="cb62-10"><a></a><span class="co"># Plot partial effect of month (seasonal)</span></span>
+<span id="cb62-11"><a></a>XX <span class="op">=</span> gam_full.generate_X_grid(term<span class="op">=</span><span class="dv">1</span>, n<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb62-12"><a></a>axes[<span class="dv">1</span>].plot(XX[:, <span class="dv">1</span>], gam_full.partial_dependence(term<span class="op">=</span><span class="dv">1</span>, X<span class="op">=</span>XX))</span>
+<span id="cb62-13"><a></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Month'</span>)</span>
+<span id="cb62-14"><a></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Partial Effect'</span>)</span>
+<span id="cb62-15"><a></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Seasonal Effect'</span>)</span>
+<span id="cb62-16"><a></a></span>
+<span id="cb62-17"><a></a>plt.tight_layout()</span>
+<span id="cb62-18"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-04_files/figure-revealjs/cell-57-output-1.png" class="quarto-figure quarto-figure-center" width="1142" height="374"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="connecting-geom_smooth-to-gams" class="slide level2">
+<h2>Connecting geom_smooth() to GAMs</h2>
+<p>When you use <code>geom_smooth()</code> in plotnine:</p>
+<ul>
+<li class="fragment">It’s using similar smoothing techniques under the hood</li>
+<li class="fragment">The <code>method</code> parameter controls the smoothing approach:
+<ul>
+<li class="fragment"><code>'lm'</code>: Linear regression</li>
+<li class="fragment"><code>'lowess'</code>: Local regression (default for small data)</li>
+<li class="fragment"><code>'gam'</code>: Generalized Additive Model (R’s ggplot2)</li>
+</ul></li>
+<li class="fragment">The smooth adapts to your data automatically</li>
+</ul>
+<div id="9d9c82cc" class="cell" data-execution_count="57">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a></a><span class="co"># These are conceptually similar:</span></span>
+<span id="cb63-2"><a></a>geom_smooth()  <span class="co"># Automatic smoothing</span></span>
+<span id="cb63-3"><a></a>geom_smooth(method<span class="op">=</span><span class="st">'lowess'</span>)  <span class="co"># Local regression</span></span>
+<span id="cb63-4"><a></a><span class="co"># In R: geom_smooth(method='gam')  # GAM smoothing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="key-gam-concepts" class="slide level2">
+<h2>Key GAM Concepts</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Spline</strong></td>
+<td>Piecewise polynomial with smooth connections</td>
+</tr>
+<tr class="even">
+<td><strong>Knots</strong></td>
+<td>Points where polynomial pieces connect</td>
+</tr>
+<tr class="odd">
+<td><strong>Basis functions</strong> <span class="math inline">\(b_j(x)\)</span></td>
+<td>Building blocks combined to form the smooth</td>
+</tr>
+<tr class="even">
+<td><strong>Penalization</strong> (<span class="math inline">\(\lambda\)</span>)</td>
+<td>Controls wiggliness, prevents overfitting</td>
+</tr>
+<tr class="odd">
+<td><strong>EDF</strong></td>
+<td>Effective degrees of freedom (complexity measure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Notation convention:</strong></p>
+<ul>
+<li class="fragment"><span class="math inline">\(f(x) = \sum_j \beta_j b_j(x)\)</span>: a spline (smooth function built from basis functions)</li>
+<li class="fragment"><span class="math inline">\(s_j(x_j)\)</span>: smooth term for predictor <span class="math inline">\(x_j\)</span> in a GAM</li>
+</ul>
+</section>
+<section id="when-to-use-gams" class="slide level2">
+<h2>When to Use GAMs</h2>
+<p>GAMs are useful when:</p>
+<ul>
+<li class="fragment">You expect <strong>non-linear relationships</strong> but don’t know the exact form</li>
+<li class="fragment">You want <strong>interpretable</strong> models (can visualize each smooth)</li>
+<li class="fragment">You have <strong>enough data</strong> to estimate smooth functions reliably</li>
+<li class="fragment">You want to capture <strong>seasonal patterns</strong> or <strong>trends</strong></li>
+</ul>
+<p>Cautions:</p>
+<ul>
+<li class="fragment">GAMs can <strong>overfit</strong> with too many knots</li>
+<li class="fragment">Higher EDF = more complex model = potential overfitting</li>
+<li class="fragment">Always validate on held-out data!</li>
+</ul>
+</section>
+<section id="summary-smooth-regression" class="slide level2 scrollable">
+<h2>Summary: Smooth Regression</h2>
+<ol type="1">
+<li class="fragment"><strong>Linear models</strong> assume straight-line relationships: <span class="math inline">\(y = \beta_0 + \beta_1 x\)</span></li>
+<li class="fragment"><strong>Polynomial regression</strong> allows curves but has global effects and boundary issues</li>
+<li class="fragment"><strong>Splines</strong> <span class="math inline">\(f(x) = \sum_j \beta_j b_j(x)\)</span> are piecewise polynomials joined at knots</li>
+<li class="fragment"><strong>Smoothing parameter</strong> <span class="math inline">\(\lambda\)</span> controls the bias-variance tradeoff</li>
+<li class="fragment"><strong>GAMs</strong> model each predictor flexibly: <span class="math inline">\(y = \beta_0 + s_1(x_1) + \ldots + s_p(x_p)\)</span></li>
+<li class="fragment"><code>geom_smooth()</code> uses these techniques under the hood</li>
+<li class="fragment">In Python: use <code>pygam</code> or <code>statsmodels</code> for GAM fitting (<code>pygam</code> shown today)</li>
+</ol>
+</section>
+<section id="python-libraries-for-gams" class="slide level2">
+<h2>Python Libraries for GAMs</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Library</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pygam</code></td>
+<td>Pure Python GAM implementation, easy to use</td>
+</tr>
+<tr class="even">
+<td><code>statsmodels</code></td>
+<td><code>GLMGam</code> class for GAMs</td>
+</tr>
+<tr class="odd">
+<td><code>scikit-learn</code></td>
+<td>Spline transformers for feature engineering</td>
+</tr>
+<tr class="even">
+<td><code>scipy</code></td>
+<td>Low-level spline interpolation</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
+<ul>
+<li class="fragment">Wood, S.N. (2017). <em>Generalized Additive Models: An Introduction with R</em></li>
+<li class="fragment">Hastie, T. &amp; Tibshirani, R. (1990). <em>Generalized Additive Models</em></li>
+<li class="fragment">pygam documentation: https://pygam.readthedocs.io/</li>
+<li class="fragment">plotnine documentation: https://plotnine.readthedocs.io/</li>
+</ul>
+</section>
+<section class="slide level2">
+
+
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
