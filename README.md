@@ -7,7 +7,7 @@
 ### Where and When
 * Instructor: [Meredith Franklin](https://meredithfranklin.github.io)
   * Email: <meredith.franklin@utoronto.ca>, please put "JSC370" in the subject line.
-* Teaching Assistants: Johnny Meng and Mandy Yao
+* Teaching Assistants: Johnny Meng and Kevin Yang
 * Time: Mondays (Lecture) and Wednesdays (Lab), 1-3pm
 * Location: MS 3278 (Mondays),  (Wednesdays)
 * Office hours: TBD
