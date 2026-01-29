@@ -1,0 +1,430 @@
+---
+title: "JSC 370: Data Science II"
+subtitle: "Assingment 1"
+format:
+  revealjs:
+    slide-number: true
+    incremental: true
+    scrollable: true
+    css: styles.css
+execute:
+  echo: true
+  warning: false
+  message: false
+jupyter: jsc370-venv
+---
+
+## 1. Reading Data
+```{python}
+import pandas as pd
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+
+from plotnine import ggplot, aes, geom_point, labs
+
+columns = ["MCI_CATEGORY", "OFFENCE", "OCC_YEAR", "OCC_MONTH", "OCC_DAY", "OCC_DOY", "OCC_HOUR", "LOCATION_TYPE", "NEIGHBOURHOOD_158",
+"LONG_WGS84", "LAT_WGS84"]
+
+data = pd.read_csv("Major_Crime_Indicators_Open_Data_-3805566126367379926.csv")
+
+data = data.loc[:, columns]
+```
+
+---
+
+##  Data shape and data types
+```{python}
+print("Data dimension: ", data.shape)
+print(data.dtypes)
+```
+
+---
+
+## Missing values
+```{python}
+print(data.isna().sum())
+```
+
+---
+
+## Checking the Missing Values
+```{python}
+data.loc[data["OCC_YEAR"].isna(), :].head(2)
+```
+
+As we can see that the missing data is already set on np.NaN. Therefore, there is no need to conversion
+
+---
+
+
+## 2. Preprocess the data
+### Find the most frequent MCI
+```{python}
+print("Count values of MCI Category")
+print(data.groupby("MCI_CATEGORY")["MCI_CATEGORY"].count().sort_values(ascending=False))
+most_frequent_MCI = data.groupby("MCI_CATEGORY")["MCI_CATEGORY"].count().idxmax()
+```
+
+Based on the number of observation of MCI Category, the most frequent category is Assault with over 242000 observations.
+
+---
+
+### Find the most frequent offence within most common MCI
+```{python}
+print(data[data["MCI_CATEGORY"] == most_frequent_MCI].groupby("OFFENCE")["OFFENCE"].count().sort_values(ascending=False)[:7])
+most_frequent_offence = data.groupby("OFFENCE")["OFFENCE"].count().idxmax()
+
+data = data[data["MCI_CATEGORY"] == most_frequent_MCI]
+data = data[data["OFFENCE"] == most_frequent_offence]
+```
+Within Assault Category, the top 3 most frequent are Assault, Assault wiht Weapon and Assault Bodily Harm.
+
+
+---
+
+## Rename the variables so it's easier to use
+```{python}
+data = data.rename(columns={
+    "OCC_YEAR": "Year",
+    "OCC_MONTH": "Month",
+    "OCC_DAY": "Day",
+    "OCC_HOUR": "Hour",
+    "OCC_DOY": "DoY",
+    "LOCATION_TYPE": "Location_Type",
+    "NEIGHBOURHOOD_158": "Neighbourhood", 
+    "LAT_WGS84": "Lat",
+    "LONG_WGS84": "Long"
+})
+```
+
+---
+
+## Converting from String into pandas category
+```{python}
+columns_to_be_changed = ["MCI_CATEGORY", "OFFENCE", "Location_Type", "Neighbourhood"]
+for column in columns_to_be_changed:
+    data[column] = data[column].astype("category")
+
+
+# Convert Month from String into Ordinal category type
+month_order = ["January","February","March","April","May","June", "July","August","September","October","November","December"]
+
+data["Month"] = data["Month"].astype(str).str.strip().str.title()
+
+data["Month"] = pd.Categorical(
+    data["Month"],
+    categories=month_order,
+    ordered=True
+)
+
+```
+
+---
+
+## Outlier
+```{python}
+# Make Minimum and Maximum
+columns = ["Year", "Day", "DoY", "Hour", "Long", "Lat"]
+for column in columns:
+    print(f"{column} minimum:", data.loc[data[column].idxmin(), column])
+    print(f"{column} maximum", data.loc[data[column].idxmax(), column])
+    print("\n")
+```
+
+As we can see, there is some interesting value on Longitude and Latitude. Since Toronto area doesn't cover Longitude = 0 or Latitude = 0, it's interesting to investigate more.
+
+---
+
+## Checking the outlier/impossible values
+```{python}
+# Make Minimum and Maximum
+outlier_mask = ((data["Long"] == 0) | (data["Lat"] == 0))
+data[outlier_mask][:3]
+```
+
+As we can see, the observation with Longitude = 0 always has Latitude = 0, and vice versa. It may indicates that the location may not reflect the real location and only imputed values for missing values.
+
+---
+
+### Convert Non-Valid Location to np.NaN
+```{python}
+outlier_mask = ((data["Long"] == 0) | (data["Lat"] == 0))
+data.loc[outlier_mask, ["Long", "Lat"]] = np.nan
+```
+
+Since the number of observations is fairly small, we can assign np.NaN to these problematic observation so we can make any geo-map easier
+
+---
+
+## 3. Check data completeness across years
+### Checking what year are in the data
+```{python}
+print("Year Observations Table, sorted by Year")
+print(np.sort(data["Year"].unique()))
+```
+
+- First, we take the unique value from data["Year"] and then sort it
+
+- we can see that in the dataset, some observations come from year 2000 - 2013. Based on the Appendix A, we can clearly see that the dataset for assault supposed to only contain observations from year 2014 onward. 
+
+---
+
+## Checking the complete years
+
+```{python}
+months_per_year = data.groupby("Year")["Month"].nunique().sort_index() == 12
+complete_years = months_per_year[months_per_year].index.to_list()
+print("Complete Years List:")
+print(complete_years)
+```
+
+- We can see that the complete year (Year with 12 months) are year 2010 - 2024. By seeing the Appendix, year 2025 doesn't have full 12 months since it's last updated on October 2025
+
+---
+
+## Sorting the year in the data by observation counts
+```{python}
+print("Year Observations Table, sorted by observations count\n", data["Year"].value_counts())
+```
+ 
+ - First, we counts the observations for each year. Notice that the value_counts already sort the table based on the observations counts for each year.
+
+- By only see on valid data range and complete years, we can see that the year with most observations are year 2024. 
+
+---
+
+## Subset into the most complete data
+```{python}
+most_year = data["Year"].value_counts().idxmax()
+print("Most Complete Year:", most_year)
+subset_data = data[data["Year"] == most_year]
+```
+
+---
+
+## 4. Examine annual change in crime
+```{python}
+months_per_year = data.groupby("Year")["Month"].nunique().sort_index()
+mask_complete_years = months_per_year == 12
+complete_years = mask_complete_years[mask_complete_years].index.to_list()
+complete_years = complete_years[4:]
+
+data_4 = data[data["Year"].isin(complete_years)].copy()
+
+count_observation = data_4.groupby("Year")["Year"].value_counts().to_list()
+
+plt.plot(complete_years, count_observation)
+plt.axvline(x=2014, color='r', linestyle='--', linewidth=2)
+plt.xlabel("Year")
+plt.ylabel("Count Observation")
+plt.show()
+```
+
+We can see from the plot that the observations count suddenly spike from 2014. It suggest more that we can't rely on observations before year 2014
+
+We can also see that there is an increasing trend on the criminal count. 
+
+---
+
+## Fitting Poisson Regression
+```{python}
+import statsmodels.api as sm
+complete_years = np.sort(data_4["Year"].unique())
+count_observation = data_4.groupby("Year")["Year"].value_counts().to_list()
+
+X = sm.add_constant(complete_years)   # intercept + year
+y = count_observation
+
+model = sm.GLM(y, X, family=sm.families.Poisson())
+poisson = model.fit()
+print(poisson.summary())
+```
+
+Based on the summary, the estimate rate ratio per 1-year increase is 1.032. In other word, it mean that for each additional 1-year increase, the expected criminal count is increase by 3.2%
+
+---
+
+## Checking Model Fit
+```{python}
+dispersion = poisson.pearson_chi2 / poisson.df_resid
+print("\nDispersion (Pearson chi2 / df_resid):", dispersion)
+
+resid_p = poisson.resid_pearson
+
+plt.figure()
+plt.plot(complete_years, resid_p, marker="o")
+plt.axhline(0)
+plt.xlabel("Year"); plt.ylabel("Pearson residual")
+plt.title("Residuals vs year")
+plt.tight_layout(); plt.show()
+```
+
+We can see that the dispersion scale is 67.5. It means that the our data has quite overdispersion. It mean that usual standard error may not reliable.
+
+---
+
+## Statistical Inference
+```{python}
+beta = poisson.params[1]
+se = poisson.bse[1]
+
+rate_ratio = np.exp(beta)
+CI_low, CI_high = np.exp(beta - 1.96*se), np.exp(beta + 1.96*se)
+print("Estimate Rate Ratio for 1-Year increase:", rate_ratio)
+print("95% Confidence Interval: (", CI_low, ",", CI_high, ")")
+print("p values:", poisson.pvalues[1])
+```
+
+Assuming we use usual standard error, the 95% confidence interval of rate-ratio doesn't contain 1. Besides, the p-value is also roughly 0. Therefore, although the effect is only 3.2%, there is a strong suggestion that this effect doesn't come from noise.
+
+---
+
+## 5. Examine seasonality in crime
+```{python}
+mask_complete_years = (data.groupby("Year")["Month"].nunique().sort_index() == 12)
+complete_years = mask_complete_years[mask_complete_years].index.to_list()
+recent_complete_year = complete_years[-1]
+data_5 = data[data["Year"] == recent_complete_year]
+
+season_map = {
+    "December": "Winter",
+    "January": "Winter",
+    "February": "Winter",
+    "March": "Spring",
+    "April": "Spring",
+    "May": "Spring",
+    "June": "Summer",
+    "July": "Summer",
+    "August": "Summer",
+    "September": "Fall",
+    "October": "Fall",
+    "November": "Fall"
+}
+data_5["Season"] = data_5["Month"].map(season_map)
+
+
+x = data_5["Season"].value_counts().index.to_list()
+y = data_5["Season"].value_counts().to_list()
+plt.bar(x, y)
+plt.xlabel("Season")
+plt.ylabel("Count")
+plt.title(f"{int(recent_complete_year)} Criminal Count Grouped By Season")
+```
+
+---
+
+## Doing Chi-Square goodness-fit Test
+```{python}
+# H0: There is no seasonality on criminal count. (equivalent to each season has p = 0.25)
+# H1: There is seasonality where each season doesn't has equal probaility
+
+expected_count = len(data_5) * 0.25
+seasons = data_5["Season"].unique()
+
+chi_square = 0
+for season in seasons:
+    observed_count = len(data_5[data_5["Season"] == season])
+    test_statistics = (observed_count - expected_count)/np.sqrt(expected_count)
+    print(f"{season} Pearson Residual:", test_statistics)
+    print(f"{season} Chi Square Contribution:", test_statistics**2)
+    chi_square += test_statistics**2
+    print("\n")
+
+print("Chi Square Test Statistics:", chi_square)
+```
+
+In here, we use chi-square goodness-of-fit test with equal expected counts across seasons. Winter season has substantially lower observed criminal counts than expected (Pearson Residual = -5.3). Besides, Summer season also has higher observed criminal counts than expected (Pearson Residual = 2.58). Other seasons has observed counts relatively same with expected counts. 
+
+---
+
+## 6. Examine seasonality, day vs night 
+```{python}
+from scipy.stats import chi2_contingency
+
+# We define Day if the hour is between 7AM and 7PM. Otherwise, it's considered Night
+data_5["Day/Night"] = ((data_5["Hour"] >= 7) & (data_5["Hour"] < 19)).map({True: "Day", False: "Night"})
+data_5["Season x Day"] = data_5.apply(lambda x: f"{x["Season"]} x {x["Day/Night"]}", axis = 1)
+
+tab = pd.crosstab(data_5["Season"], data_5["Day/Night"], margins=True)
+tab
+
+chi2, p, dof, expected = chi2_contingency(tab)
+
+print("Chi-Square:", chi2)
+print("p-values:", p)
+```
+
+---
+
+```{python}
+seasons = ["Fall", "Spring", "Summer", "Winter"]
+day_night = ["Day", "Night"]
+
+chi_square = 0
+for i in range(len(seasons)):
+    for j in range(len(day_night)):
+        expected_counts = expected[i][j]
+        observed_counts = tab.iloc[i, j]
+        test_statistics = (observed_counts - expected_counts)/np.sqrt(expected_counts)
+
+        print(f"{seasons[i]} x {day_night[j]} Pearson Residual:", test_statistics)
+        print(f"{seasons[i]} x {day_night[j]} Chi-Square Contribution:", test_statistics**2)
+        print("\n")
+        chi_square += test_statistics**2
+
+print("Chi-Square Manual Counting:", chi_square)
+        
+```
+
+Summary:
+- We can see that in Summer x Night, the number of observation is higher than expected observations. Beside, we can also see that Summer x Day has fewer observed observations than expected observations. From this, we can fairly say that Summer has different proportion of day vs night than other seasons
+- However, we can see that from contigency table, the p-value is over 0.1. It means that this difference is not significant, even at only 0.1 significance level.
+
+---
+
+## 7. Look at neighbourhood patterns
+```{python}
+data_5_temp = data_5.copy()
+data_5_temp["Day"] = data_5_temp["Day/Night"] == "Day"
+data_5_temp["Night"] = data_5_temp["Day/Night"] == "Night"
+
+
+output = data_5_temp.groupby("Neighbourhood").agg(
+    Total_Count = ("Neighbourhood", "size"),
+    Day = ("Day", "sum"),
+    Night = ("Night", "sum")
+)
+output["Night Proportion"] = output["Night"] / output["Total_Count"]
+output.sort_values("Total_Count", ascending=False)[:10]
+```
+Summary:
+-  The neighbourhood with the most crime in Assault (Offence: Assault) are Mimico-Queensway with 560 observations through year 2024. From 560 crimes, 479 happens during day (7AM - 7PM) and 81 crimes happens during night (7PM - 7AM). Based on this, 0.144 of the total crimes happened during night
+
+---
+
+## 8. Create a map
+```{python}
+import folium
+from IPython.display import display
+
+pts = data_5[["Lat", "Long"]].dropna().drop_duplicates()
+
+m = folium.Map(
+    location=[pts["Lat"].mean(), pts["Long"].mean()],
+    zoom_start=4,
+    tiles="CartoDB positron"
+)
+
+for _, r in pts.iterrows():
+    folium.CircleMarker(
+        location=[r["Lat"], r["Long"]],
+        radius=2,
+        fill=True,
+        fill_opacity=0.8,
+        opacity=0.8,
+    ).add_to(m)
+
+display(m)
+```
