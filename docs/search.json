@@ -1988,10 +1988,529 @@
     "text": "Coordinate flip the statistical transformation plot\n\n(ggplot(flights_weather_ss, aes(x='dest', y='dep_delay')) +\n  stat_summary(fun_y=np.median,\n               fun_ymin=lambda x: np.percentile(x.dropna(), 25),\n               fun_ymax=lambda x: np.percentile(x.dropna(), 75)) +\n  coord_flip() +\n  theme_minimal())"
   },
   {
+<<<<<<< HEAD
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#what-is-a-web-api",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#what-is-a-web-api",
+    "title": "JSC 370: Data Science II",
+    "section": "What is a Web API?",
+    "text": "What is a Web API?\n\nA Web API is an application programming interface for either a web server or a web browser. – Wikipedia\n\nExamples:\n\nThe Movie Database API\nNOAA Climate Data API\nX API\nOpenAI API\nGitHub API\nGene Ontology API\nOpen Trivia API"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#how-do-apis-work",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#how-do-apis-work",
+    "title": "JSC 370: Data Science II",
+    "section": "How do APIs work?",
+    "text": "How do APIs work?\nHTTP Methods:\n\nGET: Request data from a server\nPOST: Send data to a server\nPUT: Update existing data\nDELETE: Remove data\n\nWe’ll use the requests library in Python to interact with APIs.\n\nimport requests\nresponse = requests.get(\"https://api.example.com/data\")"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#structure-of-a-url",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#structure-of-a-url",
+    "title": "JSC 370: Data Science II",
+    "section": "Structure of a URL",
+    "text": "Structure of a URL\n\nURL StructureSource: HTTP: The Protocol Every Web Developer Must Know"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-apis-with-curl",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-apis-with-curl",
+    "title": "JSC 370: Data Science II",
+    "section": "Web APIs with curl",
+    "text": "Web APIs with curl\nUnder-the-hood, the requests library sends HTTP requests similar to curl:\ncurl -X GET \"https://api.github.com/users/octocat\" \\\n     -H \"Accept: application/json\"\nResponse (JSON):\n{\n  \"login\": \"octocat\",\n  \"id\": 583231,\n  \"type\": \"User\",\n  \"name\": \"The Octocat\",\n  \"company\": \"@github\",\n  \"location\": \"San Francisco\",\n  \"public_repos\": 8,\n  \"followers\": 16000\n}\nThe -X GET specifies the HTTP method, -H adds headers."
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#http-status-codes",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#http-status-codes",
+    "title": "JSC 370: Data Science II",
+    "section": "HTTP Status Codes",
+    "text": "HTTP Status Codes\n\nRemember these HTTP codes:\n\n1xx: Information message\n2xx: Success (200 = OK)\n3xx: Redirection (301 = Moved Permanently)\n4xx: Client error (404 = Not Found)\n5xx: Server error (500 = Internal Server Error)"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#setup",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#setup",
+    "title": "JSC 370: Data Science II",
+    "section": "Setup",
+    "text": "Setup\n\nimport requests\nimport pandas as pd\nimport json\nfrom pprint import pprint"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-gene-ontology",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-gene-ontology",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 1: Gene Ontology",
+    "text": "Web API Example 1: Gene Ontology\nWe will use the Gene Ontology API to find genes involved in antiviral innate immune response (GO:0140374) with experimental evidence.\n\nurl = \"http://api.geneontology.org/api/bioentity/function/GO:0140374/genes\"\nparams = {\n    \"evidence\": \"ECO:0000006\",\n    \"relationship_type\": \"involved_in\"\n}\n\nresponse = requests.get(url, params=params, timeout=60)\nprint(f\"Status Code: {response.status_code}\")\nprint(f\"URL: {response.url}\")\n\nStatus Code: 200\nURL: https://api.geneontology.org/api/bioentity/function/GO:0140374/genes?evidence=ECO%3A0000006&relationship_type=involved_in"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-gene-ontology-cont.",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-gene-ontology-cont.",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 1: Gene Ontology (cont.)",
+    "text": "Web API Example 1: Gene Ontology (cont.)\nThe equivalent curl command would be:\ncurl -X GET \\\n  \"http://api.geneontology.org/api/bioentity/function/GO:0140374/genes?evidence=ECO%3A0000006&relationship_type=involved_in\" \\\n  -H \"accept: application/json\""
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-extracting-data",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-extracting-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 1: Extracting Data",
+    "text": "Web API Example 1: Extracting Data\n\n# Parse JSON response\ndata = response.json()\n\n# Extract gene information\ngenes = []\nfor assoc in data.get('associations', []):\n    genes.append({\n        'Gene': assoc['subject']['id'],\n        'taxon_id': assoc['subject']['taxon']['id'],\n        'taxon_label': assoc['subject']['taxon']['label']\n    })\n\n# Convert to DataFrame\ndf_genes = pd.DataFrame(genes)\nprint(f\"Found {len(df_genes)} genes\")\ndf_genes.head(10)\n\nFound 100 genes\n\n\n\n\n\n\n\n\n\nGene\ntaxon_id\ntaxon_label\n\n\n\n\n0\nUniProtKB:A0A8D0WX68\nNCBITaxon:9823\nSus scrofa\n\n\n1\nUniProtKB:A0A5F8HH92\nNCBITaxon:13616\nMonodelphis domestica\n\n\n2\nUniProtKB:A0A5F8HG58\nNCBITaxon:13616\nMonodelphis domestica\n\n\n3\nUniProtKB:A0A9L0S3I7\nNCBITaxon:9796\nEquus caballus\n\n\n4\nUniProtKB:A0A5F8GEE1\nNCBITaxon:13616\nMonodelphis domestica\n\n\n5\nUniProtKB:Q5U533\nNCBITaxon:8355\nXenopus laevis\n\n\n6\nUniProtKB:A0A5F8G614\nNCBITaxon:13616\nMonodelphis domestica\n\n\n7\nUniProtKB:A0A5F8GBV6\nNCBITaxon:13616\nMonodelphis domestica\n\n\n8\nUniProtKB:A0A5F8GBC6\nNCBITaxon:13616\nMonodelphis domestica\n\n\n9\nUniProtKB:A0A288CFW7\nNCBITaxon:9823\nSus scrofa"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-using-api-tokens",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-using-api-tokens",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 2: Using API Tokens",
+    "text": "Web API Example 2: Using API Tokens\nSometimes APIs require authentication:\n\nAPI Key/Token: Passed in header or URL\nOAuth: More complex authentication flow\nBasic Auth: Username/password\n\nExample: NOAA Climate Data API\nGet your token at: https://www.ncdc.noaa.gov/cdo-web/token"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-noaa-api",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-noaa-api",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 2: NOAA API",
+    "text": "Web API Example 2: NOAA API\n\n# this is my token!\nTOKEN = \"AqvpIjnLVnPdXQrzCNJhjdFOTuIbOfyb\"\n\nurl = \"https://www.ncdc.noaa.gov/cdo-web/api/v2/stations\"\nheaders = {\"token\": TOKEN}\nparams = {\"limit\": 1000}\n\nresponse = requests.get(url, headers=headers, params=params)\ndata = response.json()\n\n# Show one station\nprint(data['results'][0])\n\nThe equivalent curl command:\ncurl --header \"token: [YOUR TOKEN HERE]\" \\\n  \"https://www.ncdc.noaa.gov/cdo-web/api/v2/stations?limit=1000\""
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-3-hhs-health-recommendations",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-3-hhs-health-recommendations",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 3: HHS Health Recommendations",
+    "text": "Web API Example 3: HHS Health Recommendations\nThe Health.gov API provides demographic-specific health recommendations.\n\nurl = \"https://health.gov/myhealthfinder/api/v3/myhealthfinder.json\"\nparams = {\n    \"lang\": \"en\",\n    \"age\": \"32\",\n    \"sex\": \"male\",\n    \"tobaccoUse\": 0\n}\nheaders = {\"accept\": \"application/json\"}\n\nresponse = requests.get(url, params=params, headers=headers, timeout=60)\nprint(f\"Status Code: {response.status_code}\")\n\nStatus Code: 200"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-3-extracting-recommendations",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-3-extracting-recommendations",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 3: Extracting Recommendations",
+    "text": "Web API Example 3: Extracting Recommendations\n\ndata = response.json()\n\n# Extract recommendation titles\ntitles = []\nresources = data.get('Result', {}).get('Resources', {})\n\nfor category in resources.values():\n    if isinstance(category, dict) and 'Resource' in category:\n        for resource in category['Resource']:\n            titles.append(resource.get('Title', 'N/A'))\n\nprint(\"Health Recommendations:\")\nfor title in titles[:10]:\n    print(f\"  - {title}\")\n\nHealth Recommendations:\n  - Quit Smoking\n  - Hepatitis C Screening: Questions for the Doctor\n  - Protect Yourself from Seasonal Flu\n  - Talk with Your Doctor About Depression\n  - Get Your Blood Pressure Checked\n  - Get Tested for HIV\n  - Get Vaccines to Protect Your Health (Adults Ages 19 to 49 Years)\n  - Drink Alcohol Only in Moderation\n  - Talk with Your Doctor About Drug Misuse and Substance Use Disorder\n  - Aim for a Healthy Weight"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#timeout-and-connection-options",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#timeout-and-connection-options",
+    "title": "JSC 370: Data Science II",
+    "section": "Timeout and Connection Options",
+    "text": "Timeout and Connection Options\nSometimes APIs are slow. Use the timeout parameter:\n\n# Set connection and read timeout (in seconds)\nresponse = requests.get(\n    url,\n    params=params,\n    timeout=(10, 60)  # (connect timeout, read timeout)\n)\n\n# Or single timeout for both\nresponse = requests.get(url, timeout=60)"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#fundamentals-of-web-scraping",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#fundamentals-of-web-scraping",
+    "title": "JSC 370: Data Science II",
+    "section": "Fundamentals of Web Scraping",
+    "text": "Fundamentals of Web Scraping\n\nWeb scraping, web harvesting, or web data extraction is data scraping used for extracting data from websites – Wikipedia\n\nHow in Python?\n\nrequests: Fetch web pages\npandas.read_html(): Extract tables directly\nBeautifulSoup: Parse and navigate HTML/XML documents\nselenium: For dynamic websites with JavaScript"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#scraping-data-from-a-webpage",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#scraping-data-from-a-webpage",
+    "title": "JSC 370: Data Science II",
+    "section": "Scraping Data from a Webpage",
+    "text": "Scraping Data from a Webpage\nWebpages contain data but are written in HTML, CSS, and JavaScript."
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#html-tables",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#html-tables",
+    "title": "JSC 370: Data Science II",
+    "section": "HTML Tables",
+    "text": "HTML Tables\nHTML tables use these tags:\n\n&lt;table&gt; - the container\n&lt;tr&gt; - table row\n&lt;th&gt; - header cell\n&lt;td&gt; - data cell\n\n&lt;table&gt;\n  &lt;tr&gt;&lt;th&gt;Film&lt;/th&gt;&lt;th&gt;Year&lt;/th&gt;&lt;th&gt;Awards&lt;/th&gt;&lt;/tr&gt;\n  &lt;tr&gt;&lt;td&gt;Titanic&lt;/td&gt;&lt;td&gt;1997&lt;/td&gt;&lt;td&gt;11&lt;/td&gt;&lt;/tr&gt;\n  &lt;tr&gt;&lt;td&gt;Avatar&lt;/td&gt;&lt;td&gt;2009&lt;/td&gt;&lt;td&gt;3&lt;/td&gt;&lt;/tr&gt;\n&lt;/table&gt;"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#setup-for-scraping",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#setup-for-scraping",
+    "title": "JSC 370: Data Science II",
+    "section": "Setup for Scraping",
+    "text": "Setup for Scraping\n\nimport requests\nimport pandas as pd\nfrom io import StringIO\nimport re\nfrom bs4 import BeautifulSoup"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#making-requests-with-headers",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#making-requests-with-headers",
+    "title": "JSC 370: Data Science II",
+    "section": "Making Requests with Headers",
+    "text": "Making Requests with Headers\nAlways include a User-Agent header to identify yourself:\n\n# URLs for our movie data\nBOXOFFICE_URL = \"https://en.wikipedia.org/wiki/List_of_highest-grossing_films\"\nOSCARS_URL = \"https://en.wikipedia.org/wiki/List_of_Academy_Award%E2%80%93winning_films\"\n\n# Headers to identify ourselves\nHEADERS = {\n    \"User-Agent\": \"jsc370-class-project/1.0 (educational use)\",\n    \"Accept-Language\": \"en-US,en;q=0.9\",\n}"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#fetching-the-data",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#fetching-the-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Fetching the Data",
+    "text": "Fetching the Data\nUse requests.get to grab the website data from the url\n\n# Request the box office page\nboxoffice_request = requests.get(BOXOFFICE_URL, headers=HEADERS, timeout=30)\n\nif boxoffice_request.ok:\n    print(\"Box office response OK:\", boxoffice_request.status_code)\nelse:\n    print(\"Request failed:\", boxoffice_request.status_code)\n\n# Request the Oscars page\noscars_request = requests.get(OSCARS_URL, headers=HEADERS, timeout=30)\nprint(\"Oscars response:\", oscars_request.status_code)\n\nBox office response OK: 200\nOscars response: 200"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#parsing-tables-with-pandas",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#parsing-tables-with-pandas",
+    "title": "JSC 370: Data Science II",
+    "section": "Parsing Tables with pandas",
+    "text": "Parsing Tables with pandas\nUse pd.read_html() with StringIO to parse HTML tables:\n\n# Parse all tables from each page\nbox_tables = pd.read_html(StringIO(boxoffice_request.text))\nosc_tables = pd.read_html(StringIO(oscars_request.text))\n\nprint(f\"Found {len(box_tables)} tables on box office page\")\nprint(f\"Found {len(osc_tables)} tables on Oscars page\")\n\n# Get the main tables (first table on each page)\nbox = box_tables[0]\nosc = osc_tables[0]\n\nFound 91 tables on box office page\nFound 2 tables on Oscars page"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#inspecting-the-data",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#inspecting-the-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Inspecting the Data",
+    "text": "Inspecting the Data\nPrint out the data in box and osc\n\nprint(\"Box Office Data:\")\nprint(box.head(), '\\n')\n\nprint(\"Oscar Winners Data:\")\nprint(osc.head())\n\nBox Office Data:\n   Rank Peak                     Title   Worldwide gross  Year          Ref\n0     1    1                    Avatar    $2,923,710,708  2009   [# 1][# 2]\n1     2    1         Avengers: Endgame    $2,797,501,328  2019   [# 3][# 4]\n2     3    3  Avatar: The Way of Water    $2,334,484,620  2022   [# 5][# 6]\n3     4    1                   Titanic   T$2,257,906,828  1997   [# 7][# 8]\n4     5    5                  Ne Zha 2  NZ$2,215,690,000  2025  [# 9][# 10] \n\nOscar Winners Data:\n             Film  Year Awards Nominations\n0           Anora  2024      5           6\n1   The Brutalist  2024      3          10\n2    Emilia Pérez  2024      2          13\n3          Wicked  2024      2          10\n4  Dune: Part Two  2024      2           5"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#merging-dataframes",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#merging-dataframes",
+    "title": "JSC 370: Data Science II",
+    "section": "Merging DataFrames",
+    "text": "Merging DataFrames\nCombine data using merge():\n\nosc[\"Year\"] = pd.to_numeric(osc[\"Year\"].astype(str).str.extract(r\"(\\d{4})\")[0], errors=\"coerce\")\nosc[\"Year\"] = osc[\"Year\"].astype(\"Int64\")\n\n# Left join: keep all box office films, add Oscar data where available\nmerged = box.merge(\n    osc,\n    how='left',\n    left_on=['Title', 'Year'],\n    right_on=['Film', 'Year']\n)\n\nThis requires a few steps due to messy scraped data. We will come back to this later"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#cleaning-data-with-regular-expressions",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#cleaning-data-with-regular-expressions",
+    "title": "JSC 370: Data Science II",
+    "section": "Cleaning Data with Regular Expressions",
+    "text": "Cleaning Data with Regular Expressions\nSome values need cleaning (e.g., “2020/21” should be “2020”):\n\n# Extract just the first 4-digit year\nyear_example = \"2020/21\"\nclean_year = re.search(r'\\d{4}', year_example).group()\nprint(f\"'{year_example}' -&gt; '{clean_year}'\")\n\n# Clean currency: \"$2,923,710,708\" -&gt; 2923710708\ngross_example = \"$2,923,710,708\"\nclean_gross = re.sub(r'[^\\d]', '', gross_example)\nprint(f\"'{gross_example}' -&gt; {int(clean_gross)}\")\n\n'2020/21' -&gt; '2020'\n'$2,923,710,708' -&gt; 2923710708"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#cleaning-the-year-column",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#cleaning-the-year-column",
+    "title": "JSC 370: Data Science II",
+    "section": "Cleaning the Year Column",
+    "text": "Cleaning the Year Column\n\n# Extract 4-digit year and convert to int\nosc['Year_clean'] = (osc['Year']\n    .astype(str)\n    .str.extract(r'(\\d{4})', expand=False)\n    .astype('int', errors='ignore'))\n\nprint(osc[['Year', 'Year_clean']].head(10))\n\n   Year  Year_clean\n0  2024        2024\n1  2024        2024\n2  2024        2024\n3  2024        2024\n4  2024        2024\n5  2024        2024\n6  2024        2024\n7  2024        2024\n8  2024        2024\n9  2024        2024"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#merging-box-office-and-oscar-data",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#merging-box-office-and-oscar-data",
+    "title": "JSC 370: Data Science II",
+    "section": "Merging Box Office and Oscar Data",
+    "text": "Merging Box Office and Oscar Data\n\n# Clean the year column first\nosc['Year'] = pd.to_numeric(\n    osc['Year'].astype(str).str.extract(r'(\\d{4})', expand=False),\n    errors='coerce'\n)\n\n# Merge the dataframes\nmerged = box.merge(\n    osc,\n    how='left',\n    left_on=['Title', 'Year'],\n    right_on=['Film', 'Year']\n)\n\nprint(f\"Merged shape: {merged.shape}\")\nmerged[['Title', 'Year', 'Worldwide gross', 'Awards']].head(10)\n\nMerged shape: (50, 10)\n\n\n\n\n\n\n\n\n\nTitle\nYear\nWorldwide gross\nAwards\n\n\n\n\n0\nAvatar\n2009\n$2,923,710,708\n3\n\n\n1\nAvengers: Endgame\n2019\n$2,797,501,328\nNaN\n\n\n2\nAvatar: The Way of Water\n2022\n$2,334,484,620\n1\n\n\n3\nTitanic\n1997\nT$2,257,906,828\n11\n\n\n4\nNe Zha 2\n2025\nNZ$2,215,690,000\nNaN\n\n\n5\nStar Wars: The Force Awakens\n2015\n$2,068,223,624\nNaN\n\n\n6\nAvengers: Infinity War\n2018\n$2,048,359,754\nNaN\n\n\n7\nSpider-Man: No Way Home\n2021\nSM$1,922,598,800\nNaN\n\n\n8\nZootopia 2 †\n2025\n$1,776,957,359\nNaN\n\n\n9\nInside Out 2\n2024\n$1,698,863,816\nNaN"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#cleaning-worldwide-gross",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#cleaning-worldwide-gross",
+    "title": "JSC 370: Data Science II",
+    "section": "Cleaning Worldwide Gross",
+    "text": "Cleaning Worldwide Gross\n\n# Extract numbers from gross column using regex\n# Pattern matches: 1,234,567 or just 1234567\ngross_clean = (merged['Worldwide gross']\n    .astype(str)\n    .str.extract(r'(\\d{1,3}(?:,\\d{3})+|\\d{4,})', expand=False)\n    .str.replace(',', '', regex=False)\n    .astype('Int64'))\n\nmerged['gross_clean'] = gross_clean\nmerged[['Title', 'Worldwide gross', 'gross_clean']].head()\n\n\n\n\n\n\n\n\nTitle\nWorldwide gross\ngross_clean\n\n\n\n\n0\nAvatar\n$2,923,710,708\n2923710708\n\n\n1\nAvengers: Endgame\n$2,797,501,328\n2797501328\n\n\n2\nAvatar: The Way of Water\n$2,334,484,620\n2334484620\n\n\n3\nTitanic\nT$2,257,906,828\n2257906828\n\n\n4\nNe Zha 2\nNZ$2,215,690,000\n2215690000"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#handling-missing-values",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#handling-missing-values",
+    "title": "JSC 370: Data Science II",
+    "section": "Handling Missing Values",
+    "text": "Handling Missing Values\n\n# Fill missing Awards with 0 (no Oscar wins)\nmerged['Awards'] = merged['Awards'].fillna(0).astype('int')\n\n# Create indicator for Oscar winners\nmerged['won_oscar'] = merged['Awards'] &gt;= 1\n\nprint(merged[['Title', 'Awards', 'won_oscar']].head(10))\n\n                          Title  Awards  won_oscar\n0                        Avatar       3       True\n1             Avengers: Endgame       0      False\n2      Avatar: The Way of Water       1       True\n3                       Titanic      11       True\n4                      Ne Zha 2       0      False\n5  Star Wars: The Force Awakens       0      False\n6        Avengers: Infinity War       0      False\n7       Spider-Man: No Way Home       0      False\n8                  Zootopia 2 †       0      False\n9                  Inside Out 2       0      False"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#comparing-oscar-winners-vs-non-winners",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#comparing-oscar-winners-vs-non-winners",
+    "title": "JSC 370: Data Science II",
+    "section": "Comparing Oscar Winners vs Non-Winners",
+    "text": "Comparing Oscar Winners vs Non-Winners\n\n# Group by Oscar status and compute statistics\nsummary = (merged\n    .groupby('won_oscar')['gross_clean']\n    .agg(num_movies='count', avg_gross='mean', median_gross='median'))\n\nprint(summary)\n\n           num_movies          avg_gross  median_gross\nwon_oscar                                             \nFalse              37  1409851897.621622  1308476166.0\nTrue               13  1510293283.384615  1290000000.0"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#visualizing-the-results",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#visualizing-the-results",
+    "title": "JSC 370: Data Science II",
+    "section": "Visualizing the Results",
+    "text": "Visualizing the Results\n\nimport matplotlib.pyplot as plt\n\nno_wins = merged[merged['won_oscar'] == False]['gross_clean'].dropna()\nwinners = merged[merged['won_oscar'] == True]['gross_clean'].dropna()\n\nplt.boxplot([no_wins, winners], tick_labels=[\"No Oscar\", \"Oscar Winner\"])\nplt.ylabel(\"Worldwide Gross (USD)\")\nplt.title(\"Box Office Revenue: Oscar Winners vs Non-Winners\")\nplt.show()"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#regular-expressions-in-python",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#regular-expressions-in-python",
+    "title": "JSC 370: Data Science II",
+    "section": "Regular Expressions in Python",
+    "text": "Regular Expressions in Python\nWhy regex? Scraped data is messy. Years appear as “2020/21”, currencies as “$2,923,710,708”, and text contains footnotes like “[1]”. Regex lets you extract and clean patterns programmatically.\nThe re module provides regex support:\n\nimport re\n\ntext = \"Contact us at support@example.com or sales@company.org\"\n\n# Find all email addresses\npattern = r'[\\w\\.-]+@[\\w\\.-]+'\nemails = re.findall(pattern, text)\nprint(f\"Found emails: {emails}\")\n\n# Replace pattern\nnew_text = re.sub(pattern, \"[EMAIL]\", text)\nprint(f\"Redacted: {new_text}\")\n\nFound emails: ['support@example.com', 'sales@company.org']\nRedacted: Contact us at [EMAIL] or [EMAIL]"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#common-regex-patterns",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#common-regex-patterns",
+    "title": "JSC 370: Data Science II",
+    "section": "Common Regex Patterns",
+    "text": "Common Regex Patterns\n\n\n\nPattern\nMeaning\n\n\n\n\n\\d\nDigit (0-9)\n\n\n\\w\nWord character (a-z, A-Z, 0-9, _)\n\n\n\\s\nWhitespace\n\n\n.\nAny character\n\n\n*\nZero or more\n\n\n+\nOne or more\n\n\n?\nZero or one\n\n\n[]\nCharacter class\n\n\n^\nStart of string\n\n\n$\nEnd of string"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#regex-example-extracting-phone-numbers",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#regex-example-extracting-phone-numbers",
+    "title": "JSC 370: Data Science II",
+    "section": "Regex Example: Extracting Phone Numbers",
+    "text": "Regex Example: Extracting Phone Numbers\n\ntext = \"Call 416-555-1234 or (905) 555-5678 for info\"\n\n# Pattern for phone numbers\npattern = r'[\\(]?\\d{3}[\\)\\-\\s]?\\s?\\d{3}[\\-\\s]?\\d{4}'\nphones = re.findall(pattern, text)\nprint(f\"Phone numbers: {phones}\")\n\n# More specific pattern\npattern2 = r'\\(?\\d{3}\\)?[-.\\s]?\\d{3}[-.\\s]?\\d{4}'\nphones2 = re.findall(pattern2, text)\nprint(f\"Phone numbers: {phones2}\")\n\nPhone numbers: ['416-555-1234', '(905) 555-5678']\nPhone numbers: ['416-555-1234', '(905) 555-5678']"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#putting-it-together-scraping-function",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#putting-it-together-scraping-function",
+    "title": "JSC 370: Data Science II",
+    "section": "Putting It Together: Scraping Function",
+    "text": "Putting It Together: Scraping Function\n\ndef scrape_wikipedia_table(url, table_index=0, clean=True):\n    \"\"\"\n    Scrape a table from a Wikipedia page.\n\n    Args:\n        url: Wikipedia page URL\n        table_index: Which table to extract (0-indexed)\n        clean: Whether to remove footnote markers\n\n    Returns:\n        pandas DataFrame\n    \"\"\"\n    response = requests.get(url)\n    response.raise_for_status()  # Check for errors\n\n    soup = BeautifulSoup(response.content, 'html.parser')\n    tables = pd.read_html(str(soup))\n\n    if table_index &gt;= len(tables):\n        raise ValueError(f\"Only {len(tables)} tables found\")\n\n    df = tables[table_index]\n\n    # Clean footnotes from all string columns\n    if clean:\n        for col in df.select_dtypes(include=['object']).columns:\n            df[col] = df[col].apply(clean_footnotes)\n\n    return df\n\n# Example: Get Oscar data\n# oscars = scrape_wikipedia_table(\n#     \"https://en.wikipedia.org/wiki/List_of_Academy_Award–winning_films\",\n#     table_index=0\n# )"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#api-best-practices",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#api-best-practices",
+    "title": "JSC 370: Data Science II",
+    "section": "API Best Practices",
+    "text": "API Best Practices\n\nRead the documentation - Every API is different\nRespect rate limits - Use time.sleep() between requests\nHandle errors gracefully - Check status codes\nUse timeouts - Don’t hang indefinitely\nStore tokens securely - Never commit API keys to git!\n\n# Use environment variables for tokens\nimport os\nAPI_KEY = os.environ.get('TMDB_API_KEY')"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#error-handling",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#error-handling",
+    "title": "JSC 370: Data Science II",
+    "section": "Error Handling",
+    "text": "Error Handling\n\ndef safe_api_call(url, params=None, timeout=30):\n    \"\"\"Make an API call with proper error handling.\"\"\"\n    try:\n        response = requests.get(url, params=params, timeout=timeout)\n        response.raise_for_status()  # Raises exception for 4xx/5xx\n        return response.json()\n    except requests.exceptions.Timeout:\n        print(\"Request timed out\")\n    except requests.exceptions.HTTPError as e:\n        print(f\"HTTP error: {e}\")\n    except requests.exceptions.RequestException as e:\n        print(f\"Request failed: {e}\")\n    return None\n\n# Example usage\ndata = safe_api_call(\"https://api.github.com/users/octocat\")\nif data:\n    print(f\"User: {data.get('login')}\")\n\nUser: octocat"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#summary-web-scraping",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#summary-web-scraping",
+    "title": "JSC 370: Data Science II",
+    "section": "Summary: Web Scraping",
+    "text": "Summary: Web Scraping\n\nUse BeautifulSoup to parse HTML\nUse pandas.read_html() for tables\nClean data with regular expressions\nBe respectful - check robots.txt\n\nfrom bs4 import BeautifulSoup\nimport requests\nimport pandas as pd\n\nresponse = requests.get(url)\nsoup = BeautifulSoup(response.content, 'html.parser')\ntables = pd.read_html(str(soup))"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#summary-apis",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#summary-apis",
+    "title": "JSC 370: Data Science II",
+    "section": "Summary: APIs",
+    "text": "Summary: APIs\n\nUse the requests library for HTTP calls\nPass parameters as dictionaries\nPass tokens in headers\nHandle timeouts and errors\nParse JSON responses with .json()\n\nimport requests\n\nresponse = requests.get(url, params=params, headers=headers, timeout=60)\ndata = response.json()"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#resources",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#resources",
+    "title": "JSC 370: Data Science II",
+    "section": "Resources",
+    "text": "Resources\n\nRequests Documentation\nBeautifulSoup Documentation\nPython Regex HOWTO\nHTTP Status Codes\nPublic APIs List"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#practice",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#practice",
+    "title": "JSC 370: Data Science II",
+    "section": "Practice",
+    "text": "Practice\nTry these APIs:\n\nGitHub API: https://api.github.com/users/{username}\nOpen Trivia DB: https://opentdb.com/api.php?amount=10\nJSONPlaceholder: https://jsonplaceholder.typicode.com/posts\n\nAnd try scraping these Wikipedia tables:\n\nList of Academy Award-winning films\nList of highest-grossing films\nWorld population by country"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-the-movie-database-tmdb",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-the-movie-database-tmdb",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 1: The Movie Database (TMDB)",
+    "text": "Web API Example 1: The Movie Database (TMDB)\nUsing TMDB\n\n# TMDB API configuration\nBASE_URL = \"https://api.themoviedb.org/3\"\nAPI_KEY = \"demo\"  # Replace with your API key!"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-discovering-movies",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-discovering-movies",
+    "title": "JSC 370: Data Science II",
+    "section": "TMDB API: Discovering Movies",
+    "text": "TMDB API: Discovering Movies\n\n# Discover top-grossing movies from 2020-2024\nurl = f\"{BASE_URL}/discover/movie\"\n\nparams = {\n    \"api_key\": API_KEY,\n    \"sort_by\": \"revenue.desc\",\n    \"release_date.gte\": \"2020-01-01\",\n    \"release_date.lte\": \"2024-12-31\",\n    \"page\": 1\n}\n\nresponse = requests.get(url, params=params, timeout=30)\nprint(f\"Status Code: {response.status_code}\")\nprint(f\"URL: {response.url}\")\n\nStatus Code: 200\nURL: https://api.themoviedb.org/3/discover/movie?api_key=f6600b8ecd0876798ce46888f63faf47&sort_by=revenue.desc&release_date.gte=2020-01-01&release_date.lte=2024-12-31&page=1"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-understanding-the-response",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-understanding-the-response",
+    "title": "JSC 370: Data Science II",
+    "section": "TMDB API: Understanding the Response",
+    "text": "TMDB API: Understanding the Response\nresponse.json parses the HTTP response body as JSON and return it as normal Python objects (usually a dict or list)\n\ndata = response.json()\n\n# The response contains pagination info and results\nprint(f\"Total results: {data.get('total_results')}\")\nprint(f\"Total pages: {data.get('total_pages')}\")\nprint(f\"Movies on this page: {len(data.get('results', []))}\")\n\nTotal results: 240380\nTotal pages: 12019\nMovies on this page: 20"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-extracting-movie-data",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-extracting-movie-data",
+    "title": "JSC 370: Data Science II",
+    "section": "TMDB API: Extracting Movie Data",
+    "text": "TMDB API: Extracting Movie Data\n\n# Extract movie information from results this turns into a list\nmovies = []\nfor movie in data.get('results', []):\n    movies.append({\n        'movie_id': movie.get('id'),\n        'title': movie.get('title'),\n        'release_date': movie.get('release_date'),\n        'popularity': movie.get('popularity'),\n        'vote_average': movie.get('vote_average')\n    })\n\n# Convert to DataFrame\ndf_movies = pd.DataFrame(movies)\nprint(f\"Found {len(df_movies)} movies\")\ndf_movies.head(10)\n\nFound 20 movies\n\n\n\n\n\n\n\n\n\nmovie_id\ntitle\nrelease_date\npopularity\nvote_average\n\n\n\n\n0\n19995\nAvatar\n2009-12-16\n43.7770\n7.600\n\n\n1\n299534\nAvengers: Endgame\n2019-04-24\n17.3797\n8.236\n\n\n2\n76600\nAvatar: The Way of Water\n2022-12-14\n41.0016\n7.600\n\n\n3\n597\nTitanic\n1997-12-18\n30.2952\n7.902\n\n\n4\n140607\nStar Wars: The Force Awakens\n2015-12-15\n9.9024\n7.252\n\n\n5\n299536\nAvengers: Infinity War\n2018-04-25\n28.5981\n8.234\n\n\n6\n634649\nSpider-Man: No Way Home\n2021-12-15\n25.5223\n7.934\n\n\n7\n1022789\nInside Out 2\n2024-06-11\n21.0638\n7.546\n\n\n8\n420818\nThe Lion King\n2019-07-12\n9.3301\n7.097\n\n\n9\n24428\nThe Avengers\n2012-04-25\n67.3150\n7.928"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-getting-movie-details",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-getting-movie-details",
+    "title": "JSC 370: Data Science II",
+    "section": "TMDB API: Getting Movie Details",
+    "text": "TMDB API: Getting Movie Details\nEach movie has additional details available that we can extract.\nHere we extract one movie and see several attributes:\n\n# Get details for a specific movie (e.g., movie_id = 550 is Fight Club)\nmovie_id = 550\ndetail_url = f\"{BASE_URL}/movie/{movie_id}\"\n\ndetail_response = requests.get(detail_url, params={\"api_key\": API_KEY}, timeout=30)\nmovie_details = detail_response.json()\n\nprint(f\"Title: {movie_details.get('title')}\")\nprint(f\"Budget: ${movie_details.get('budget'):,}\")\nprint(f\"Revenue: ${movie_details.get('revenue'):,}\")\nprint(f\"Runtime: {movie_details.get('runtime')} minutes\")\nprint(f\"Genres: {[g['name'] for g in movie_details.get('genres', [])]}\")\n\nTitle: Fight Club\nBudget: $63,000,000\nRevenue: $100,853,753\nRuntime: 139 minutes\nGenres: ['Drama', 'Thriller']"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-fetching-multiple-pages",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-fetching-multiple-pages",
+    "title": "JSC 370: Data Science II",
+    "section": "TMDB API: Fetching Multiple Pages",
+    "text": "TMDB API: Fetching Multiple Pages\nThe discover endpoint returns 20 movies per page. To get more data, we loop through pages:\n\nimport time\n\n# Fetch first 3 pages of results (60 movies)\nall_movies = []\n\nfor page in range(1, 4):\n    params = {\n        \"api_key\": API_KEY,\n        \"sort_by\": \"revenue.desc\",\n        \"release_date.gte\": \"2020-01-01\",\n        \"page\": page\n    }\n\n    resp = requests.get(f\"{BASE_URL}/discover/movie\", params=params, timeout=30)\n    data = resp.json()\n\n    for movie in data.get('results', []):\n        all_movies.append({\n            'id': movie.get('id'),\n            'title': movie.get('title'),\n            'popularity': movie.get('popularity')\n        })\n\n    print(f\"Page {page}: fetched {len(data.get('results', []))} movies\")\n    time.sleep(0.25)  # Be polite: wait 250ms between requests\n\nprint(f\"\\nTotal movies collected: {len(all_movies)}\")\n\nPage 1: fetched 20 movies\nPage 2: fetched 20 movies\nPage 3: fetched 20 movies\n\nTotal movies collected: 60"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#understanding-query-parameters",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#understanding-query-parameters",
+    "title": "JSC 370: Data Science II",
+    "section": "Understanding Query Parameters",
+    "text": "Understanding Query Parameters\nWhen we call an API, query parameters customize what data we get back.\nparams = {\n    \"lang\": \"en\",        # Language: English\n    \"age\": \"32\",         # User's age\n    \"sex\": \"male\",       # User's sex\n    \"tobaccoUse\": 0      # Tobacco use: 0=no, 1=yes\n}\nThese get appended to the URL as ?key1=value1&key2=value2:\nhttps://health.gov/myhealthfinder/api/v3/myhealthfinder.json?lang=en&age=32&sex=male&tobaccoUse=0"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#how-requests-builds-the-url",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#how-requests-builds-the-url",
+    "title": "JSC 370: Data Science II",
+    "section": "How requests Builds the URL",
+    "text": "How requests Builds the URL\n\n# The base URL\nbase_url = \"https://health.gov/myhealthfinder/api/v3/myhealthfinder.json\"\n\n# Our parameters as a dictionary\nparams = {\n    \"lang\": \"en\",\n    \"age\": \"32\",\n    \"sex\": \"male\",\n    \"tobaccoUse\": 0\n}\n\n# requests.get() combines them automatically\n# Let's see what URL it creates:\nfrom requests import Request\nreq = Request('GET', base_url, params=params)\nprepared = req.prepare()\nprint(f\"Full URL:\\n{prepared.url}\")\n\nFull URL:\nhttps://health.gov/myhealthfinder/api/v3/myhealthfinder.json?lang=en&age=32&sex=male&tobaccoUse=0"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#why-use-a-dictionary-for-parameters",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#why-use-a-dictionary-for-parameters",
+    "title": "JSC 370: Data Science II",
+    "section": "Why Use a Dictionary for Parameters?",
+    "text": "Why Use a Dictionary for Parameters?\nInstead of this:\nurl = \"https://api.example.com/data?age=32&sex=male&lang=en\"\nresponse = requests.get(url)\nDo this:\nurl = \"https://api.example.com/data\"\nparams = {\"age\": 32, \"sex\": \"male\", \"lang\": \"en\"}\nresponse = requests.get(url, params=params)\nBenefits:\n\nAutomatic URL encoding (handles special characters)\nEasier to read and modify\nNo manual string concatenation errors"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#experimenting-with-different-parameters",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#experimenting-with-different-parameters",
+    "title": "JSC 370: Data Science II",
+    "section": "Experimenting with Different Parameters",
+    "text": "Experimenting with Different Parameters\n\n# Try different demographic parameters\nurl = \"https://health.gov/myhealthfinder/api/v3/myhealthfinder.json\"\n\n# Female, age 65, tobacco user\nparams_female = {\n    \"lang\": \"en\",\n    \"age\": \"65\",\n    \"sex\": \"female\",\n    \"tobaccoUse\": 1\n}\n\nresponse2 = requests.get(url, params=params_female, timeout=60)\ndata2 = response2.json()\n\n# Count recommendations\nresources2 = data2.get('Result', {}).get('Resources', {})\ncount = sum(len(cat.get('Resource', [])) for cat in resources2.values() if isinstance(cat, dict))\nprint(f\"Recommendations for 65-year-old female tobacco user: {count}\")\n\nRecommendations for 65-year-old female tobacco user: 28"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#common-parameter-patterns-in-apis",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#common-parameter-patterns-in-apis",
+    "title": "JSC 370: Data Science II",
+    "section": "Common Parameter Patterns in APIs",
+    "text": "Common Parameter Patterns in APIs\n\n\n\nParameter Type\nExample\nPurpose\n\n\n\n\nFiltering\n?status=active\nOnly return matching items\n\n\nPagination\n?page=2&limit=50\nControl result batches\n\n\nSorting\n?sort=date&order=desc\nOrder results\n\n\nFields\n?fields=name,email\nSelect specific data\n\n\nSearch\n?q=python\nText search\n\n\nFormat\n?format=json\nResponse format"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#pagination-example",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#pagination-example",
+    "title": "JSC 370: Data Science II",
+    "section": "Pagination Example",
+    "text": "Pagination Example\nMany APIs return results in pages:\n\n# Fetch data page by page\nall_results = []\n\nfor page in range(1, 4):  # Get first 3 pages\n    params = {\n        \"page\": page,\n        \"limit\": 100\n    }\n    response = requests.get(url, params=params, timeout=30)\n    data = response.json()\n\n    results = data.get('results', [])\n    if not results:\n        break  # No more data\n\n    all_results.extend(results)\n    print(f\"Page {page}: {len(results)} items\")\n\nprint(f\"Total: {len(all_results)} items\")"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#additional-setup-for-apis",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#additional-setup-for-apis",
+    "title": "JSC 370: Data Science II",
+    "section": "Additional setup for APIs",
+    "text": "Additional setup for APIs\nIn addition to requests we also need pandas (for all data science stuff!) and json\n\nimport requests\nimport pandas as pd\nimport json"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#structure-of-an-api-url",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#structure-of-an-api-url",
+    "title": "JSC 370: Data Science II",
+    "section": "Structure of an API URL",
+    "text": "Structure of an API URL\nhttps://api.themoviedb.org/3/discover/movie?api_key=abc123&sort_by=revenue.desc&page=1\n\\_____/\\__________________/\\_____________/\\__________________________________________/\n   |            |                 |                            |\nProtocol    Base URL         Endpoint               Query Parameters\n                              (Path)                  (key=value pairs)\nComponents:\n\n\n\n\n\n\n\n\nPart\nExample\nPurpose\n\n\n\n\nProtocol\nhttps://\nSecure connection\n\n\nBase URL\napi.themoviedb.org/3\nAPI server + version\n\n\nEndpoint\n/discover/movie\nWhich resource to access\n\n\nQuery Params\n?api_key=...&sort_by=...\nFilter/customize results"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#what-is-json",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#what-is-json",
+    "title": "JSC 370: Data Science II",
+    "section": "What is JSON?",
+    "text": "What is JSON?\nJSON (JavaScript Object Notation) is the standard format for API responses.\n{\n  \"name\": \"Avatar\",\n  \"year\": 2009,\n  \"budget\": 237000000,\n  \"genres\": [\"Action\", \"Adventure\", \"Sci-Fi\"],\n  \"awards\": {\n    \"oscars\": 3,\n    \"nominations\": 9\n  }\n}\nKey features:\n\nObjects: { } contain key-value pairs\nArrays: [ ] contain ordered lists\nValues: strings, numbers, booleans, null, objects, or arrays\nHuman-readable and easy to parse in Python with .json()"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#api-keys-and-tokens",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#api-keys-and-tokens",
+    "title": "JSC 370: Data Science II",
+    "section": "API Keys and Tokens",
+    "text": "API Keys and Tokens\nSometimes APIs require authentication:\n\nAPI Key/Token: Passed in header or URL\nOAuth: More complex authentication flow\nBasic Auth: Username/password\n\nExample 1: The Movie Database API to discover popular movies and their details.\nGet your free API key at: themoviedb.org\nExample 2: NOAA Climate Data API (data we used in earlier weeks)\nGet your token at: https://www.ncdc.noaa.gov/cdo-web/token"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-the-movie-database-tmdb-1",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-1-the-movie-database-tmdb-1",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 1: The Movie Database (TMDB)",
+    "text": "Web API Example 1: The Movie Database (TMDB)\nUsing TMDB"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-understanding-query-parameters",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#tmdb-api-understanding-query-parameters",
+    "title": "JSC 370: Data Science II",
+    "section": "TMDB API: Understanding Query Parameters",
+    "text": "TMDB API: Understanding Query Parameters\nEach parameter customizes what movies we get back:\nparams = {\n    \"api_key\": API_KEY,           # Authentication (required)\n    \"sort_by\": \"revenue.desc\",    # Sort by revenue, descending\n    \"release_date.gte\": \"2020-01-01\",  # Released on or after\n    \"release_date.lte\": \"2024-12-31\",  # Released on or before\n    \"page\": 1                     # Which page of results\n}\n\n\n\nParameter\nValue\nEffect\n\n\n\n\nsort_by\nrevenue.desc\nHighest-grossing first\n\n\nrelease_date.gte\n2020-01-01\nOnly movies from 2020+\n\n\nrelease_date.lte\n2024-12-31\nOnly movies up to 2024\n\n\npage\n1\nFirst 20 results"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#how-do-we-know-what-parameters-are-available",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#how-do-we-know-what-parameters-are-available",
+    "title": "JSC 370: Data Science II",
+    "section": "How Do We Know What Parameters Are Available?",
+    "text": "How Do We Know What Parameters Are Available?\nRead the API documentation! Every API publishes docs explaining:\n\nAvailable endpoints (URLs)\nRequired vs optional parameters\nAuthentication method\nResponse format and fields\n\nTMDB Discover Movies API Docs"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-hhs-health-recommendations",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-hhs-health-recommendations",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 2: HHS Health Recommendations",
+    "text": "Web API Example 2: HHS Health Recommendations\nThe Health.gov API provides demographic-specific health recommendations. This API does not require a key or token\n\nurl = \"https://health.gov/myhealthfinder/api/v3/myhealthfinder.json\"\nparams = {\n    \"lang\": \"en\",\n    \"age\": \"32\",\n    \"sex\": \"male\",\n    \"tobaccoUse\": 0\n}\nheaders = {\"accept\": \"application/json\"}\n\nresponse = requests.get(url, params=params, headers=headers, timeout=60)\nprint(f\"Status Code: {response.status_code}\")\n\nStatus Code: 200"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-extracting-recommendations",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-extracting-recommendations",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 2: Extracting Recommendations",
+    "text": "Web API Example 2: Extracting Recommendations\n\ndata = response.json()\n\n# Extract recommendation titles\ntitles = []\nresources = data.get('Result', {}).get('Resources', {})\n\nfor category in resources.values():\n    if isinstance(category, dict) and 'Resource' in category:\n        for resource in category['Resource']:\n            titles.append(resource.get('Title', 'N/A'))\n\nprint(\"Health Recommendations:\")\nfor title in titles[:10]:\n    print(f\"  - {title}\")\n\nHealth Recommendations:\n  - Quit Smoking\n  - Hepatitis C Screening: Questions for the Doctor\n  - Protect Yourself from Seasonal Flu\n  - Talk with Your Doctor About Depression\n  - Get Your Blood Pressure Checked\n  - Get Tested for HIV\n  - Get Vaccines to Protect Your Health (Adults Ages 19 to 49 Years)\n  - Drink Alcohol Only in Moderation\n  - Talk with Your Doctor About Drug Misuse and Substance Use Disorder\n  - Aim for a Healthy Weight"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-extracting-health-recommendations",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#web-api-example-2-extracting-health-recommendations",
+    "title": "JSC 370: Data Science II",
+    "section": "Web API Example 2: Extracting Health Recommendations",
+    "text": "Web API Example 2: Extracting Health Recommendations\n\ndata = response.json()\n\n# Extract recommendation titles\ntitles = []\nresources = data.get('Result', {}).get('Resources', {})\n\nfor category in resources.values():\n    if isinstance(category, dict) and 'Resource' in category:\n        for resource in category['Resource']:\n            titles.append(resource.get('Title', 'N/A'))\n\nprint(\"Health Recommendations:\")\nfor title in titles[:10]:\n    print(f\"  - {title}\")\n\nHealth Recommendations:\n  - Quit Smoking\n  - Hepatitis C Screening: Questions for the Doctor\n  - Protect Yourself from Seasonal Flu\n  - Talk with Your Doctor About Depression\n  - Get Your Blood Pressure Checked\n  - Get Tested for HIV\n  - Get Vaccines to Protect Your Health (Adults Ages 19 to 49 Years)\n  - Drink Alcohol Only in Moderation\n  - Talk with Your Doctor About Drug Misuse and Substance Use Disorder\n  - Aim for a Healthy Weight"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#how-do-we-know-what-parameters-are-available-1",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#how-do-we-know-what-parameters-are-available-1",
+    "title": "JSC 370: Data Science II",
+    "section": "How Do We Know What Parameters Are Available?",
+    "text": "How Do We Know What Parameters Are Available?"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#rate-limiting",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#rate-limiting",
+    "title": "JSC 370: Data Science II",
+    "section": "Rate Limiting",
+    "text": "Rate Limiting\nMany APIs limit how many requests you can make. Use time.sleep() to be polite:\nimport time\n\nfor movie_id in movie_ids:\n    response = requests.get(f\"{BASE_URL}/movie/{movie_id}\", params=params)\n    data = response.json()\n    # Process data...\n    time.sleep(0.5)  # Wait 500ms between requests\nWhy rate limit?\n\nAvoid getting blocked (HTTP 429: Too Many Requests)\nBe a good API citizen\nMost APIs specify limits in their documentation"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#post-requests-sending-data",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#post-requests-sending-data",
+    "title": "JSC 370: Data Science II",
+    "section": "POST Requests: Sending Data",
+    "text": "POST Requests: Sending Data\nSo far we’ve used GET to retrieve data. POST sends data to a server:\n# GET: retrieve data (parameters in URL)\nresponse = requests.get(url, params={\"query\": \"python\"})\n\n# POST: send data (data in request body)\nresponse = requests.post(url, json={\"name\": \"John\", \"email\": \"john@example.com\"})\nCommon POST use cases:\n\nCreating new records (users, posts, comments)\nSubmitting forms\nSending data for processing (e.g., ML model predictions)\n\nNote: Most data retrieval APIs use GET; POST is mainly for writing data."
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#inspecting-html-with-browser-devtools",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#inspecting-html-with-browser-devtools",
+    "title": "JSC 370: Data Science II",
+    "section": "Inspecting HTML with Browser DevTools",
+    "text": "Inspecting HTML with Browser DevTools\nTo scrape a webpage, you need to understand its HTML structure:\n\nRight-click on the element you want → Inspect\nThe Elements panel shows the HTML structure\nHover over elements to highlight them on the page\nLook for patterns: tag names, classes, IDs\n\nCommon HTML elements to look for:\n\n\n\nElement\nTag\nExample\n\n\n\n\nTables\n&lt;table&gt;\nData tables\n\n\nLinks\n&lt;a href=\"...\"&gt;\nNavigation, references\n\n\nParagraphs\n&lt;p&gt;\nText content\n\n\nDivs\n&lt;div class=\"...\"&gt;\nContent containers\n\n\nLists\n&lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;\nBulleted/numbered items"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#parsing-tables",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#parsing-tables",
+    "title": "JSC 370: Data Science II",
+    "section": "Parsing Tables",
+    "text": "Parsing Tables\nWe want to turn HTML &lt;table&gt; tags into pandas DataFrames.\n\npd.read_html() scans HTML and returns a list of DataFrames—one per table found.\nStringIO() wraps the HTML string to look like a file-like object.\n\n\n# Parse all tables from each page\nbox_tables = pd.read_html(StringIO(boxoffice_request.text))\nosc_tables = pd.read_html(StringIO(oscars_request.text))\n\nprint(f\"Found {len(box_tables)} tables on box office page\")\nprint(f\"Found {len(osc_tables)} tables on Oscars page\")\n\n# Get the main tables (first table on each page)\nbox = box_tables[0]\nosc = osc_tables[0]\n\nFound 91 tables on box office page\nFound 2 tables on Oscars page\n\n\nIf the page has multiple tables, you might need to choose by inspecting box_tables[i].columns or by matching a column name."
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#scraping-beyond-tables-beautifulsoup",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#scraping-beyond-tables-beautifulsoup",
+    "title": "JSC 370: Data Science II",
+    "section": "Scraping Beyond Tables: BeautifulSoup",
+    "text": "Scraping Beyond Tables: BeautifulSoup\nWhile pd.read_html() is great for tables, BeautifulSoup can extract any HTML element:\n\n# Parse the box office page with BeautifulSoup\nsoup = BeautifulSoup(boxoffice_request.content, 'html.parser')\n\n# Find the first paragraph\nfirst_paragraph = soup.find('p')\nprint(\"First paragraph:\", first_paragraph.get_text()[:100], \"...\")\n\n# Find all section headings\nheadings = soup.find_all('h2')\nprint(f\"\\nFound {len(headings)} section headings\")\n\n# Find the table of contents\ntoc = soup.find(id='toc')\nprint(f\"Table of contents found: {toc is not None}\")\n\nFirst paragraph: \n ...\n\nFound 10 section headings\nTable of contents found: False"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#beautifulsoup-extracting-links",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#beautifulsoup-extracting-links",
+    "title": "JSC 370: Data Science II",
+    "section": "BeautifulSoup: Extracting Links",
+    "text": "BeautifulSoup: Extracting Links\n\n# Extract all citation/reference links from the films page\nreferences = []\n\nfor link in soup.find_all('a', href=True):\n    href = link['href']\n    text = link.get_text().strip()\n    # Find external reference links (not Wikipedia internal links)\n    if href.startswith('http') and 'wikipedia' not in href and text:\n        references.append({\n            'text': text[:50],  # Truncate long text\n            'url': href[:60]    # Truncate long URLs\n        })\n\n# Show first few external references\nrefs_df = pd.DataFrame(references[:8])\nprint(refs_df)\n\n                                     text  \\\n0                           Wikidata item   \n1  \"Movies aren't the only B.O. monsters\"   \n2                                Archived   \n3                  \"Avatar – Video Sales\"   \n4                                Archived   \n5                         \"Unkind unwind\"   \n6                                Archived   \n7                                     224   \n\n                                                 url  \n0  https://www.wikidata.org/wiki/Special:EntityPa...  \n1  https://variety.com/2006/legit/news/movies-are...  \n2  https://web.archive.org/web/20210420110457/htt...  \n3  https://www.the-numbers.com/movie/Avatar#tab=v...  \n4  https://web.archive.org/web/20181125204128/htt...  \n5  https://www.economist.com/briefing/2011/03/17/...  \n6  https://web.archive.org/web/20170904063950/htt...  \n7  https://books.google.com/books?id=BfyFFCyRvX0C..."
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#hhs-extracting-health-recommendations",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#hhs-extracting-health-recommendations",
+    "title": "JSC 370: Data Science II",
+    "section": "HHS: Extracting Health Recommendations",
+    "text": "HHS: Extracting Health Recommendations\n\ndata = response.json()\n\n# Extract recommendation titles\ntitles = []\nresources = data.get('Result', {}).get('Resources', {})\n\nfor category in resources.values():\n    if isinstance(category, dict) and 'Resource' in category:\n        for resource in category['Resource']:\n            titles.append(resource.get('Title', 'N/A'))\n\nprint(\"Health Recommendations:\")\nfor title in titles[:10]:\n    print(f\"  - {title}\")\n\nHealth Recommendations:\n  - Quit Smoking\n  - Hepatitis C Screening: Questions for the Doctor\n  - Protect Yourself from Seasonal Flu\n  - Talk with Your Doctor About Depression\n  - Get Your Blood Pressure Checked\n  - Get Tested for HIV\n  - Get Vaccines to Protect Your Health (Adults Ages 19 to 49 Years)\n  - Drink Alcohol Only in Moderation\n  - Talk with Your Doctor About Drug Misuse and Substance Use Disorder\n  - Aim for a Healthy Weight"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#error-handling-why-each-part-matters",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#error-handling-why-each-part-matters",
+    "title": "JSC 370: Data Science II",
+    "section": "Error Handling: Why Each Part Matters",
+    "text": "Error Handling: Why Each Part Matters\n\n\n\n\n\n\n\n\nComponent\nWhat it does\nWhy it matters\n\n\n\n\ntry:\nWraps risky operations\nAPIs can fail for many reasons outside your control\n\n\ntimeout=30\nLimits wait time\nPrevents your script from hanging indefinitely\n\n\nraise_for_status()\nConverts HTTP 4xx/5xx to exceptions\nWithout this, error responses look “successful”\n\n\nTimeout exception\nCatches slow/unresponsive servers\nNetwork issues, server overload\n\n\nHTTPError exception\nCatches bad responses (404, 500, etc.)\nInvalid URLs, rate limiting (429), server errors\n\n\nRequestException\nCatches everything else\nDNS failures, connection refused, SSL errors\n\n\nreturn None\nSignals failure gracefully\nCaller can check if data: instead of crashing\n\n\n\nWithout error handling, a single failed API call would crash your entire script—especially problematic when looping through hundreds of requests."
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#why-use-headers",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#why-use-headers",
+    "title": "JSC 370: Data Science II",
+    "section": "Why Use Headers?",
+    "text": "Why Use Headers?\n1. Servers may block requests without a User-Agent\nWithout headers, requests sends a default like python-requests/2.28.0. Many websites block or rate-limit requests that look like bots.\n2. Identifying yourself is good etiquette\nIf your script causes problems, site admins can contact you instead of blocking your IP.\n3. Accept-Language controls content language\nWikipedia serves content in different languages based on this header.\n\n\n\n\n\n\n\n\nHeader\nPurpose\nExample\n\n\n\n\nUser-Agent\nIdentifies the client\n\"MyApp/1.0 (contact@email.com)\"\n\n\nAccept-Language\nPreferred language\n\"en-US,en;q=0.9\"\n\n\nAccept\nExpected response format\n\"application/json\"\n\n\nAuthorization\nAPI tokens/credentials\n\"Bearer abc123\""
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#breaking-down-the-email-pattern",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#breaking-down-the-email-pattern",
+    "title": "JSC 370: Data Science II",
+    "section": "Breaking Down the Email Pattern",
+    "text": "Breaking Down the Email Pattern\nr'[\\w\\.-]+@[\\w\\.-]+'\n\n\n\n\n\n\n\n\nPart\nMeaning\nMatches\n\n\n\n\n[\\w\\.-]\nCharacter class: word chars, dots, hyphens\ns, u, p, ., -\n\n\n+\nOne or more of the previous\nsupport, example.com\n\n\n@\nLiteral @ symbol\n@\n\n\n[\\w\\.-]+\nSame pattern after @\nexample.com\n\n\n\nKey re functions:\n\n\n\n\n\n\n\n\nFunction\nPurpose\nExample\n\n\n\n\nre.findall(pattern, text)\nFind all matches\nReturns list of matches\n\n\nre.search(pattern, text)\nFind first match\nReturns match object or None\n\n\nre.sub(pattern, repl, text)\nReplace matches\nReturns modified string"
+  },
+  {
+    "objectID": "slides/05-scrape-api/JSC370-slides-05.html#understanding-the-cleaning-patterns",
+    "href": "slides/05-scrape-api/JSC370-slides-05.html#understanding-the-cleaning-patterns",
+    "title": "JSC 370: Data Science II",
+    "section": "Understanding the Cleaning Patterns",
+    "text": "Understanding the Cleaning Patterns\nPattern 1: Extract year r'\\d{4}'\n\n\n\nPart\nMeaning\n\n\n\n\n\\d\nAny digit (0-9)\n\n\n{4}\nExactly 4 of them\n\n\n\nMatches: \"2020\" from \"2020/21\" — ignores the /21 part\nPattern 2: Remove non-digits r'[^\\d]'\n\n\n\nPart\nMeaning\n\n\n\n\n[^...]\nNOT these characters (negation)\n\n\n\\d\nDigits\n\n\nTogether\nMatch anything that is NOT a digit\n\n\n\nre.sub(r'[^\\d]', '', text) replaces all non-digits with nothing, leaving only numbers.\n\"$2,923,710,708\" → \"2923710708\""
+=======
     "objectID": "labs/lab4/lab04-viz-gam.html",
     "href": "labs/lab4/lab04-viz-gam.html",
     "title": "Lab 04 - Data Visualization and GAMs",
     "section": "",
     "text": "import pandas as pd\nimport numpy as np\nfrom plotnine import *\nimport warnings\nwarnings.filterwarnings('ignore')\nimport matplotlib.pyplot as plt\nfrom pygam import LinearGAM, s\nimport statsmodels.api as sm\nfrom folium.plugins import MarkerCluster\n\n\nLearning Goals\n\nRead in and prepare the meteorological dataset\nUse pd.merge() to join two datasets\nDeal with missings and impute data\nCreate several graphs with different geoms in plotnine\nCreate a facet graph\nConduct customizations of the graphs\nFit smooth regression models using pygam and compare to a linear regression model\n\n\n\nLab Description\nWe will work with the meteorological data from last week’s lab.\nThe objective of the lab is to examine the association between weather variables in the US, practice data visualization, and fit smooth regression models.\n\n1. Read in the data\nFirst download and then read in with pandas:\n\nurl = \"https://raw.githubusercontent.com/JSC370/JSC370-2026/main/data/met_all_2025.gz\"\nmet = pd.read_csv(url, compression=\"gzip\")\n\n\n\n2. Prepare the data: some wrangling\n\nFrom last week: remove temperatures less than -20C and change 999.9 to NaN.\nGenerate a date variable using pd.to_datetime().\nUsing date filtering, keep the observations of the first week of July 2025.\nCompute the mean by station of the variables temp, rh, wind_sp, vis_dist, dew_point, lat, lon, and elev.\nCreate a region variable for NW, SW, NE, SE based on lon = -98.00 and lat = 39.71 degrees.\nCreate a categorical variable for elevation (low: &lt; 252m, high: &gt;= 252m)\n\n\n# Replace 999.9 with NaN and filter temps &gt; -20\nmet.loc[met['temp'] == 999.9, 'temp'] = np.nan\nmet = met[met['temp'] &gt; -20].copy()\n\n# Create date variable\nmet['date'] = pd.to_datetime(\n    met[['year', 'month', 'day', 'hour']])\n\n# Create region variable using np.select\nmet['region'] = (\n    np.select(\n        [\n            (met['lon'] &lt; -98) & (met['lat'] &gt;= 39.71),\n            (met['lon'] &gt;= -98) & (met['lat'] &gt;= 39.71),\n            (met['lon'] &lt; -98) & (met['lat'] &lt; 39.71),\n        ],\n        ['NW', 'NE', 'SW'],\n        default='SE'\n    )\n)\n\n# Create elevation category\nmet['elev_high_low'] = np.select(\n    [met['elev'] &gt;= 252],\n    ['high'],\n    default='low'\n)\n\ndisplay(met.head())\n\n\n\n\n\n\n\n\nUSAFID\nWBAN\nyear\nmonth\nday\nhour\nmin\nlat\nlon\nelev\n...\ntemp\ntemp_qc\ndew_point\ndew_point_qc\natm_press\natm_press_qc\nrh\ndate\nregion\nelev_high_low\n\n\n\n\n0\n690150\n93121\n2025\n6\n1\n0\n26\n34.296\n-116.162\n625\n...\n37.2\n1\n4.4\n1\nNaN\n9\n12.952344\n2025-06-01 00:00:00\nSW\nhigh\n\n\n1\n690150\n93121\n2025\n6\n1\n0\n54\n34.296\n-116.162\n625\n...\n36.7\n1\n4.4\n1\n1008.4\n1\n13.324572\n2025-06-01 00:00:00\nSW\nhigh\n\n\n2\n690150\n93121\n2025\n6\n1\n1\n54\n34.296\n-116.162\n625\n...\n34.4\n1\n4.4\n1\n1008.4\n1\n15.194316\n2025-06-01 01:00:00\nSW\nhigh\n\n\n3\n690150\n93121\n2025\n6\n1\n2\n54\n34.296\n-116.162\n625\n...\n32.2\n1\n5.6\n1\n1008.9\n1\n18.773303\n2025-06-01 02:00:00\nSW\nhigh\n\n\n4\n690150\n93121\n2025\n6\n1\n3\n54\n34.296\n-116.162\n625\n...\n31.1\n1\n5.6\n1\n1009.1\n1\n20.015403\n2025-06-01 03:00:00\nSW\nhigh\n\n\n\n\n5 rows × 33 columns\n\n\n\n\n\n3. Use geom_violin to examine dew_point for low and high elevations by region\nUse geom_violin and subset the data to the first two weeks in July.\n\nSubset to the first two weeks in July\nUse facets\nSummarize below\n\n\nSummary:\n\n\n4. Use geom_bar to create barplots of the proportion of weather stations by elevation category colored by region\n\nUse the subset data from #3, the first two weeks of July\nCreate nice labels on axes and add a title\nTry a second plot with counts and dodge positioning\nSummarize below\n\n\n\nSummary:\n\n\n5. Use stat_summary to examine mean dew point by region with standard deviation error bars\n\nUse stat_summary with appropriate functions for mean and standard deviation\nAdd error bars using another layer of stat_summary with geom = \"errorbar\"\nUse coord_flip\nAdd labels and a title\nSummarize below\n\n\nSummary:\n\n\n6. Smooth Regression with GAMs\nLet’s practice running regression models with smooth functions on X. We use the statsmodels OLS for linear models and pygam package and LinearGAM function to do this.\n\nUse the subsetted data. First remove NaN before fitting\nFit both a linear model with sm.OLS and a spline model (use LinearGAM() with s() for a smooth term on wind_sp and temp).\nFor the spline model try n_splines = 20\nSummarize and plot the results from the models.\n\n\n\nNow fit linear model with sm.OLS\n\n\nSummary:\n\nReport adjusted R2\nAre the beta coefficients for wind speed and temperature significant?\n\n\nSummary:\n\nReport pseudo R2, how does it compare to the linear model R2?\nWhat are the EDoF for wind speed and temp?\nAre the smooths for wind speed and temperature significant?\n\n\nSummary:\n\nVisual inspection of the fitted curves\nDoes the smooth term capture meaningful non-linearity?"
+>>>>>>> c9f162036bfb721764a1df15519b5e91ff605489
   }
 ]

@@ -1,0 +1,1501 @@
+---
+title: "JSC 370: Data Science II"
+subtitle: "Week 6: Text Mining & Large Language Models"
+format:
+  revealjs:
+    transition: slide
+    slide-number: true
+    scrollable: true
+    css: styles.css
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+---
+
+## What is NLP?
+
+Natural Language Processing (NLP) is used for **qualitative data** that is collected using:
+
+- Open-ended or free-form text from surveys
+- Medical provider notes in electronic medical records (EMR)
+- Transcripts of research participant interviews
+- Social media posts, reviews, and other user-generated content
+
+It is also called **text mining**.
+
+---
+
+## What is NLP used for?
+
+- Looking at frequencies of words and phrases in text
+- Labeling relationships between words (subject, object, modification)
+- Identifying entities in free text (person, location, organization)
+- Coupled with AI/LLMs: text generation, summarization, classification, and more
+
+---
+
+## Python NLP Ecosystem
+
+```{python}
+#| echo: false
+import warnings
+warnings.filterwarnings('ignore')
+```
+
+**Key Libraries:**
+
+- **NLTK**: Classic NLP toolkit with tokenizers, stemmers, taggers
+- **spaCy**: NLP with pre-trained models
+- **scikit-learn**: TF-IDF, topic modeling, text classification
+- **transformers (Hugging Face)**: State-of-the-art LLMs
+- **gensim**: Topic modeling and word embeddings
+
+---
+
+## Setup
+
+```{python}
+import pandas as pd
+import numpy as np
+import nltk
+import re
+from collections import Counter
+
+nltk.download('punkt', quiet=True)
+nltk.download('stopwords', quiet=True)
+nltk.download('vader_lexicon', quiet=True)
+nltk.download('punkt_tab', quiet=True)
+
+from plotnine import *
+import matplotlib.pyplot as plt  
+```
+
+---
+
+
+## Pride and Prejudice
+
+We'll use Jane Austen's "Pride and Prejudice" from NLTK's Gutenberg corpus.
+
+```{python}
+nltk.download('gutenberg', quiet=True)
+from nltk.corpus import gutenberg
+
+# Load Pride and Prejudice
+raw_text = gutenberg.raw('austen-persuasion.txt')
+print(f"Total characters: {len(raw_text):,}")
+print(f"\nFirst 500 characters:\n{raw_text[:500]}")
+```
+
+---
+
+
+## Preparing the Text Data
+
+- Split the text into chapters (Persuasion has chapters marked)
+- Create a DataFrame
+
+```{python}
+
+chapters = re.split(r'Chapter \d+', raw_text)[1:]  # Skip preamble
+print(f"Number of chapters: {len(chapters)}")
+
+
+text_df = pd.DataFrame({
+    'chapter': range(1, len(chapters) + 1),
+    'text': [ch.strip() for ch in chapters]
+})
+text_df.head()
+```
+
+---
+
+## Tokenization
+
+Turning text into smaller units (tokens): individual words, numbers, or punctuation marks.
+
+**In English:**
+
+- Split by spaces (simple approach)
+- More advanced algorithms handle contractions, punctuation
+
+---
+
+## Why Tokenize?
+
+Tokenization is the **first step** in most NLP pipelines because:
+
+1. **Computers don't understand sentences** - they need discrete units to process
+2. **Enables counting** - we can count word frequencies, find patterns
+3. **Allows filtering** - remove stop words, punctuation, or rare words
+4. **Prepares for modeling** - tokens become features for machine learning
+
+---
+
+## Tokenization with NLTK
+
+NLTK's `word_tokenize()` uses the **Punkt tokenizer**, which is trained on text to recognize:
+
+- Word boundaries (not just spaces)
+- Abbreviations (e.g., "Dr.", "U.S.A.")
+- Contractions (e.g., "don't" → "do" + "n't")
+- Punctuation as separate tokens
+
+```{python}
+from nltk.tokenize import word_tokenize
+
+all_text = ' '.join(text_df['text'])
+tokens = word_tokenize(all_text.lower())
+
+print(f"Total tokens: {len(tokens):,}")
+print(f"\nFirst 20 tokens: {tokens[:20]}")
+```
+
+---
+
+## Tokenization: What Happened?
+
+Notice in the output:
+
+- **Lowercase conversion**: "The" becomes "the" (normalizes text)
+- **Punctuation separated**: Periods, commas become their own tokens
+- **Contractions split**: "didn't" becomes "did" + "n't"
+
+This gives us a **clean list of tokens** ready for analysis.
+
+---
+
+## spaCy: "Industrial-Strength" NLP
+
+**spaCy** is a modern NLP library designed for production use (https://spacy.io/). Unlike NLTK (which is more educational), spaCy focuses on:
+
+- **Speed**: Optimized for large-scale text processing
+- **Pre-trained models**: Download models trained on large corpora
+- **Rich annotations**: Tokenization + parts of speech (POS) tagging + named entity recognition (NER) + dependency parsing (relationships between words) in one pass
+
+---
+
+## spaCy Models
+
+spaCy uses pre-trained **language models** that you download:
+
+| Model | Size | Features |
+|-------|------|----------|
+| `en_core_web_sm` | 12 MB | Basic (POS, NER, parsing) |
+| `en_core_web_md` | 40 MB | + word vectors |
+| `en_core_web_lg` | 560 MB | + larger word vectors |
+
+Install with: `python -m spacy download en_core_web_sm`
+
+---
+
+## Tokenization with spaCy
+
+When you call `nlp(text)`, spaCy creates a `Doc` object containing `Token` objects. Each token has many attributes:
+
+- `token.text` - the original text
+- `token.pos_` - part-of-speech tag (NOUN, VERB, ADJ, etc.)
+- `token.lemma_` - base form ("running" → "run")
+- `token.is_stop` - is it a stop word?
+
+```{python}
+import spacy
+
+# Load English model (small)
+nlp = spacy.load("en_core_web_sm")
+
+
+# Process a sample
+sample = text_df['text'].iloc[0][:500]
+doc = nlp(sample)
+
+print("SpaCy tokens with POS tags:")
+for token in list(doc)[:15]:
+    print(f"  {token.text:15} -> {token.pos_}")
+```
+
+---
+
+## Understanding POS Tags
+
+**Part-of-Speech (POS) tags** identify the grammatical role of each word:
+
+| Tag | Meaning | Examples |
+|-----|---------|----------|
+| `NOUN` | Noun | cat, house, idea |
+| `VERB` | Verb | run, is, thinking |
+| `ADJ` | Adjective | beautiful, quick |
+| `ADV` | Adverb | quickly, very |
+| `PROPN` | Proper noun | Elizabeth, London |
+| `PUNCT` | Punctuation | . , ! ? |
+| `DET` | Determiner | the, a, this |
+
+POS tags help with tasks like finding all the **people** (PROPN) or **actions** (VERB) in text.
+
+---
+
+## Named Entity Recognition (NER)
+
+**NER** identifies and classifies named entities in text into predefined categories:
+
+| Entity Type | Description | Examples |
+|-------------|-------------|----------|
+| `PERSON` | People's names | Elizabeth Bennet, Mr. Darcy |
+| `ORG` | Organizations | Google, United Nations |
+| `GPE` | Countries, cities, states | England, Toronto, California |
+| `DATE` | Dates and periods | January 2024, the 1800s |
+| `MONEY` | Monetary values | $100, fifty dollars |
+| `WORK_OF_ART` | Titles of books, songs | Pride and Prejudice |
+
+---
+
+## NER Example with spaCy
+
+- Let's show it on a sample of text 
+
+```{python}
+
+sample_text = "Elizabeth Bennet lived in Hertfordshire, England in the early 1800s."
+doc = nlp(sample_text)
+
+print("Named Entities:")
+for ent in doc.ents:
+    print(f"  {ent.text:20} -> {ent.label_}")
+```
+
+NER is useful for:
+
+- **Information extraction**: Find all people/places mentioned
+- **Document classification**: What topics does this text cover?
+- **Knowledge graphs**: Build relationships between entities
+
+---
+
+## Dependency Parsing
+
+**Dependency parsing** analyzes the grammatical structure of a sentence by identifying relationships between words.
+
+Each word is connected to a **head** word with a labeled relationship:
+
+- `nsubj` - nominal subject ("Elizabeth" is subject of "lived")
+- `dobj` - direct object ("book" in "I read the book")
+- `prep` - preposition ("in" connecting "lived" to "England")
+- `amod` - adjectival modifier ("red" in "red car")
+
+---
+
+## Dependency Parsing Example
+
+```{python}
+# Parse a simple sentence
+sentence = "Elizabeth gave the letter to Mr. Darcy."
+doc = nlp(sentence)
+
+print("Dependency Parse:")
+for token in doc:
+    print(f"  {token.text:12} --{token.dep_:10}--> {token.head.text}")
+```
+
+---
+
+## Why Dependency Parsing Matters
+
+Dependency parsing helps understand **meaning**, not just words:
+
+- **"The dog bit the man"** vs **"The man bit the dog"**
+  - Same words, different subjects/objects!
+
+- **Question answering**: "Who gave the letter?" → Find the `nsubj` of "gave"
+
+- **Relation extraction**: Understand who did what to whom
+
+- **Machine translation**: Languages have different word orders
+
+---
+
+## Working with Tokens as Data
+
+Now that we have words as the unit of observation, we can use pandas for analysis. First we create a dataframe from the tokens.
+
+```{python}
+
+tokens_df = pd.DataFrame({'token': tokens})
+print(f"Shape: {tokens_df.shape}")
+tokens_df.head(10)
+```
+
+---
+
+
+## Counting Tokens
+
+```{python}
+# Count token frequencies
+token_counts = tokens_df['token'].value_counts().reset_index()
+token_counts.columns = ['token', 'n']
+token_counts.head(15)
+```
+
+---
+
+## Stop Words
+
+Words like "the", "and", "at" appear frequently but don't add much context.
+
+These are called **stop words** - they're the "glue" of language but don't carry meaning on their own.
+
+**Categories of stop words:**
+
+- **Articles**: a, an, the
+- **Pronouns**: I, you, he, she, it, we, they
+- **Prepositions**: in, on, at, to, from, with
+- **Conjunctions**: and, but, or, if, because
+- **Auxiliary verbs**: is, are, was, were, have, has
+- **Common adverbs**: very, just, also, now
+
+---
+
+## NLTK's Stop Words List
+
+NLTK provides curated stop word lists for **multiple languages**:
+
+```{python}
+from nltk.corpus import stopwords
+
+print("Available languages:")
+print(stopwords.fileids())
+```
+
+---
+
+## English Stop Words
+
+- Let's get and show the English stopwords
+
+```{python}
+
+stop_words = set(stopwords.words('english'))
+print(f"Number of English stop words: {len(stop_words)}")
+
+sorted_stops = sorted(list(stop_words))
+print(f"\nAll English stop words:\n{sorted_stops}")
+```
+
+---
+
+## Why Remove Stop Words?
+
+**Benefits:**
+
+- **Reduces noise**: Focus on meaningful content words
+- **Smaller vocabulary**: Faster processing, less memory
+- **Better results**: For tasks like topic modeling, keyword extraction
+
+**But be careful!** Sometimes stop words matter:
+
+- Sentiment: "not good" vs "good" (negation matters!)
+- Phrases: "to be or not to be" loses meaning without stop words
+- Search: "The Who" (band name) vs "who" (pronoun)
+
+---
+
+## Top Words BEFORE Removing Stop Words
+
+Let's see what the top 15 words look like **before** we remove stop words:
+
+```{python}
+#| fig-align: center
+top_before = token_counts.head(15).copy()
+top_before['token'] = pd.Categorical(top_before['token'],
+                                      categories=top_before['token'][::-1])
+
+(ggplot(top_before, aes(x='token', y='n'))
+ + geom_col(fill='gray')
+ + coord_flip()
+ + labs(x='Word', y='Frequency',
+        title='Top 15 Words (WITH Stop Words)')
+ + theme_bw()
+)
+```
+
+Notice: The top words are all **stop words** like "the", "to", "and" - not very informative!
+
+---
+
+## Removing Stop Words
+
+We use a **list comprehension** to filter tokens. This is a concise way to create a new list by iterating through an existing one with conditions.
+
+```python
+filtered_tokens = [t for t in tokens
+                   if t.isalpha() and t not in stop_words]
+```
+
+This reads as: *"Give me each token `t` from `tokens`, but only if it passes both conditions."*
+
+---
+
+## The Filtering Conditions
+
+Our filter applies **two conditions** (both must be True):
+
+| Condition | What it does | Why we need it |
+|-----------|--------------|----------------|
+| `t.isalpha()` | Checks if token contains only letters | Removes punctuation (`.`, `,`, `!`) and numbers (`1`, `2025`) |
+| `t not in stop_words` | Checks if token is NOT a stop word | Removes common words like "the", "and", "is" |
+
+**Example:**
+
+- `"the"` → `isalpha()` = True, but it's a stop word → **Removed**
+- `"."` → `isalpha()` = False → **Removed**
+- `"elizabeth"` → `isalpha()` = True, not a stop word → **Kept**
+
+---
+
+## Removing Stop Words: The Code
+
+- Filter out stop words and non-alphabetic tokens
+- Look at the number before and after
+
+```{python}
+filtered_tokens = [t for t in tokens
+                   if t.isalpha() and t not in stop_words]
+
+print(f"Before filtering: {len(tokens):,} tokens")
+print(f"After filtering:  {len(filtered_tokens):,} tokens")
+print(f"Removed: {len(tokens) - len(filtered_tokens):,} tokens ({100*(len(tokens) - len(filtered_tokens))/len(tokens):.1f}%)")
+```
+
+---
+
+## Counting Filtered Tokens
+
+Now we count word frequencies on the **cleaned** tokens:
+
+```{python}
+filtered_counts = pd.Series(filtered_tokens).value_counts().reset_index()
+filtered_counts.columns = ['token', 'n']
+filtered_counts.head(15)
+```
+
+Notice how the top words are now **meaningful content words** instead of "the", "and", "to"!
+
+---
+
+## Visualizing Top Words
+
+```{python}
+#| fig-align: center
+top_words = filtered_counts.head(15).copy()
+top_words['token'] = pd.Categorical(top_words['token'],
+                                     categories=top_words['token'][::-1])
+
+(ggplot(top_words, aes(x='token', y='n'))
+ + geom_col(fill='coral')
+ + coord_flip()
+ + labs(x='Word', y='Frequency', title='Top 15 Words in Persuasion')
+ + theme_bw()
+)
+```
+
+---
+
+
+## Custom Stop Words
+
+Sometimes we need to add domain-specific stop words:
+
+```{python}
+# Add custom stop words
+custom_stops = {'would', 'could', 'one', 'might', 'must',
+                'said', 'mr', 'mrs', 'miss', 'lady'}
+
+all_stops = stop_words.union(custom_stops)
+
+# Re-filter
+filtered_tokens_v2 = [t for t in tokens
+                      if t.isalpha() and t not in all_stops and len(t) > 2]
+
+filtered_counts_v2 = pd.Series(filtered_tokens_v2).value_counts().head(15)
+print(filtered_counts_v2)
+```
+
+---
+
+## Top Words AFTER Custom Stop Words
+
+Now let's compare: with custom stop words removed, we get even more meaningful content:
+
+```{python}
+#| fig-align: center
+# Prepare data for plotting
+top_custom = filtered_counts_v2.reset_index()
+top_custom.columns = ['token', 'n']
+top_custom['token'] = pd.Categorical(top_custom['token'],
+                                      categories=top_custom['token'][::-1])
+
+(ggplot(top_custom, aes(x='token', y='n'))
+ + geom_col(fill='seagreen')
+ + coord_flip()
+ + labs(x='Word', y='Frequency',
+        title='Top 15 Words (After Custom Stop Words)')
+ + theme_bw()
+)
+```
+
+Compare to the previous plot: words like "would", "could", "said" are now removed!
+
+---
+
+## Word Cloud
+
+- This is a visualization that you often see to illustrate popular words
+
+```{python}
+#| fig-align: center
+from wordcloud import WordCloud
+
+# Create word frequency dictionary
+word_freq = dict(pd.Series(filtered_tokens_v2).value_counts().head(100))
+
+# Generate word cloud
+wordcloud = WordCloud(width=800, height=400,
+                      background_color='white',
+                      colormap='viridis').generate_from_frequencies(word_freq)
+
+plt.figure(figsize=(12, 6))
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.title('Word Cloud - Persuasion')
+plt.show()
+```
+
+---
+
+## N-grams
+
+**N-grams** are n consecutive words that appear together:
+
+- **Unigrams** (n=1): "which", "words", "appear"
+- **Bigrams** (n=2): "which words", "words appear"
+- **Trigrams** (n=3): "which words appear"
+
+---
+
+## N-grams: Filtered or Unfiltered?
+
+**Should we remove stop words before computing n-grams?**
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **With stop words** | Preserves phrases like "to be or not to be", "the United States" | Dominated by uninteresting pairs like "of the", "in a" |
+| **Without stop words** | Focuses on meaningful content word pairs | May miss important phrases; words that weren't adjacent become "adjacent" |
+
+**Our choice:** We'll use filtered tokens to focus on **meaningful word pairs**.
+
+---
+
+## Extracting Bigrams
+
+- Generate bigrams from filtered tokens (stop words removed)
+
+```{python}
+from nltk import ngrams
+
+
+bigrams = list(ngrams(filtered_tokens_v2, 2))
+bigram_counts = Counter(bigrams).most_common(15)
+
+print("Top 15 Bigrams (from filtered tokens):")
+for bigram, count in bigram_counts:
+    print(f"  {' '.join(bigram):30} {count}")
+```
+
+Note: These pairs weren't necessarily adjacent in the original text - words between them may have been removed!
+
+---
+
+
+## Visualizing Bigrams
+
+```{python}
+#| fig-align: center
+bigram_df = pd.DataFrame(bigram_counts, columns=['bigram', 'count'])
+bigram_df['bigram'] = bigram_df['bigram'].apply(lambda x: ' '.join(x))
+bigram_df['bigram'] = pd.Categorical(bigram_df['bigram'],
+                                      categories=bigram_df['bigram'][::-1])
+
+(ggplot(bigram_df, aes(x='bigram', y='count'))
+ + geom_col(fill='steelblue')
+ + coord_flip()
+ + labs(x='Bigram', y='Frequency', title='Top 15 Bigrams in Persuasion')
+ + theme_bw()
+)
+```
+
+---
+
+## The Problem with Word Counts
+
+Simple word frequency has a limitation: **it treats all documents the same**.
+
+Consider analyzing chapters in a book:
+
+- A word like "anne" might appear frequently in Chapter 5
+- But if "anne" appears in *every* chapter, it's not distinctive to Chapter 5
+- We want to find words that are **important to specific documents**
+
+**Solution:** TF-IDF weights words by how unique they are across documents.
+
+---
+
+## Why Use TF-IDF?
+
+**Use cases:**
+
+- **Document comparison**: What makes each chapter/document unique?
+- **Search engines**: Rank documents by relevance to a query
+- **Feature engineering**: Convert text to numbers for machine learning
+- **Keyword extraction**: Find the most distinctive terms
+
+TF-IDF answers: *"What words are important in THIS document compared to others?"*
+
+---
+
+## TF-IDF
+
+**Term Frequency (TF)**: How often a word appears in a document
+
+$$TF = \frac{\text{Term count in document}}{\text{Total terms in document}}$$
+
+**Inverse Document Frequency (IDF)**: How rare a word is across documents
+
+$$IDF = \log\left(\frac{\text{Total documents}}{\text{Documents containing term}}\right)$$
+
+---
+
+## TF-IDF Combined
+
+$$\text{TF-IDF} = TF \times IDF$$
+
+- **High TF-IDF**: Important word in a specific document
+- **Low TF-IDF**: Common word with less importance
+
+---
+
+## TF-IDF with scikit-learn
+
+```{python}
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Create TF-IDF matrix by chapter
+vectorizer = TfidfVectorizer(stop_words='english', max_features=1000)
+tfidf_matrix = vectorizer.fit_transform(text_df['text'])
+
+# Get feature names
+feature_names = vectorizer.get_feature_names_out()
+print(f"Vocabulary size: {len(feature_names)}")
+```
+
+---
+
+## Top TF-IDF Words by Chapter
+
+```{python}
+# Get top words for first 4 chapters
+def get_top_tfidf(chapter_idx, n=5):
+    row = tfidf_matrix[chapter_idx].toarray().flatten()
+    top_indices = row.argsort()[-n:][::-1]
+    return [(feature_names[i], row[i]) for i in top_indices]
+
+for i in range(min(4, len(text_df))):
+    print(f"\nChapter {i+1}:")
+    for word, score in get_top_tfidf(i):
+        print(f"  {word:15} {score:.4f}")
+```
+
+---
+
+## Sentiment Analysis
+
+Extracting opinions and emotions from text:
+
+- **Positive / Negative / Neutral** classification
+- **Emotion categories**: joy, anger, fear, sadness, etc.
+- **Intensity scores**: How strongly positive or negative
+
+---
+
+## VADER Sentiment Analysis
+
+**VADER** (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon-based sentiment analyzer designed for social media and general text.
+
+**How it works:**
+
+- Uses a dictionary of words with pre-assigned sentiment scores
+- Handles negations ("not good" $\rightarrow$ negative)
+- Understands intensifiers ("very good" $\rightarrow$ more positive)
+- Recognizes punctuation and capitalization ("GREAT!!!" $\rightarrow$ very positive)
+
+---
+
+## VADER Output: Four Scores
+
+VADER returns **four scores** for each text:
+
+| Score | Range | Meaning |
+|-------|-------|---------|
+| `neg` | 0 to 1 | Proportion of text that is negative |
+| `neu` | 0 to 1 | Proportion of text that is neutral |
+| `pos` | 0 to 1 | Proportion of text that is positive |
+| `compound` | -1 to +1 | **Overall sentiment** (normalized, weighted composite) |
+
+The `neg`, `neu`, and `pos` scores sum to 1.0.
+
+---
+
+## The Compound Score
+
+The **compound score** is the most useful single metric:
+
+- Computed by summing all word scores, adjusting for rules, then normalizing
+- Ranges from **-1** (extremely negative) to **+1** (extremely positive)
+
+**Interpretation thresholds:**
+
+| Compound Score | Sentiment |
+|----------------|-----------|
+| >= 0.05 | Positive |
+| <= -0.05 | Negative |
+| Between -0.05 and 0.05 | Neutral |
+
+---
+
+## VADER Example
+
+Let's see how VADER scores some sentences
+
+```{python}
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+sia = SentimentIntensityAnalyzer()
+
+
+examples = [
+    "I love this book!",
+    "This is okay.",
+    "I hate this terrible weather.",
+    "The movie was not good.",
+    "The movie was not bad."
+]
+
+for text in examples:
+    scores = sia.polarity_scores(text)
+    print(f"{text:35} → compound: {scores['compound']:+.3f}")
+```
+
+---
+
+## The Problem with Long Texts
+
+**VADER is designed for short texts** (tweets, reviews, sentences).
+
+When analyzing entire chapters:
+
+- The compound score tends to **saturate** at +1 or -1
+- Long texts contain both positive and negative sentences
+- The normalization doesn't work well for thousands of words
+
+**Solution:** Analyze at the **sentence level**, then aggregate per chapter.
+
+---
+
+## Sentence Tokenization
+
+NLTK's `sent_tokenize()` splits text into sentences using:
+
+- **Punctuation patterns**: Periods, question marks, exclamation points
+- **Abbreviation handling**: Knows "Dr." and "Mrs." aren't sentence endings
+- **Trained model**: Uses the Punkt tokenizer trained on English text
+
+```python
+sent_tokenize("Dr. Smith went home. She was tired.")
+# Returns: ["Dr. Smith went home.", "She was tired."]
+```
+
+---
+
+## Sentence-Level Sentiment Analysis
+
+```{python}
+from nltk.tokenize import sent_tokenize
+
+sentence_sentiments = []
+
+for _, row in text_df.iterrows():
+    # Split chapter into individual sentences
+    sentences = sent_tokenize(row['text'])
+    # Score each sentence separately
+    for sent in sentences:
+        scores = sia.polarity_scores(sent)
+        scores['chapter'] = row['chapter']
+        sentence_sentiments.append(scores)
+
+sentence_df = pd.DataFrame(sentence_sentiments)
+print(f"Total sentences analyzed: {len(sentence_df):,}")
+sentence_df.head()
+```
+
+---
+
+## Aggregating by Chapter
+
+Let's calculate the mean sentiment score by chapter
+
+```{python}
+
+chapter_sentiment = sentence_df.groupby('chapter').agg({
+    'compound': 'mean',
+    'pos': 'mean',
+    'neg': 'mean',
+    'neu': 'mean'
+}).reset_index()
+
+chapter_sentiment
+```
+
+Now we have **average sentiment per chapter** based on all sentences!
+
+---
+
+## Sentiment Across Chapters
+
+```{python}
+#| fig-align: center
+(ggplot(chapter_sentiment, aes(x='chapter', y='compound'))
+ + geom_line(color='purple', size=1)
+ + geom_point(color='purple', size=3)
+ + geom_hline(yintercept=0, linetype='dashed', color='gray', alpha=0.5)
+ + labs(x='Chapter', y='Mean Compound Sentiment Score',
+        title='Sentiment Arc in Persuasion (Sentence-Level Aggregation)')
+ + theme_bw()
+ + theme(figure_size=(10, 5))
+)
+```
+
+---
+
+## Topic Modeling
+
+**What is it?** An unsupervised method to discover abstract "topics" in a collection of documents.
+
+**Use cases:**
+
+- **Document organization**: Automatically categorize articles, emails, reviews
+- **Content recommendation**: Find similar documents based on topics
+- **Trend analysis**: Track how topics change over time
+- **Exploratory analysis**: Understand what a corpus is about
+
+---
+
+## Latent Dirichlet Allocation (LDA)
+
+The most popular topic modeling algorithm. **Key assumptions:**
+
+1. Each **document** is a mixture of topics
+   - Chapter 1 might be 60% "romance", 30% "family", 10% "society"
+
+2. Each **topic** is a mixture of words
+   - "Romance" topic: love, heart, feeling, affection, ...
+   - "Family" topic: father, sister, mother, home, ...
+
+3. Topics are **latent** (hidden) - we discover them from word patterns
+
+---
+
+## How LDA Works 
+
+LDA is a **generative model** - it imagines how documents were created:
+
+1. For each document, randomly choose a topic mixture
+2. For each word position:
+   - Pick a topic based on the document's mixture
+   - Pick a word based on that topic's word distribution
+
+**In practice:** LDA works *backwards* - given documents, it infers the topics that likely generated them.
+
+---
+
+## The Document-Term Matrix
+
+LDA needs a **document-term matrix (DTM)** as input:
+
+|  | word1 | word2 | word3 | ... |
+|--|-------|-------|-------|-----|
+| Doc 1 | 3 | 0 | 5 | ... |
+| Doc 2 | 0 | 2 | 1 | ... |
+| Doc 3 | 1 | 4 | 0 | ... |
+
+- Rows = documents (chapters)
+- Columns = words in vocabulary
+- Values = word counts (or frequencies)
+
+---
+
+## Creating the Document-Term Matrix
+
+```{python}
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
+
+count_vec = CountVectorizer(stop_words='english', max_features=500)
+dtm = count_vec.fit_transform(text_df['text'])
+
+print(f"DTM shape: {dtm.shape}")
+print(f"  - {dtm.shape[0]} documents (chapters)")
+print(f"  - {dtm.shape[1]} unique words in vocabulary")
+```
+
+---
+
+## Choosing the Number of Topics
+
+**The `n_topics` parameter** is a hyperparameter you must choose:
+
+| Few topics (2-3) | Many topics (10+) |
+|------------------|-------------------|
+| Broad, general themes | Specific, narrow themes |
+| Easier to interpret | May capture nuances |
+| Topics may blend together | Topics may be redundant |
+
+**Tips:**
+
+- Start with a small number and increase if topics are too broad
+- There's no "correct" answer - it depends on your use case
+- Use domain knowledge to evaluate if topics make sense
+
+---
+
+## Fitting the LDA Model
+
+Fit LDA model with 4 topics:
+
+```{python}
+
+n_topics = 4
+lda = LatentDirichletAllocation(
+    n_components=n_topics,
+    random_state=42,       # seed
+    max_iter=10            # number of iterations
+)
+lda.fit(dtm)
+
+print(f"Model fitted with {n_topics} topics")
+```
+
+---
+
+## Visualizing Topics
+
+- Create a DataFrame
+- Create ordered factor for words within each topic
+- Visualize
+
+```{python}
+#| fig-align: center
+feature_names = count_vec.get_feature_names_out()
+
+topic_data = []
+for topic_idx, topic in enumerate(lda.components_):
+    top_words_idx = topic.argsort()[-10:][::-1]
+    for rank, idx in enumerate(top_words_idx):
+        topic_data.append({
+            'topic': f'Topic {topic_idx + 1}',
+            'word': feature_names[idx],
+            'weight': topic[idx],
+            'rank': rank
+        })
+
+topic_df = pd.DataFrame(topic_data)
+
+
+topic_df['word_ordered'] = pd.Categorical(
+    topic_df['word'],
+    categories=topic_df.sort_values(['topic', 'weight'])['word'].unique()
+)
+
+(ggplot(topic_df, aes(x='reorder(word, weight)', y='weight', fill='topic'))
+ + geom_col(show_legend=False)
+ + coord_flip()
+ + facet_wrap('~topic', scales='free')
+ + labs(x='', y='Weight', title='Top Words by Topic')
+ + theme_bw()
+ + theme(figure_size=(12, 8))
+)
+```
+
+---
+
+# Large Language Models (LLMs)
+
+---
+
+## What are LLMs?
+
+Large Language Models are neural networks trained on massive text corpora that can:
+
+- **Generate** coherent, contextual text
+- **Summarize** documents
+- **Classify** text into categories
+- **Answer questions** about content
+- **Extract** structured information
+- Create **embeddings** for semantic search
+
+---
+
+## LLM APIs
+
+Popular LLM providers:
+
+- **Anthropic**: Claude (claude-sonnet-4-20250514)
+- **OpenAI**: GPT-5.2, GPT-4o-mini
+- **Google**: Gemini
+- **Open Source**: Llama, Mistral, DeepSeek
+
+---
+
+## How LLM APIs Work
+
+1. **Authentication**: You get an API key from the provider
+2. **Send a request**: Your code sends text (a "prompt") to the API
+3. **LLM processes**: The model generates a response
+4. **Receive response**: You get back generated text
+
+```
+Your Code  $\rightarrow$  API Request  $\rightarrow$ LLM Server  $\rightarrow$ Response  $\rightarrow$  Your Code
+              (prompt)         (Claude)      (generated text)
+```
+
+**Cost**: You pay per token (roughly 1 token $\approx$ 4 characters)
+
+---
+
+## The Messages Format
+
+LLM APIs use a **messages** structure - a list of conversation turns:
+
+```python
+messages = [
+    {"role": "user", "content": "Your question or instruction"},
+]
+```
+
+Each message has:
+
+- `role`: Who is speaking (`"user"` = you, `"assistant"` = the LLM)
+- `content`: The text of the message
+
+You can include multiple messages for multi-turn conversations.
+
+---
+
+## Setting Up the Anthropic Client
+
+We are going to show this with Claude, we need an API key
+
+```{python}
+#| eval: true
+#| echo: false
+import anthropic
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Read API key from environment variable
+client = anthropic.Anthropic(
+    api_key=os.environ.get("ANTHROPIC_API_KEY")
+)
+```
+
+---
+
+## Setting Up the Anthropic Client
+
+```{python}
+#| eval: false
+#| echo: true
+import anthropic
+
+# Initialize client with API key
+# Get your key from: https://console.anthropic.com/
+client = anthropic.Anthropic(
+    api_key="API_KEY" 
+)
+
+```
+
+---
+
+## LLM for Text Summarization
+
+**The task**: Give the LLM a long text and ask it to summarize.
+
+**Key parameters**:
+
+- `model`: Which LLM to use
+- `max_tokens`: Maximum length of response
+- `messages`: The conversation (our prompt)
+
+---
+
+## LLM for Text Summarization
+
+```{python}
+#| eval: true
+# Get the first chapter text (first 2000 chars for demo)
+chapter1_text = text_df['text'].iloc[0][:2000]
+
+# Call Claude to summarize
+response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=150,
+    messages=[
+        {"role": "user", "content": f"Summarize this text in 2-3 sentences:\n\n{chapter1_text}"}
+    ]
+)
+
+# Extract text from response object
+summary = response.content[0].text
+print("Chapter 1 Summary:")
+print("-" * 40)
+print(summary)
+```
+
+---
+
+## Text Embeddings
+
+**What are embeddings?** Numerical vectors that capture semantic meaning.
+
+```
+"The cat sat on the mat"  →  [0.23, -0.45, 0.12, ..., 0.67]  (384 numbers)
+"A kitten rested on a rug" →  [0.21, -0.42, 0.15, ..., 0.65]  (similar!)
+"Stock prices rose today"  →  [-0.54, 0.33, -0.21, ..., 0.12] (different)
+```
+
+**Why?** Similar meanings $\rightarrow$ similar vectors $\rightarrow$ can compute similarity!
+
+---
+
+## Creating Embeddings
+
+We use `sentence-transformers`, a library that runs **locally** (no API needed):
+
+```{python}
+#| eval: true
+from sentence_transformers import SentenceTransformer
+
+# load a pre-trained model (downloads once, then cached)
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# embed first 3 chapters - each becomes a 384-dim vector
+chapter_texts = text_df['text'][:3].tolist()
+embeddings = model.encode(chapter_texts)
+
+print(f"Embedded {len(embeddings)} chapters")
+print(f"Each embedding has {len(embeddings[0])} dimensions")
+```
+
+---
+
+## What is Cosine Similarity?
+
+**Cosine similarity** measures the angle between two vectors, not their magnitude.
+
+$$\text{cosine similarity} = \frac{A \cdot B}{\|A\| \|B\|} = \frac{\sum_{i=1}^{n} A_i B_i}{\sqrt{\sum_{i=1}^{n} A_i^2} \sqrt{\sum_{i=1}^{n} B_i^2}}$$
+
+| Value | Meaning |
+|-------|---------|
+| 1 | Identical direction (most similar) |
+| 0 | Perpendicular (unrelated) |
+| -1 | Opposite direction (most dissimilar) |
+
+**Why cosine?** Document length doesn't matter - a short and long document about the same topic will still be similar.
+
+---
+
+## Semantic Similarity with Embeddings
+
+Once you have embeddings, compute similarity with **cosine similarity**:
+
+```{python}
+#| eval: true
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Calculate similarity between chapter embeddings
+similarity_matrix = cosine_similarity(embeddings)
+
+# Display as DataFrame
+sim_df = pd.DataFrame(
+    similarity_matrix,
+    index=['Ch 1', 'Ch 2', 'Ch 3'],
+    columns=['Ch 1', 'Ch 2', 'Ch 3']
+)
+print("Chapter Similarity Matrix:")
+print(sim_df.round(3))
+```
+
+---
+
+## Visualizing Chapter Similarity
+
+```{python}
+#| eval: true
+#| fig-align: center
+
+sim_long = sim_df.reset_index().melt(
+    id_vars='index', var_name='Chapter_Y', value_name='Similarity'
+)
+sim_long.columns = ['Chapter_X', 'Chapter_Y', 'Similarity']
+
+sim_long['label'] = sim_long['Similarity'].round(2)
+
+(ggplot(sim_long, aes(x='Chapter_X', y='Chapter_Y', fill='Similarity'))
+ + geom_tile(color='white')
+ + geom_text(aes(label='label'), size=12, format_string='{:.2f}')
+ + scale_fill_gradient(low='#f7fbff', high='#08519c')
+ + labs(x='', y='', title='Chapter Similarity Heatmap')
+ + theme_bw()
+ + theme(figure_size=(6, 5))
+)
+```
+
+Higher values (darker) = more similar content
+
+---
+
+## LLM for Structured Extraction
+
+**Powerful capability**: Ask LLMs to return **structured data** (JSON).
+
+**How it works**:
+
+1. Give the LLM some text
+2. Ask it to extract specific information
+3. Request output in JSON format
+4. Parse the JSON in Python
+
+This lets you convert unstructured text → structured data!
+
+---
+
+## LLM for Named Entity Recognition
+
+```{python}
+#| eval: true
+import json
+import re
+
+# Use a sample from Chapter 1
+sample_text = text_df['text'].iloc[0][:1500]
+
+# Ask Claude to extract entities and return as JSON
+response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=500,
+    messages=[
+        {"role": "user", "content": f"""Extract named entities from this text.
+Return ONLY valid JSON with keys: persons (list), locations (list), relationships (list).
+
+Text: {sample_text}"""}
+    ]
+)
+
+# Parse JSON from response (strip markdown code blocks if present)
+text = response.content[0].text
+text = re.sub(r'^```json\s*', '', text)
+text = re.sub(r'\s*```$', '', text)
+entities = json.loads(text)
+
+print("Extracted Entities from Chapter 1:")
+print("-" * 40)
+for key, value in entities.items():
+    print(f"{key}: {value}")
+```
+
+---
+
+## Visualizing Extracted Entities
+
+Let's count the entites by type
+
+```{python}
+#| eval: true
+#| fig-align: center
+
+entity_counts = pd.DataFrame({
+    'type': ['Persons', 'Locations', 'Relationships'],
+    'count': [
+        len(entities.get('persons', [])),
+        len(entities.get('locations', [])),
+        len(entities.get('relationships', []))
+    ]
+})
+
+(ggplot(entity_counts, aes(x='type', y='count', fill='type'))
+ + geom_col(show_legend=False)
+ + geom_text(aes(label='count'), va='bottom', size=12)
+ + scale_fill_manual(values=['#e74c3c', '#3498db', '#9b59b6'])
+ + labs(x='', y='Count', title='Entities Extracted by LLM')
+ + theme_bw()
+ + theme(figure_size=(6, 4))
+)
+```
+
+---
+
+## LLM vs VADER for Sentiment
+
+| Feature | VADER | LLM |
+|---------|-------|-----|
+| Speed | Very fast | Slower (API call) |
+| Cost | Free | Pay per token |
+| Context | Word-level | Understands context |
+| Nuance | Limited | Can detect sarcasm, irony |
+| Custom output | Fixed scores | Any structure you want |
+
+**When to use LLMs**: Complex text, need explanations, custom categories
+
+---
+
+## LLM for Sentiment Classification
+
+```{python}
+#| eval: true
+# Analyze sentiment of a chapter excerpt
+chapter_excerpt = text_df['text'].iloc[5][:2000]  # Chapter 6
+
+response = client.messages.create(
+    model="claude-sonnet-4-20250514",
+    max_tokens=300,
+    messages=[
+        {"role": "user", "content": f"""Analyze the sentiment and emotions in this text.
+Return ONLY valid JSON with:
+- overall_sentiment: positive/negative/neutral/mixed
+- confidence: 0 to 1
+- emotions: list of detected emotions
+- brief_explanation: 1 sentence explaining your analysis
+
+Text: {chapter_excerpt}"""}
+    ]
+)
+
+# Parse JSON (strip markdown code blocks if present)
+text = response.content[0].text
+text = re.sub(r'^```json\s*', '', text)
+text = re.sub(r'\s*```$', '', text)
+sentiment = json.loads(text)
+
+print("LLM Sentiment Analysis (Chapter 6):")
+print("-" * 40)
+for key, value in sentiment.items():
+    print(f"{key}: {value}")
+```
+
+---
+
+## Comparing VADER vs LLM Sentiment
+
+```{python}
+#| eval: true
+#| fig-align: center
+# Get VADER sentiment for first 6 chapters (already computed earlier)
+vader_scores = chapter_sentiment.head(6)[['chapter', 'compound']].copy()
+vader_scores['method'] = 'VADER'
+vader_scores.columns = ['chapter', 'score', 'method']
+
+# Create comparison data (using VADER scores for visualization)
+# Note: LLM scores would require multiple API calls
+comparison_df = vader_scores.copy()
+
+(ggplot(comparison_df, aes(x='factor(chapter)', y='score', fill='method'))
+ + geom_col()
+ + geom_hline(yintercept=0, linetype='dashed', alpha=0.5)
+ + scale_fill_manual(values=['#2ecc71'])
+ + labs(x='Chapter', y='Sentiment Score',
+        title='VADER Sentiment by Chapter',
+        subtitle='Sentence-level aggregation')
+ + theme_bw()
+ + theme(figure_size=(8, 4))
+)
+```
+
+---
+
+## Local LLMs with Hugging Face
+
+ Hugging face is an open-source platform that has a repository with 500,000+ pre-trained models including text models and image models. It is easy to use these models locally.
+
+```{python}
+#| eval: false
+from transformers import pipeline
+
+# Load a small sentiment model (runs locally)
+classifier = pipeline("sentiment-analysis",
+                       model="distilbert-base-uncased-finetuned-sst-2-english")
+
+# Analyze sentences
+sample_sentences = [
+    "The weather was absolutely delightful.",
+    "She felt a deep sense of disappointment.",
+    "The meeting was scheduled for Tuesday."
+]
+
+for sentence in sample_sentences:
+    result = classifier(sentence)[0]
+    print(f"{sentence}")
+    print(f"  -> {result['label']}: {result['score']:.3f}\n")
+```
+
+---
+
+## Combining Traditional NLP + LLMs
+
+Best practices for text analysis:
+
+1. **Preprocessing**: Use traditional NLP for cleaning, tokenization
+2. **Exploration**: Word frequencies, n-grams, word clouds
+3. **Statistical Analysis**: TF-IDF, topic modeling
+4. **Deep Understanding**: LLMs for summarization, Q&A, classification
+5. **Embeddings**: Semantic search and clustering
+
+---
+
+## Summary
+
+| Technique | Use Case | Tool |
+|-----------|----------|------|
+| Tokenization | Text preprocessing | NLTK, spaCy |
+| Stop Words | Noise removal | NLTK, custom |
+| TF-IDF | Important words | scikit-learn |
+| Sentiment | Opinion mining | VADER, LLMs |
+| Topic Modeling | Theme discovery | LDA, NMF |
+| Embeddings | Semantic search | OpenAI, HuggingFace |
+| LLM Generation | Summarization, Q&A | GPT, Claude |
+
+---
+
+## Resources
+
+- [NLTK Documentation](https://www.nltk.org/)
+- [spaCy Documentation](https://spacy.io/)
+- [scikit-learn Text Tutorial](https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html)
+- [Hugging Face Transformers](https://huggingface.co/docs/transformers)
+- [Anthropic Claude API Documentation](https://docs.anthropic.com/en/docs)
+- [Anthropic API Quickstart](https://docs.anthropic.com/en/api/getting-started)
+- [Text Mining with R](https://www.tidytextmining.com/) (concepts transfer to Python)
+
+---

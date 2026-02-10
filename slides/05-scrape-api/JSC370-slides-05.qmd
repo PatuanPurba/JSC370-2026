@@ -1,0 +1,1163 @@
+---
+title: "JSC 370: Data Science II"
+subtitle: "Week 5: Scraping and APIs"
+format:
+  revealjs:
+    slide-number: true
+    incremental: true
+    scrollable: true
+    css: styles.css
+execute:
+  echo: true
+  warning: false
+  message: false
+jupyter: python3
+---
+
+## What is a Web API?
+
+> A Web API is an application programming interface for either a web server or a web browser. -- [Wikipedia](https://en.wikipedia.org/wiki/Web_API)
+
+**Examples:**
+
+- [The Movie Database API](https://developer.themoviedb.org/docs/getting-started)
+- [NOAA Climate Data API](https://www.ncdc.noaa.gov/cdo-web/webservices/v2)
+- [X API](https://developer.x.com/en)
+- [OpenAI API](https://platform.openai.com/docs/api-reference)
+- [GitHub API](https://docs.github.com/en/rest)
+- [Gene Ontology API](http://api.geneontology.org/api)
+- [Open Trivia API](https://opentdb.com/api_config.php)
+
+---
+
+## How do APIs work?
+
+**HTTP Methods:**
+
+- **GET**: Request data from a server
+- **POST**: Send data to a server
+- **PUT**: Update existing data
+- **DELETE**: Remove data
+
+We'll use the `requests` library in Python to interact with APIs.
+
+```{python}
+#| echo: true
+#| eval: false
+import requests
+response = requests.get("https://api.example.com/data")
+```
+---
+
+## Additional setup for APIs
+
+In addition to `requests` we also need `pandas` (for all data science stuff!) and `json` 
+
+```{python}
+#| label: setup
+#| echo: true
+import requests
+import pandas as pd
+import json
+```
+
+
+---
+
+## Structure of a URL
+
+![URL Structure](https://cdn.tutsplus.com/net/authors/jeremymcpeak/http1-url-structure.png){width="700"}
+
+Source: [HTTP: The Protocol Every Web Developer Must Know](https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177)
+
+---
+
+## Structure of an API URL
+
+```
+https://api.themoviedb.org/3/discover/movie?api_key=abc123&sort_by=revenue.desc&page=1
+\_____/\__________________/\_____________/\__________________________________________/
+   |            |                 |                            |
+Protocol    Base URL         Endpoint               Query Parameters
+                              (Path)                  (key=value pairs)
+```
+
+**Components:**
+
+| Part | Example | Purpose |
+|------|---------|---------|
+| **Protocol** | `https://` | Secure connection |
+| **Base URL** | `api.themoviedb.org/3` | API server + version |
+| **Endpoint** | `/discover/movie` | Which resource to access |
+| **Query Params** | `?api_key=...&sort_by=...` | Filter/customize results |
+
+---
+
+## What is JSON?
+
+**JSON** (JavaScript Object Notation) is the standard format for API responses.
+
+```json
+{
+  "name": "Avatar",
+  "year": 2009,
+  "budget": 237000000,
+  "genres": ["Action", "Adventure", "Sci-Fi"],
+  "awards": {
+    "oscars": 3,
+    "nominations": 9
+  }
+}
+```
+
+**Key features:**
+
+- **Objects**: `{ }` contain key-value pairs
+- **Arrays**: `[ ]` contain ordered lists
+- **Values**: strings, numbers, booleans, null, objects, or arrays
+- Human-readable and easy to parse in Python with `.json()`
+
+---
+
+## Web APIs with curl
+
+Under-the-hood, the `requests` library sends HTTP requests similar to curl:
+
+```bash
+curl -X GET "https://api.github.com/users/octocat" \
+     -H "Accept: application/json"
+```
+
+Response (JSON):
+```json
+{
+  "login": "octocat",
+  "id": 583231,
+  "type": "User",
+  "name": "The Octocat",
+  "company": "@github",
+  "location": "San Francisco",
+  "public_repos": 8,
+  "followers": 16000
+}
+```
+
+The `-X GET` specifies the HTTP method, `-H` adds headers.
+
+---
+
+## HTTP Status Codes
+
+
+![](img/api-diagram.svg){fig-align="center" width="200%"}
+
+Remember these HTTP codes:
+
+- **1xx**: Information message
+- **2xx**: Success (200 = OK)
+- **3xx**: Redirection (301 = Moved Permanently)
+- **4xx**: Client error (404 = Not Found)
+- **5xx**: Server error (500 = Internal Server Error)
+
+---
+
+
+
+
+## API Keys and Tokens
+
+Sometimes APIs require authentication:
+
+- **API Key/Token**: Passed in header or URL
+- **OAuth**: More complex authentication flow
+- **Basic Auth**: Username/password
+
+Example 1: [The Movie Database API](https://developer.themoviedb.org/docs/getting-started) to discover popular movies and their details.
+
+Get your free API key at: [themoviedb.org](https://www.themoviedb.org/settings/api)
+
+Example 2: [NOAA Climate Data API](https://www.ncdc.noaa.gov/cdo-web/webservices/v2) (data we used in earlier weeks)
+
+Get your token at: [https://www.ncdc.noaa.gov/cdo-web/token](https://www.ncdc.noaa.gov/cdo-web/token)
+
+---
+
+
+## Web API Example 1: The Movie Database (TMDB)
+
+Using TMDB
+
+```{python}
+#| label: tmdb-setup
+#| echo: true
+
+# TMDB API configuration
+BASE_URL = "https://api.themoviedb.org/3"
+API_KEY = "demo"  # Replace with your API key!
+```
+
+```{python}
+#| label: tmdb-setup-2
+#| echo: false
+
+# TMDB API configuration
+BASE_URL = "https://api.themoviedb.org/3"
+API_KEY = "f6600b8ecd0876798ce46888f63faf47"  # Replace with your API key!
+```
+
+---
+
+
+## TMDB API: Discovering Movies
+
+```{python}
+#| label: tmdb-discover
+#| echo: true
+#| eval: true
+
+# Discover top-grossing movies from 2020-2024
+url = f"{BASE_URL}/discover/movie"
+
+params = {
+    "api_key": API_KEY,
+    "sort_by": "revenue.desc",
+    "release_date.gte": "2020-01-01",
+    "release_date.lte": "2024-12-31",
+    "page": 1
+}
+
+response = requests.get(url, params=params, timeout=30)
+print(f"Status Code: {response.status_code}")
+print(f"URL: {response.url}")
+```
+
+---
+
+## TMDB API: Understanding Query Parameters
+
+Each parameter customizes what movies we get back:
+
+```python
+params = {
+    "api_key": API_KEY,           # Authentication (required)
+    "sort_by": "revenue.desc",    # Sort by revenue, descending
+    "release_date.gte": "2020-01-01",  # Released on or after
+    "release_date.lte": "2024-12-31",  # Released on or before
+    "page": 1                     # Which page of results
+}
+```
+
+| Parameter | Value | Effect |
+|-----------|-------|--------|
+| `sort_by` | `revenue.desc` | Highest-grossing first |
+| `release_date.gte` | `2020-01-01` | Only movies from 2020+ |
+| `release_date.lte` | `2024-12-31` | Only movies up to 2024 |
+| `page` | `1` | First 20 results |
+
+---
+
+## How Do We Know What Parameters Are Available?
+
+**Read the API documentation!** Every API publishes docs explaining:
+
+- Available **endpoints** (URLs)
+- Required vs optional **parameters**
+- **Authentication** method
+- **Response format** and fields
+
+[TMDB Discover Movies API Docs](https://developer.themoviedb.org/reference/discover-movie)
+
+---
+
+## How Do We Know What Parameters Are Available?
+
+![](img/tmdb-docs.png){fig-align="center" width="100%"}
+
+---
+
+## TMDB API: Understanding the Response
+
+`response.json` parses the HTTP response body as JSON and return it as normal Python objects (usually a dict or list) 
+
+```{python}
+#| label: tmdb-response
+#| echo: true
+#| eval: true
+
+data = response.json()
+
+# The response contains pagination info and results
+print(f"Total results: {data.get('total_results')}")
+print(f"Total pages: {data.get('total_pages')}")
+print(f"Movies on this page: {len(data.get('results', []))}")
+```
+
+---
+
+## TMDB API: Extracting Movie Data
+
+```{python}
+#| label: tmdb-extract
+#| echo: true
+#| eval: true
+
+# Extract movie information from results this turns into a list
+movies = []
+for movie in data.get('results', []):
+    movies.append({
+        'movie_id': movie.get('id'),
+        'title': movie.get('title'),
+        'release_date': movie.get('release_date'),
+        'popularity': movie.get('popularity'),
+        'vote_average': movie.get('vote_average')
+    })
+
+# Convert to DataFrame
+df_movies = pd.DataFrame(movies)
+print(f"Found {len(df_movies)} movies")
+df_movies.head(10)
+```
+
+---
+
+## TMDB API: Getting Movie Details
+
+Each movie has additional details available that we can extract.
+
+Here we extract one movie and see several attributes:
+
+```{python}
+#| label: tmdb-details
+#| echo: true
+#| eval: true
+
+# Get details for a specific movie (e.g., movie_id = 550 is Fight Club)
+movie_id = 550
+detail_url = f"{BASE_URL}/movie/{movie_id}"
+
+detail_response = requests.get(detail_url, params={"api_key": API_KEY}, timeout=30)
+movie_details = detail_response.json()
+
+print(f"Title: {movie_details.get('title')}")
+print(f"Budget: ${movie_details.get('budget'):,}")
+print(f"Revenue: ${movie_details.get('revenue'):,}")
+print(f"Runtime: {movie_details.get('runtime')} minutes")
+print(f"Genres: {[g['name'] for g in movie_details.get('genres', [])]}")
+```
+
+---
+
+## TMDB API: Fetching Multiple Pages
+
+The discover endpoint returns **20 movies per page**. To get more data, we loop through pages:
+
+```{python}
+#| label: tmdb-pagination
+#| echo: true
+#| eval: true
+
+import time
+
+# Fetch first 3 pages of results (60 movies)
+all_movies = []
+
+for page in range(1, 4):
+    params = {
+        "api_key": API_KEY,
+        "sort_by": "revenue.desc",
+        "release_date.gte": "2020-01-01",
+        "page": page
+    }
+
+    resp = requests.get(f"{BASE_URL}/discover/movie", params=params, timeout=30)
+    data = resp.json()
+
+    for movie in data.get('results', []):
+        all_movies.append({
+            'id': movie.get('id'),
+            'title': movie.get('title'),
+            'popularity': movie.get('popularity')
+        })
+
+    print(f"Page {page}: fetched {len(data.get('results', []))} movies")
+    time.sleep(0.25)  # Be polite: wait 250ms between requests
+
+print(f"\nTotal movies collected: {len(all_movies)}")
+```
+---
+
+
+
+## Web API Example 2: HHS Health Recommendations
+
+The [Health.gov API](https://health.gov/our-work/health-literacy/consumer-health-content/free-web-content/apis-developers/documentation) provides demographic-specific health recommendations. This API does not require a key or token
+
+```{python}
+#| label: hhs-api
+#| echo: true
+#| cache: true
+
+url = "https://health.gov/myhealthfinder/api/v3/myhealthfinder.json"
+params = {
+    "lang": "en",
+    "age": "32",
+    "sex": "male",
+    "tobaccoUse": 0
+}
+headers = {"accept": "application/json"}
+
+response = requests.get(url, params=params, headers=headers, timeout=60)
+print(f"Status Code: {response.status_code}")
+```
+
+---
+
+## HHS: Extracting Health Recommendations
+
+```{python}
+#| label: hhs-extract
+#| echo: true
+#| cache: true
+
+data = response.json()
+
+# Extract recommendation titles
+titles = []
+resources = data.get('Result', {}).get('Resources', {})
+
+for category in resources.values():
+    if isinstance(category, dict) and 'Resource' in category:
+        for resource in category['Resource']:
+            titles.append(resource.get('Title', 'N/A'))
+
+print("Health Recommendations:")
+for title in titles[:10]:
+    print(f"  - {title}")
+```
+
+---
+
+### HHS: params
+
+![](img/hhs-docs.png){fig-align="center" width="100%"}
+[HHS](https://odphp.health.gov/our-work/national-health-initiatives/health-literacy/consumer-health-content/free-web-content/apis-developers/api-documentation)
+
+---
+
+
+## Why Use a Dictionary for Parameters?
+
+**Instead of this:**
+```python
+url = "https://api.example.com/data?age=32&sex=male&lang=en"
+response = requests.get(url)
+```
+
+**Do this:**
+```python
+url = "https://api.example.com/data"
+params = {"age": 32, "sex": "male", "lang": "en"}
+response = requests.get(url, params=params)
+```
+
+**Benefits:**
+
+- Automatic URL encoding (handles special characters)
+- Easier to read and modify
+- No manual string concatenation errors
+
+---
+
+## Common Parameter Patterns in APIs
+
+| Parameter Type | Example | Purpose |
+|----------------|---------|---------|
+| **Filtering** | `?status=active` | Only return matching items |
+| **Pagination** | `?page=2&limit=50` | Control result batches |
+| **Sorting** | `?sort=date&order=desc` | Order results |
+| **Fields** | `?fields=name,email` | Select specific data |
+| **Search** | `?q=python` | Text search |
+| **Format** | `?format=json` | Response format |
+
+---
+
+## Timeout and Connection Options
+
+Sometimes APIs are slow. Use the `timeout` parameter:
+
+```{python}
+#| label: timeout-example
+#| echo: true
+#| eval: false
+
+# Set connection and read timeout (in seconds)
+response = requests.get(
+    url,
+    params=params,
+    timeout=(10, 60)  # (connect timeout, read timeout)
+)
+
+# Or single timeout for both
+response = requests.get(url, timeout=60)
+```
+
+---
+
+## Rate Limiting
+
+Many APIs limit how many requests you can make. Use `time.sleep()` to be polite:
+
+```python
+import time
+
+for movie_id in movie_ids:
+    response = requests.get(f"{BASE_URL}/movie/{movie_id}", params=params)
+    data = response.json()
+    # Process data...
+    time.sleep(0.5)  # Wait 500ms between requests
+```
+
+**Why rate limit?**
+
+- Avoid getting blocked (HTTP 429: Too Many Requests)
+- Be a good API citizen
+- Most APIs specify limits in their documentation
+
+---
+
+## POST Requests: Sending Data
+
+So far we've used **GET** to retrieve data. **POST** sends data to a server:
+
+```python
+# GET: retrieve data (parameters in URL)
+response = requests.get(url, params={"query": "python"})
+
+# POST: send data (data in request body)
+response = requests.post(url, json={"name": "John", "email": "john@example.com"})
+```
+
+**Common POST use cases:**
+
+- Creating new records (users, posts, comments)
+- Submitting forms
+- Sending data for processing (e.g., ML model predictions)
+
+*Note: Most data retrieval APIs use GET; POST is mainly for writing data.*
+
+---
+
+## Error Handling
+
+```{python}
+#| label: error-handling-api
+#| echo: true
+
+def safe_api_call(url, params=None, timeout=30):
+    """Make an API call with proper error handling."""
+    try:
+        response = requests.get(url, params=params, timeout=timeout)
+        response.raise_for_status()  # Raises exception for 4xx/5xx
+        return response.json()
+    except requests.exceptions.Timeout:
+        print("Request timed out")
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP error: {e}")
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+    return None
+
+# Example usage
+data = safe_api_call("https://api.github.com/users/octocat")
+if data:
+    print(f"User: {data.get('login')}")
+```
+
+---
+
+## Error Handling: Why Each Part Matters
+
+| Component | What it does | Why it matters |
+|-----------|--------------|----------------|
+| `try:` | Wraps risky operations | APIs can fail for many reasons outside your control |
+| `timeout=30` | Limits wait time | Prevents your script from hanging indefinitely |
+| `raise_for_status()` | Converts HTTP 4xx/5xx to exceptions | Without this, error responses look "successful" |
+| `Timeout` exception | Catches slow/unresponsive servers | Network issues, server overload |
+| `HTTPError` exception | Catches bad responses (404, 500, etc.) | Invalid URLs, rate limiting (429), server errors |
+| `RequestException` | Catches everything else | DNS failures, connection refused, SSL errors |
+| `return None` | Signals failure gracefully | Caller can check `if data:` instead of crashing |
+
+Without error handling, a single failed API call would crash your entire script—especially problematic when looping through hundreds of requests.
+
+---
+
+## API Best Practices
+
+1. **Read the documentation** - Every API is different
+2. **Respect rate limits** - Use `time.sleep()` between requests
+3. **Handle errors gracefully** - Check status codes
+4. **Use timeouts** - Don't hang indefinitely
+5. **Store tokens securely** - Never commit API keys to git!
+
+```python
+# Use environment variables for tokens
+import os
+API_KEY = os.environ.get('TMDB_API_KEY')
+```
+
+---
+
+## Summary: APIs
+
+- Use the **requests** library for HTTP calls
+- Pass **parameters** as dictionaries
+- Pass **tokens** in headers
+- Handle **timeouts** and **errors**
+- Parse **JSON** responses with `.json()`
+
+```python
+import requests
+
+response = requests.get(url, params=params, headers=headers, timeout=60)
+data = response.json()
+```
+
+---
+
+## Fundamentals of Web Scraping
+
+> Web scraping, web harvesting, or web data extraction is data scraping used for extracting data from websites -- [Wikipedia](https://en.wikipedia.org/wiki/Web_scraping)
+
+**How in Python?**
+
+- **requests**: Fetch web pages
+- **pandas.read_html()**: Extract tables directly
+- **BeautifulSoup**: Parse and navigate HTML/XML documents
+- **selenium**: For dynamic websites with JavaScript
+
+---
+
+## Scraping Data from a Webpage
+
+Webpages contain data but are written in HTML, CSS, and JavaScript.
+
+![](img/wikipedia_scrape.png){fig-align="center" width="150%"}
+
+---
+
+## Inspecting HTML with Browser DevTools
+
+To scrape a webpage, you need to understand its HTML structure:
+
+1. **Right-click** on the element you want → **Inspect**
+2. The **Elements** panel shows the HTML structure
+3. Hover over elements to highlight them on the page
+4. Look for patterns: tag names, classes, IDs
+
+**Common HTML elements to look for:**
+
+| Element | Tag | Example |
+|---------|-----|---------|
+| Tables | `<table>` | Data tables |
+| Links | `<a href="...">` | Navigation, references |
+| Paragraphs | `<p>` | Text content |
+| Divs | `<div class="...">` | Content containers |
+| Lists | `<ul>`, `<ol>`, `<li>` | Bulleted/numbered items |
+
+---
+
+## HTML Tables
+
+HTML tables use these tags:
+
+- `<table>` - the container
+- `<tr>` - table row
+- `<th>` - header cell
+- `<td>` - data cell
+
+```html
+<table>
+  <tr><th>Film</th><th>Year</th><th>Awards</th></tr>
+  <tr><td>Titanic</td><td>1997</td><td>11</td></tr>
+  <tr><td>Avatar</td><td>2009</td><td>3</td></tr>
+</table>
+```
+
+---
+
+## Setup for Scraping
+
+```{python}
+#| label: scraping-setup
+#| echo: true
+import requests
+import pandas as pd
+from io import StringIO
+import re
+from bs4 import BeautifulSoup
+```
+
+---
+
+## Making Requests with Headers
+
+Always include a User-Agent header to identify yourself:
+
+```{python}
+#| label: scraping-headers
+#| echo: true
+
+# URLs for our movie data
+BOXOFFICE_URL = "https://en.wikipedia.org/wiki/List_of_highest-grossing_films"
+OSCARS_URL = "https://en.wikipedia.org/wiki/List_of_Academy_Award%E2%80%93winning_films"
+
+# Headers to identify ourselves
+HEADERS = {
+    "User-Agent": "jsc370-class-project/1.0 (educational use)",
+    "Accept-Language": "en-US,en;q=0.9",
+}
+```
+
+---
+
+## Why Use Headers?
+
+**1. Servers may block requests without a User-Agent**
+
+Without headers, `requests` sends a default like `python-requests/2.28.0`. Many websites block or rate-limit requests that look like bots.
+
+**2. Identifying yourself is good etiquette**
+
+If your script causes problems, site admins can contact you instead of blocking your IP.
+
+**3. Accept-Language controls content language**
+
+Wikipedia serves content in different languages based on this header.
+
+| Header | Purpose | Example |
+|--------|---------|---------|
+| `User-Agent` | Identifies the client | `"MyApp/1.0 (contact@email.com)"` |
+| `Accept-Language` | Preferred language | `"en-US,en;q=0.9"` |
+| `Accept` | Expected response format | `"application/json"` |
+| `Authorization` | API tokens/credentials | `"Bearer abc123"` |
+
+---
+
+## Fetching the Data
+
+Use `requests.get` to grab the website data from the url
+
+
+```{python}
+#| label: scraping-fetch
+#| echo: true
+
+# Request the box office page
+boxoffice_request = requests.get(BOXOFFICE_URL, headers=HEADERS, timeout=30)
+
+if boxoffice_request.ok:
+    print("Box office response OK:", boxoffice_request.status_code)
+else:
+    print("Request failed:", boxoffice_request.status_code)
+
+# Request the Oscars page
+oscars_request = requests.get(OSCARS_URL, headers=HEADERS, timeout=30)
+print("Oscars response:", oscars_request.status_code)
+```
+
+---
+
+## Parsing Tables
+
+We want to turn HTML `<table>` tags into pandas DataFrames.
+
+- `pd.read_html()` scans HTML and returns a list of DataFrames—one per table found.
+- `StringIO()` wraps the HTML string to look like a file-like object.
+
+```{python}
+#| label: scraping-parse
+#| echo: true
+
+# Parse all tables from each page
+box_tables = pd.read_html(StringIO(boxoffice_request.text))
+osc_tables = pd.read_html(StringIO(oscars_request.text))
+
+print(f"Found {len(box_tables)} tables on box office page")
+print(f"Found {len(osc_tables)} tables on Oscars page")
+
+# Get the main tables (first table on each page)
+box = box_tables[0]
+osc = osc_tables[0]
+```
+
+If the page has multiple tables, you might need to choose by inspecting `box_tables[i].columns` or by matching a column name.
+
+---
+
+## Inspecting the Data
+
+Print out the data in `box` and `osc`
+
+```{python}
+#| label: scraping-inspect
+#| echo: true
+
+print("Box Office Data:")
+print(box.head(), '\n')
+
+print("Oscar Winners Data:")
+print(osc.head())
+```
+
+---
+
+## Merging DataFrames
+
+Combine data using `merge()`:
+
+```{python}
+#| label: scraping-merge-example
+#| echo: true
+#| eval: true
+osc["Year"] = pd.to_numeric(osc["Year"].astype(str).str.extract(r"(\d{4})")[0], errors="coerce")
+osc["Year"] = osc["Year"].astype("Int64")
+
+# Left join: keep all box office films, add Oscar data where available
+merged = box.merge(
+    osc,
+    how='left',
+    left_on=['Title', 'Year'],
+    right_on=['Film', 'Year']
+)
+```
+
+This requires a few steps due to messy scraped data. We will come back to this later
+
+---
+
+## Scraping Beyond Tables: BeautifulSoup
+
+While `pd.read_html()` is great for tables, **BeautifulSoup** can extract any HTML element:
+
+```{python}
+#| label: bs4-beyond-tables
+#| echo: true
+#| eval: true
+
+# Parse the box office page with BeautifulSoup
+soup = BeautifulSoup(boxoffice_request.content, 'html.parser')
+
+# Find the first paragraph
+first_paragraph = soup.find('p')
+print("First paragraph:", first_paragraph.get_text()[:100], "...")
+
+# Find all section headings
+headings = soup.find_all('h2')
+print(f"\nFound {len(headings)} section headings")
+
+# Find the table of contents
+toc = soup.find(id='toc')
+print(f"Table of contents found: {toc is not None}")
+```
+
+---
+
+## BeautifulSoup: Extracting Links
+
+```{python}
+#| label: bs4-links
+#| echo: true
+#| eval: true
+
+# Extract all citation/reference links from the films page
+references = []
+
+for link in soup.find_all('a', href=True):
+    href = link['href']
+    text = link.get_text().strip()
+    # Find external reference links (not Wikipedia internal links)
+    if href.startswith('http') and 'wikipedia' not in href and text:
+        references.append({
+            'text': text[:50],  # Truncate long text
+            'url': href[:60]    # Truncate long URLs
+        })
+
+# Show first few external references
+refs_df = pd.DataFrame(references[:8])
+print(refs_df)
+```
+
+---
+
+
+**Key BeautifulSoup methods:**
+
+- `soup.find('tag')` - first matching element
+- `soup.find_all('tag')` - all matching elements
+- `element.get_text()` - extract text content
+- `element['attribute']` - get attribute value (e.g., `href`)
+
+---
+
+
+## Regular Expressions in Python
+
+**Why regex?** Scraped data is messy. Years appear as "2020/21", currencies as "$2,923,710,708", and text contains footnotes like "[1]". Regex lets you extract and clean patterns programmatically.
+
+The `re` module provides regex support:
+
+```{python}
+#| label: regex-intro
+#| echo: true
+import re
+
+text = "Contact us at support@example.com or sales@company.org"
+
+# Find all email addresses
+pattern = r'[\w\.-]+@[\w\.-]+'
+emails = re.findall(pattern, text)
+print(f"Found emails: {emails}")
+
+# Replace pattern
+new_text = re.sub(pattern, "[EMAIL]", text)
+print(f"Redacted: {new_text}")
+```
+
+---
+
+## Breaking Down the Email Pattern
+
+```
+r'[\w\.-]+@[\w\.-]+'
+```
+
+| Part | Meaning | Matches |
+|------|---------|---------|
+| `[\w\.-]` | Character class: word chars, dots, hyphens | `s`, `u`, `p`, `.`, `-` |
+| `+` | One or more of the previous | `support`, `example.com` |
+| `@` | Literal @ symbol | `@` |
+| `[\w\.-]+` | Same pattern after @ | `example.com` |
+
+**Key `re` functions:**
+
+| Function | Purpose | Example |
+|----------|---------|---------|
+| `re.findall(pattern, text)` | Find all matches | Returns list of matches |
+| `re.search(pattern, text)` | Find first match | Returns match object or None |
+| `re.sub(pattern, repl, text)` | Replace matches | Returns modified string |
+
+---
+
+## Common Regex Patterns
+
+| Pattern | Meaning |
+|---------|---------|
+| `\d` | Digit (0-9) |
+| `\w` | Word character (a-z, A-Z, 0-9, _) |
+| `\s` | Whitespace |
+| `.` | Any character |
+| `*` | Zero or more |
+| `+` | One or more |
+| `?` | Zero or one |
+| `[]` | Character class |
+| `^` | Start of string |
+| `$` | End of string |
+
+---
+
+## Cleaning Data with Regular Expressions
+
+Some values need cleaning (e.g., "2020/21" should be "2020"):
+
+```{python}
+#| label: scraping-regex-clean
+#| echo: true
+
+# Extract just the first 4-digit year
+year_example = "2020/21"
+clean_year = re.search(r'\d{4}', year_example).group()
+print(f"'{year_example}' -> '{clean_year}'")
+
+# Clean currency: "$2,923,710,708" -> 2923710708
+gross_example = "$2,923,710,708"
+clean_gross = re.sub(r'[^\d]', '', gross_example)
+print(f"'{gross_example}' -> {int(clean_gross)}")
+```
+
+---
+
+## Understanding the Cleaning Patterns
+
+**Pattern 1: Extract year** `r'\d{4}'`
+
+| Part | Meaning |
+|------|---------|
+| `\d` | Any digit (0-9) |
+| `{4}` | Exactly 4 of them |
+
+Matches: `"2020"` from `"2020/21"` — ignores the `/21` part
+
+**Pattern 2: Remove non-digits** `r'[^\d]'`
+
+| Part | Meaning |
+|------|---------|
+| `[^...]` | NOT these characters (negation) |
+| `\d` | Digits |
+| Together | Match anything that is NOT a digit |
+
+`re.sub(r'[^\d]', '', text)` replaces all non-digits with nothing, leaving only numbers.
+
+`"$2,923,710,708"` → `"2923710708"`
+
+---
+
+## Cleaning the Year Column
+
+```{python}
+#| label: scraping-clean-year
+#| echo: true
+
+# Extract 4-digit year and convert to int
+osc['Year_clean'] = (osc['Year']
+    .astype(str)
+    .str.extract(r'(\d{4})', expand=False)
+    .astype('int', errors='ignore'))
+
+print(osc[['Year', 'Year_clean']].head(10))
+```
+
+---
+
+## Merging Box Office and Oscar Data
+
+```{python}
+#| label: scraping-merge-real
+#| echo: true
+
+# Clean the year column first
+osc['Year'] = pd.to_numeric(
+    osc['Year'].astype(str).str.extract(r'(\d{4})', expand=False),
+    errors='coerce'
+)
+
+# Merge the dataframes
+merged = box.merge(
+    osc,
+    how='left',
+    left_on=['Title', 'Year'],
+    right_on=['Film', 'Year']
+)
+
+print(f"Merged shape: {merged.shape}")
+merged[['Title', 'Year', 'Worldwide gross', 'Awards']].head(10)
+```
+
+---
+
+## Cleaning Worldwide Gross
+
+```{python}
+#| label: scraping-clean-gross
+#| echo: true
+
+# Extract numbers from gross column using regex
+# Pattern matches: 1,234,567 or just 1234567
+gross_clean = (merged['Worldwide gross']
+    .astype(str)
+    .str.extract(r'(\d{1,3}(?:,\d{3})+|\d{4,})', expand=False)
+    .str.replace(',', '', regex=False)
+    .astype('Int64'))
+
+merged['gross_clean'] = gross_clean
+merged[['Title', 'Worldwide gross', 'gross_clean']].head()
+```
+
+---
+
+## Handling Missing Values
+
+```{python}
+#| label: scraping-fillna
+#| echo: true
+
+# Fill missing Awards with 0 (no Oscar wins)
+merged['Awards'] = merged['Awards'].fillna(0).astype('int')
+
+# Create indicator for Oscar winners
+merged['won_oscar'] = merged['Awards'] >= 1
+
+print(merged[['Title', 'Awards', 'won_oscar']].head(10))
+```
+
+---
+
+## Comparing Oscar Winners vs Non-Winners
+
+```{python}
+#| label: scraping-groupby
+#| echo: true
+
+# Group by Oscar status and compute statistics
+summary = (merged
+    .groupby('won_oscar')['gross_clean']
+    .agg(num_movies='count', avg_gross='mean', median_gross='median'))
+
+print(summary)
+```
+
+---
+
+## Visualizing the Results
+
+```{python}
+#| label: scraping-viz
+#| echo: true
+#| fig-width: 10
+#| fig-height: 5
+import matplotlib.pyplot as plt
+
+no_wins = merged[merged['won_oscar'] == False]['gross_clean'].dropna()
+winners = merged[merged['won_oscar'] == True]['gross_clean'].dropna()
+
+plt.boxplot([no_wins, winners], tick_labels=["No Oscar", "Oscar Winner"])
+plt.ylabel("Worldwide Gross (USD)")
+plt.title("Box Office Revenue: Oscar Winners vs Non-Winners")
+plt.show()
+```
+
+---
+
+## Summary: Web Scraping
+
+- Use **BeautifulSoup** to parse HTML
+- Use **pandas.read_html()** for tables
+- Clean data with **regular expressions**
+- Be respectful - check `robots.txt`
+
+```python
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+
+response = requests.get(url)
+soup = BeautifulSoup(response.content, 'html.parser')
+tables = pd.read_html(str(soup))
+```
+
+---
+
+
+
+
+
+## Resources
+
+- [Requests Documentation](https://docs.python-requests.org/)
+- [BeautifulSoup Documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+- [Python Regex HOWTO](https://docs.python.org/3/howto/regex.html)
+- [HTTP Status Codes](https://httpstatuses.com/)
+- [Public APIs List](https://github.com/public-apis/public-apis)
+
+---
+
+
