@@ -27,7 +27,7 @@ This course serves as the second in a series of courses on data science. We will
 | **Week 3** | January 19 [(lecture)](slides/03-eda-viz/JSC370-slides-03.html) <br> January 21 [(lab)](labs/lab3/lab03-github.html) | Exploratory Data Analysis & Data Viz 1 | **Lab 3** |
 | **Week 4** | January 26 [(lecture)](slides/04-viz-ml1/JSC370-slides-04.html) <br> January 28 [(lab)](labs/lab4/lab04-viz-gam.html) | Data Viz 2 & ML 1 | **[HW1](homework/hw1_2026.pdf)**, **Lab 4** |
 | **Week 5** | February 2 [(lecture)](slides/05-scrape-api/JSC370-slides-05.html) <br> February 4 [(lab)](labs/lab5/lab05-api-scrape.html) | Regular expressions; data scraping; using APIs | **Lab 5** |
-| **Week 6** | February 9 [(lecture)](slides/06-text-llm/JSC370-slides-06.html)  <br> February 11 (lab) | Text mining and LLMs | **[HW2](homework/hw2_2026.pdf)**, **Lab 6** |
+| **Week 6** | February 9 [(lecture)](slides/06-text-llm/JSC370-slides-06.html)  <br> February 11 [(lab)](labs/lab6/lab06-text-llm.html) | Text mining | **[HW2](homework/hw2_2026.pdf)**, **Lab 6** |
 | **Week 7** | February 16 | Reading Week |  |
 | **Week 8** | February 23 (lecture) <br> February 25 (lab) | ML 2 (trees, random forests, boosting) | **Lab 8** |
 | **Week 9** | March 2 (lecture) <br> March 4 (lab) | ML 3 (model evaluation and interpretation) | **HW3**, **Lab 9** |
