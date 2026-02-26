@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <title>JSC 370: Data Science II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link rel="stylesheet" href="styles.css">
+  <link href="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">JSC 370: Data Science II</h1>
+  <p class="subtitle">Week 8: Decision Trees, Random Forests, Boosting and Gradient Boosting</p>
+
+<div class="quarto-title-authors">
+</div>
+
+</section>
+<section id="outline" class="slide level2">
+<h2>Outline</h2>
+<ul>
+<li>Part 1: Motivation for Classification and Regression Trees</li>
+<li>Part 2: Decision Trees</li>
+<li>Part 3: Ensemble methods including Bagging, Random Forests, Boosting, Gradient Boosting, XGBoost</li>
+</ul>
+</section>
+<section id="geometry-of-data-for-classification" class="slide level2">
+<h2>Geometry of Data for Classification</h2>
+<ul>
+<li>The decision boundary is defined where the probability of being in class 1 and class 0 are equal, i.e.</li>
+</ul>
+<p><span class="math display">\[P(Y=1) = P(Y=0) \rightarrow P(Y=1) = 0.5\]</span> - In logistic regression this is equivalent the log-odds=0: <span class="math inline">\(x\beta=0\)</span></p>
+</section>
+<section id="geometry-of-data-for-classification-1" class="slide level2">
+<h2>Geometry of Data for Classification</h2>
+<ul>
+<li>Here we are classifying vegetation and non-vegetation</li>
+<li>The decision boundary is <span class="math display">\[−0.8 x_1+x_2=0 \rightarrow x_2=0.8x_1\]</span></li>
+<li>This translates to latitude <span class="math inline">\(=0.8\times\)</span> longitude</li>
+</ul>
+
+<img data-src="img/logistic.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="geometry-of-data-for-classification-2" class="slide level2">
+<h2>Geometry of Data for Classification</h2>
+<ul>
+<li>Logistic regression for classification works best when the classes are well separated in the feature space</li>
+<li>Linear boundaries are easy to interpret, but not straightforward in non-linear cases</li>
+</ul>
+</section>
+<section id="geometry-of-data-for-classification-3" class="slide level2">
+<h2>Geometry of Data for Classification</h2>
+
+<img data-src="img/logistic2.png" class="quarto-figure quarto-figure-center r-stretch"><ul>
+<li><p><strong>LHS</strong>: Multiple linear boundaries that form squares will perform better</p></li>
+<li><p><strong>RHS</strong>: Circular boundaries will perform better</p></li>
+</ul>
+</section>
+<section id="geometry-of-data-for-regression" class="slide level2">
+<h2>Geometry of Data for Regression</h2>
+<ul>
+<li><p>In regression, the goal is to predict a <strong>continuous outcome</strong> rather than a class label</p></li>
+<li><p>Instead of finding decision boundaries that separate classes, we partition the feature space into regions where we predict the <strong>mean response</strong></p></li>
+<li><p>Linear regression fits a global model: <span class="math inline">\(\hat y = x\beta\)</span>, which works well when the relationship is linear</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>But what if the relationship is <strong>non-linear</strong> or involves <strong>interactions</strong>?
+<ul>
+<li>We could add polynomial terms or interaction terms, but this requires knowing the form in advance</li>
+<li>GAM models were a step in this direction</li>
+<li>Tree-based methods <strong>automatically</strong> discover non-linear relationships and interactions by recursively partitioning the feature space</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="regression-trees" class="slide level2">
+<h2>Regression Trees</h2>
+<ul>
+<li>A regression tree splits the feature space into <span class="math inline">\(M\)</span> distinct, non-overlapping regions <span class="math inline">\(R_1, R_2, \dots, R_M\)</span></li>
+<li>For each region, we predict the <strong>mean of the training responses</strong> in that region: <span class="math display">\[ \hat y_{R_m} = \frac{1}{|R_m|} \sum_{i \in R_m} y_i \]</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>To build the tree, we minimize the <strong>residual sum of squares (RSS)</strong>: <span class="math display">\[\text{RSS} = \sum_{m=1}^{M} \sum_{i \in R_m} (y_i - \hat{y}_{R_m})^2\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>At each step, we choose the predictor <span class="math inline">\(j\)</span> and split point <span class="math inline">\(s\)</span> that minimize: <span class="math display">\[\sum_{i: x_i \in R_1(j,s)} (y_i - \hat y_{R_1})^2 + \sum_{i: x_i \in R_2(j,s)} (y_i - \hat y_{R_2})^2\]</span></li>
+</ul>
+</div>
+</section>
+<section id="decision-trees" class="slide level2">
+<h2>Decision Trees</h2>
+<ul>
+<li>Simple flow charts can be formulated as mathematical models for both classification and regression.</li>
+<li>Properties:
+<ul>
+<li>Interpretable by humans.</li>
+<li>Sufficiently complex decision boundaries.</li>
+<li>Locally linear decision boundaries.</li>
+</ul></li>
+</ul>
+</section>
+<section id="decision-tree-classification" class="slide level2">
+<h2>Decision Tree: Classification</h2>
+<ul>
+<li>Involve stratifying or segmenting the space into simple regions.</li>
+</ul>
+
+<img data-src="img/tree1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"></section>
+<section id="decision-tree-splitting" class="slide level2">
+<h2>Decision Tree: Splitting</h2>
+<p>Formally, a decision tree model is one in which the final outcome of the model is based on a series of comparisons of the values of predictors against threshold values. Each comparison and branching represents splitting a region in the feature space on a single feature. Typically, at each iteration, we split once along one dimension (one predictor).</p>
+
+<img data-src="img/tree2.png" class="quarto-figure quarto-figure-center r-stretch" style="width:50.0%"></section>
+<section id="decision-tree-terminology" class="slide level2">
+<h2>Decision Tree Terminology</h2>
+<ul>
+<li><strong>Root node</strong>: the top of the tree — contains all observations before any split</li>
+<li><strong>Internal node</strong>: where a split occurs — applies a rule like “is <span class="math inline">\(x_j \leq t\)</span>?” and sends observations left or right</li>
+<li><strong>Split</strong>: the act of dividing a node into two child nodes based on a feature and threshold</li>
+<li><strong>Leaf node</strong> (terminal node): where splitting has stopped — holds the final prediction
+<ul>
+<li>Classification: the majority class in that leaf</li>
+<li>Regression: the mean response in that leaf</li>
+</ul></li>
+<li><strong>Depth</strong>: how many splits deep a node is from the root</li>
+</ul>
+<div class="fragment">
+<p>Every path from root to leaf represents a series of <strong>if-then rules</strong> — this is what makes decision trees interpretable</p>
+</div>
+</section>
+<section id="decision-tree-regression" class="slide level2">
+<h2>Decision Tree: Regression</h2>
+<ul>
+<li>Predict grade from study time</li>
+</ul>
+
+<img data-src="img/regression-tree1.webp" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"></section>
+<section id="decision-tree-regression-1" class="slide level2">
+<h2>Decision Tree: Regression</h2>
+<ul>
+<li>The tree splits study time into <span class="math inline">\(M\)</span> distinct, non-overlapping regions <span class="math inline">\(R_1, R_2, \dots, R_M\)</span></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/regression-tree2.webp" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/regression-tree3.webp" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="learning-the-tree-model" class="slide level2 scrollable">
+<h2>Learning the Tree Model</h2>
+<ol type="1">
+<li>Start with an empty decision tree.</li>
+<li>Choose the ‘optimal’ predictor and threshold for splitting.</li>
+<li>Recurse on each new node until stopping condition is met.</li>
+<li>Define the splitting criterion and stopping condition.</li>
+</ol>
+<p><strong>We need to define the splitting criterion and stopping condition</strong></p>
+</section>
+<section id="greedy-algorithms" class="slide level2">
+<h2>Greedy Algorithms</h2>
+<ul>
+<li>Always makes the choice that seems best at the moment.</li>
+<li>Ensures local optimality at each step.</li>
+<li>Makes greedy choices at each step to ensure that the objective function is optimized.</li>
+<li>Never reverses a decision.</li>
+</ul>
+<div class="fragment">
+<p><strong>Example: Making change for $0.63</strong></p>
+<ul>
+<li>Available coins: quarters (25¢), dimes (10¢), nickels (5¢), pennies (1¢)</li>
+<li>Greedy approach: always pick the largest coin that fits
+<ul>
+<li>25¢ → 25¢ → 10¢ → 1¢ → 1¢ → 1¢ = 6 coins</li>
+</ul></li>
+<li>In decision trees: at each node, pick the single split (feature + threshold) that gives the best improvement — without considering whether a different split now might lead to a better tree overall</li>
+</ul>
+</div>
+</section>
+<section id="optimality-of-splitting" class="slide level2">
+<h2>Optimality of Splitting</h2>
+<ul>
+<li>The greedy algorithm needs a metric to decide the “best” split at each node</li>
+<li>No single ‘correct’ way to define an optimal split, but two common approaches:</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><strong>Classification</strong>: minimize <strong>impurity</strong> — how mixed are the classes in each region?
+<ul>
+<li>Gini Index (most common), Entropy / Information Gain</li>
+</ul></li>
+<li><strong>Regression</strong>: minimize <strong>RSS</strong> — how far are observations from the region mean?</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Common sense guidelines:
+<ul>
+<li>Feature space should grow progressively more pure (classification) or more homogeneous (regression) with splits</li>
+<li>Fitness metric of a split should be differentiable</li>
+<li>Avoid empty regions with no training points</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="gini-index" class="slide level2">
+<h2>Gini Index</h2>
+<ul>
+<li>The Gini Index is a metric used to measure the impurity or homogeneity of a dataset at a node.</li>
+<li>It helps in determining the best feature to split on when building the tree.</li>
+</ul>
+</section>
+<section id="gini-index-1" class="slide level2">
+<h2>Gini Index</h2>
+<ul>
+<li>Suppose we have <span class="math inline">\(J\)</span> predictors, <span class="math inline">\(N\)</span> number of training points and <span class="math inline">\(K\)</span> classes.</li>
+<li>Suppose we select the <span class="math inline">\(j\)</span>-th predictor and split a region containing <span class="math inline">\(N\)</span> number of training points along the threshold <span class="math inline">\(t_j \in R\)</span>.</li>
+<li>We can assess the quality of this split by measuring the purity of each newly created region, <span class="math inline">\(R_1,R_2\)</span>. This metric is called the Gini Index: <span class="math display">\[Gini = 1 - \sum_{i=1}^{k} p(k|R_i)^2\]</span></li>
+</ul>
+</section>
+<section id="gini-index-2" class="slide level2">
+<h2>Gini Index</h2>
+<p>Understanding Gini Index</p>
+<ul>
+<li>If all samples at a node belong to the same class, Gini = 0 (pure node).</li>
+<li>If samples are evenly distributed among classes, Gini is maximized.</li>
+<li>The goal of splitting in decision trees (like CART) is to minimize the Gini Index, leading to purer nodes.</li>
+</ul>
+</section>
+<section id="gini-index-3" class="slide level2">
+<h2>Gini Index</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/gini.png" class="quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+<p>We can try to find the predictor <span class="math inline">\(j\)</span> and the threshold <span class="math inline">\(t_j\)</span> that minimizes the average Gini Index over the two regions, weighted by the population of the regions (<span class="math inline">\(N_i\)</span> is the number of training points in region <span class="math inline">\(R_i\)</span>):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/gini2.png" class="quarto-figure quarto-figure-center" style="width:50.0%"></p>
+</figure>
+</div>
+</section>
+<section id="rss-for-regression-trees" class="slide level2">
+<h2>RSS for Regression Trees</h2>
+<ul>
+<li>For regression, we use <strong>Residual Sum of Squares (RSS)</strong> instead of Gini</li>
+<li>At each split, choose the predictor <span class="math inline">\(j\)</span> and threshold <span class="math inline">\(s\)</span> that minimize the weighted RSS across the two new regions:</li>
+</ul>
+<p><span class="math display">\[\text{RSS}(j, s) = \sum_{i: x_i \in R_1(j,s)} (y_i - \hat y_{R_1})^2 + \sum_{i: x_i \in R_2(j,s)} (y_i - \hat y_{R_2})^2\]</span></p>
+<p>where <span class="math inline">\(\hat y_{R_m}\)</span> is the mean response in region <span class="math inline">\(R_m\)</span></p>
+<div class="fragment">
+<ul>
+<li><strong>Intuition</strong>: a good split creates regions where the observations are close to their region mean — i.e., the variation within each region is small</li>
+<li>Like Gini, the greedy algorithm tries every feature and every possible split point, and picks the one with the lowest RSS</li>
+</ul>
+</div>
+</section>
+<section id="splitting-criteria-summary" class="slide level2">
+<h2>Splitting Criteria: Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Classification</th>
+<th>Regression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Goal</strong></td>
+<td>Maximize purity</td>
+<td>Minimize variance</td>
+</tr>
+<tr class="even">
+<td><strong>Metric</strong></td>
+<td>Gini Index</td>
+<td>RSS</td>
+</tr>
+<tr class="odd">
+<td><strong>Prediction</strong></td>
+<td>Majority class in region</td>
+<td>Mean response in region</td>
+</tr>
+<tr class="even">
+<td><strong>Greedy choice</strong></td>
+<td>Split that reduces Gini most</td>
+<td>Split that reduces RSS most</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="from-splitting-to-stopping" class="slide level2">
+<h2>From Splitting to Stopping</h2>
+<ul>
+<li>We now know how to evaluate a split: Gini (classification) or RSS (regression)</li>
+<li>The greedy algorithm keeps splitting — but <strong>when should it stop?</strong></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>If we never stop, the tree grows until every leaf contains a single observation
+<ul>
+<li>Perfect training accuracy, but massive <strong>overfitting</strong></li>
+</ul></li>
+<li>We need a <strong>stopping condition</strong> to decide when a split is no longer worth making</li>
+</ul>
+</div>
+</section>
+<section id="gain-measuring-improvement-from-a-split" class="slide level2">
+<h2>Gain: Measuring Improvement from a Split</h2>
+<ul>
+<li><strong>Gain</strong> measures how much a split improves the metric — it is the difference between the impurity (or RSS) of the parent node and the weighted average of the children:</li>
+</ul>
+<p><span class="math display">\[\text{Gain}(R) = m(R) - \frac{N_1}{N} m(R_1) - \frac{N_2}{N} m(R_2)\]</span></p>
+<ul>
+<li>where <span class="math inline">\(m\)</span> is the splitting metric (Gini, entropy, or RSS), <span class="math inline">\(R\)</span> is the parent region, <span class="math inline">\(R_1, R_2\)</span> are the child regions, and <span class="math inline">\(N_1, N_2\)</span> are their sizes</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><strong>High gain</strong>: the split meaningfully separates the data — worth doing</li>
+<li><strong>Low gain</strong>: the split barely improves things — may not be worth the added complexity</li>
+<li><strong>Zero gain</strong>: no improvement — the split does nothing useful</li>
+</ul>
+</div>
+</section>
+<section id="stopping-conditions" class="slide level2">
+<h2>Stopping Conditions</h2>
+<p>We can stop splitting when:</p>
+<ul>
+<li>The <strong>gain falls below a threshold</strong> — the split doesn’t improve enough to justify</li>
+<li>A node reaches a <strong>minimum number of observations</strong> (e.g., <code>min_samples_leaf</code>)</li>
+<li>The tree reaches a <strong>maximum depth</strong></li>
+<li>A node is already <strong>pure</strong> (Gini = 0) or has <strong>zero RSS</strong></li>
+</ul>
+<div class="fragment">
+<p><strong>Problem</strong>: What is the major issue with pre-specifying a stopping condition?</p>
+<ul>
+<li>You may stop <strong>too early</strong> (miss useful splits deeper in the tree) or <strong>too late</strong> (overfit)</li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Try several thresholds and <strong>cross-validate</strong> to find the best one</li>
+<li>Or: don’t stop at all — grow the full tree, then <strong>prune</strong> it back</li>
+</ul>
+</div>
+</section>
+<section id="pruning" class="slide level2">
+<h2>Pruning</h2>
+<ul>
+<li>Instead of trying to find the right stopping condition up front, <strong>grow a large tree first</strong>, then cut it back</li>
+<li>A fully grown tree overfits — it memorizes the training data, including noise</li>
+</ul>
+
+<img data-src="img/full-tree.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="pruning-how-it-works" class="slide level2">
+<h2>Pruning: How It Works</h2>
+<ul>
+<li><strong>Cost-complexity pruning</strong>: add a penalty for tree size</li>
+</ul>
+<p><span class="math display">\[\text{Cost}(T) = \text{RSS}(T) + \alpha |T|\]</span> - <span class="math inline">\(|T|\)</span> = number of leaf nodes, <span class="math inline">\(\alpha\)</span> = complexity parameter - Small <span class="math inline">\(\alpha\)</span>: keep more leaves (complex tree) - Large <span class="math inline">\(\alpha\)</span>: penalize leaves heavily (simpler tree)</p>
+<div class="fragment">
+<ul>
+<li>For each <span class="math inline">\(\alpha\)</span>, find the subtree that minimizes Cost(<span class="math inline">\(T\)</span>)</li>
+<li>Use <strong>cross-validation</strong> to choose the best <span class="math inline">\(\alpha\)</span></li>
+</ul>
+</div>
+</section>
+<section id="pruning-before-and-after" class="slide level2">
+<h2>Pruning: Before and After</h2>
+
+<img data-src="img/tree-prune.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><ul>
+<li>The pruned tree is simpler, more interpretable, and generalizes better to new data</li>
+<li>We trade a small increase in training error for a large decrease in test error</li>
+</ul>
+</section>
+<section id="summary-decision-trees" class="slide level2">
+<h2>Summary: Decision trees</h2>
+<p>Decision trees partition training data into <strong>homogenous nodes / subgroups</strong> with similar response values.</p>
+<p><strong>Pros</strong></p>
+<ul>
+<li>Decision trees are <strong>very easy to explain</strong> to non-statisticians.</li>
+<li>Easy to visualize and thus easy to interpret <strong>without assuming a parametric form</strong></li>
+</ul>
+<p><strong>Cons</strong></p>
+<ul>
+<li>High variance, i.e.&nbsp;split a dataset in half and grow tress in each half, the result will be very different</li>
+<li>Related note - <strong>they generalize poorly resulting in higher test set error rates</strong></li>
+</ul>
+<div class="fragment">
+<p>But there are several ways we can overcome this via <strong>ensemble models</strong></p>
+</div>
+</section>
+<section id="bagging" class="slide level2">
+<h2>Bagging</h2>
+<p><strong>Bootstrap aggregation</strong> (aka bagging) is a general approach for overcoming high variance</p>
+<div class="fragment">
+<ul>
+<li><strong>Bootstrap</strong>: sample the training data <em>with replacement</em></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://bradleyboehmke.github.io/HOML/images/bootstrap-scheme.png" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
+</figure>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Aggregation</strong>: Combine the results from many trees together, each constructed with a different bootstrapped sample of the data</li>
+</ul>
+</div>
+</section>
+<section id="bagging-algorithm" class="slide level2">
+<h2>Bagging Algorithm</h2>
+<p>Start with a <strong>specified number of trees <span class="math inline">\(B\)</span></strong>:</p>
+<div class="fragment">
+<ul>
+<li><p>For each tree <span class="math inline">\(b\)</span> in <span class="math inline">\(1, \dots, B\)</span>:</p>
+<ul>
+<li>Construct a bootstrap sample from the training data</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Grow a deep, unpruned, complicated (aka really overfit!) tree</li>
+</ul>
+</div>
+<div class="fragment">
+<p>To generate a prediction for a new point:</p>
+<ul>
+<li><strong>Regression</strong>: take the <strong>average</strong> across the <span class="math inline">\(B\)</span> trees</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p><strong>Classification</strong>: take the <strong>majority vote</strong> across the <span class="math inline">\(B\)</span> trees</p>
+<ul>
+<li>assuming each tree predicts a single class (could use probabilities instead…)</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p>Improves prediction accuracy via <strong>wisdom of the crowds</strong> - but at the expense of interpretability</p>
+<ul>
+<li>Easy to read one tree, but how do you read <span class="math inline">\(B = 500\)</span>?</li>
+</ul>
+</div>
+<div class="fragment">
+<p>But we can still use the measures of <strong>variable importance</strong> and <strong>partial dependence</strong> to summarize our models</p>
+</div>
+</section>
+<section id="random-forest-algorithm" class="slide level2">
+<h2>Random Forest Algorithm</h2>
+<p>Random forests are <strong>an extension of bagging</strong></p>
+<div class="fragment">
+<ul>
+<li><p>For each tree <span class="math inline">\(b\)</span> in <span class="math inline">\(1, \dots, B\)</span>:</p>
+<ul>
+<li>Construct a bootstrap sample from the training data</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Grow a deep, unpruned, complicated (aka really overfit!) tree <strong>but with a twist</strong></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>At each split</strong>: limit the variables considered to a <strong>random subset</strong> <span class="math inline">\(m_{try}\)</span> of original <span class="math inline">\(p\)</span> variables</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Predictions are made the same way as bagging:</p>
+<ul>
+<li><p><strong>Regression</strong>: take the <strong>average</strong> across the <span class="math inline">\(B\)</span> trees</p></li>
+<li><p><strong>Classification</strong>: take the <strong>majority vote</strong> across the <span class="math inline">\(B\)</span> trees</p></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Split-variable randomization</strong> adds more randomness to make <strong>each tree more independent of each other</strong></p>
+</div>
+<div class="fragment">
+<p>Introduce <span class="math inline">\(m_{try}\)</span> as a tuning parameter: typically use <span class="math inline">\(p / 3\)</span> (regression) or <span class="math inline">\(\sqrt{p}\)</span> (classification)</p>
+<ul>
+<li><span class="math inline">\(m_{try} = p\)</span> is bagging</li>
+</ul>
+</div>
+</section>
+<section id="example-data-mlb-2021-batting-statistics" class="slide level2">
+<h2>Example data: MLB 2021 batting statistics</h2>
+<p>The MLB 2021 batting statistics leaderboard from <a href="https://www.fangraphs.com/leaders.aspx?pos=all&amp;stats=bat&amp;lg=all&amp;qual=y&amp;type=8&amp;season=2021&amp;month=0&amp;season1=2021&amp;ind=0">Fangraphs</a></p>
+<p>We aim to predict WAR (Wins Above Replacement), an advanced metric that estimates the total number of wins a player contributes to their team compared to a “replacement-level” player. A replacement-level player is a theoretical player who is readily available, typically a Triple-A call-up or a minimum-salary free agent, and represents the baseline of a “0.0 WAR” player</p>
+<div id="ab4a7d78" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a></a></span>
+<span id="cb1-4"><a></a>mlb_data <span class="op">=</span> pd.read_csv(<span class="st">"http://www.stat.cmu.edu/cmsac/sure/2021/materials/data/fg_batting_2021.csv"</span>)</span>
+<span id="cb1-5"><a></a>mlb_data.columns <span class="op">=</span> mlb_data.columns.<span class="bu">str</span>.lower().<span class="bu">str</span>.replace(<span class="st">" "</span>, <span class="st">"_"</span>)</span>
+<span id="cb1-6"><a></a></span>
+<span id="cb1-7"><a></a><span class="co"># fix strings with % in BB% and K% to make numeric</span></span>
+<span id="cb1-8"><a></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">"bb%"</span>, <span class="st">"k%"</span>]:</span>
+<span id="cb1-9"><a></a>    <span class="cf">if</span> col <span class="kw">in</span> mlb_data.columns:</span>
+<span id="cb1-10"><a></a>        mlb_data[col] <span class="op">=</span> mlb_data[col].astype(<span class="bu">str</span>).<span class="bu">str</span>.replace(<span class="st">"%"</span>, <span class="st">""</span>).<span class="bu">str</span>.strip()</span>
+<span id="cb1-11"><a></a>        mlb_data[col] <span class="op">=</span> pd.to_numeric(mlb_data[col], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb1-12"><a></a></span>
+<span id="cb1-13"><a></a>model_mlb_data <span class="op">=</span> mlb_data.drop(columns<span class="op">=</span>[<span class="st">"name"</span>, <span class="st">"team"</span>, <span class="st">"playerid"</span>], errors<span class="op">=</span><span class="st">"ignore"</span>)</span>
+<span id="cb1-14"><a></a>model_mlb_data.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">g</th>
+<th data-quarto-table-cell-role="th">pa</th>
+<th data-quarto-table-cell-role="th">hr</th>
+<th data-quarto-table-cell-role="th">r</th>
+<th data-quarto-table-cell-role="th">rbi</th>
+<th data-quarto-table-cell-role="th">sb</th>
+<th data-quarto-table-cell-role="th">bb%</th>
+<th data-quarto-table-cell-role="th">k%</th>
+<th data-quarto-table-cell-role="th">iso</th>
+<th data-quarto-table-cell-role="th">babip</th>
+<th data-quarto-table-cell-role="th">avg</th>
+<th data-quarto-table-cell-role="th">obp</th>
+<th data-quarto-table-cell-role="th">slg</th>
+<th data-quarto-table-cell-role="th">woba</th>
+<th data-quarto-table-cell-role="th">xwoba</th>
+<th data-quarto-table-cell-role="th">wrc+</th>
+<th data-quarto-table-cell-role="th">bsr</th>
+<th data-quarto-table-cell-role="th">off</th>
+<th data-quarto-table-cell-role="th">def</th>
+<th data-quarto-table-cell-role="th">war</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>82</td>
+<td>354</td>
+<td>27</td>
+<td>66</td>
+<td>69</td>
+<td>2</td>
+<td>14.4</td>
+<td>17.2</td>
+<td>0.336</td>
+<td>0.346</td>
+<td>0.336</td>
+<td>0.438</td>
+<td>0.671</td>
+<td>0.462</td>
+<td>0.439</td>
+<td>194</td>
+<td>0.2</td>
+<td>40.9</td>
+<td>-7.5</td>
+<td>4.6</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>68</td>
+<td>288</td>
+<td>27</td>
+<td>66</td>
+<td>58</td>
+<td>18</td>
+<td>12.5</td>
+<td>28.1</td>
+<td>0.395</td>
+<td>0.333</td>
+<td>0.302</td>
+<td>0.385</td>
+<td>0.698</td>
+<td>0.443</td>
+<td>0.420</td>
+<td>185</td>
+<td>5.4</td>
+<td>35.7</td>
+<td>-3.2</td>
+<td>4.2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>79</td>
+<td>347</td>
+<td>16</td>
+<td>61</td>
+<td>52</td>
+<td>0</td>
+<td>13.5</td>
+<td>17.0</td>
+<td>0.231</td>
+<td>0.324</td>
+<td>0.298</td>
+<td>0.398</td>
+<td>0.529</td>
+<td>0.397</td>
+<td>0.377</td>
+<td>157</td>
+<td>-2.7</td>
+<td>21.6</td>
+<td>5.7</td>
+<td>4.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>82</td>
+<td>372</td>
+<td>21</td>
+<td>63</td>
+<td>54</td>
+<td>10</td>
+<td>8.9</td>
+<td>23.9</td>
+<td>0.256</td>
+<td>0.329</td>
+<td>0.286</td>
+<td>0.349</td>
+<td>0.542</td>
+<td>0.379</td>
+<td>0.328</td>
+<td>139</td>
+<td>1.0</td>
+<td>18.7</td>
+<td>5.4</td>
+<td>3.7</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>78</td>
+<td>342</td>
+<td>23</td>
+<td>67</td>
+<td>51</td>
+<td>16</td>
+<td>13.2</td>
+<td>24.3</td>
+<td>0.313</td>
+<td>0.306</td>
+<td>0.278</td>
+<td>0.386</td>
+<td>0.592</td>
+<td>0.409</td>
+<td>0.428</td>
+<td>159</td>
+<td>2.7</td>
+<td>27.6</td>
+<td>-2.2</td>
+<td>3.7</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="mlb-2021-batting-statistics-variables" class="slide level2 smaller">
+<h2>MLB 2021 Batting Statistics: Variables</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Description</th>
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>g</code></td>
+<td>Games played</td>
+<td><code>babip</code></td>
+<td>Batting avg on balls in play</td>
+</tr>
+<tr class="even">
+<td><code>pa</code></td>
+<td>Plate appearances</td>
+<td><code>avg</code></td>
+<td>Batting average</td>
+</tr>
+<tr class="odd">
+<td><code>hr</code></td>
+<td>Home runs</td>
+<td><code>obp</code></td>
+<td>On-base percentage</td>
+</tr>
+<tr class="even">
+<td><code>r</code></td>
+<td>Runs scored</td>
+<td><code>slg</code></td>
+<td>Slugging percentage</td>
+</tr>
+<tr class="odd">
+<td><code>rbi</code></td>
+<td>Runs batted in</td>
+<td><code>woba</code></td>
+<td>Weighted on-base average</td>
+</tr>
+<tr class="even">
+<td><code>sb</code></td>
+<td>Stolen bases</td>
+<td><code>xwoba</code></td>
+<td>Expected wOBA (Statcast)</td>
+</tr>
+<tr class="odd">
+<td><code>bb%</code></td>
+<td>Walk rate (%)</td>
+<td><code>wrc+</code></td>
+<td>Weighted runs created plus</td>
+</tr>
+<tr class="even">
+<td><code>k%</code></td>
+<td>Strikeout rate (%)</td>
+<td><code>bsr</code></td>
+<td>Base running runs above avg</td>
+</tr>
+<tr class="odd">
+<td><code>iso</code></td>
+<td>Isolated power (SLG − AVG)</td>
+<td><code>off</code></td>
+<td>Offensive runs above avg</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td><code>def</code></td>
+<td>Defensive runs above avg</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Target</strong>: <code>war</code> — Wins Above Replacement. Note, <code>off</code>, <code>def</code>, and <code>bsr</code> are direct components of WAR (WAR is approx Off + Def + BsR + replacement adjustment).</p>
+</section>
+<section id="example-random-forest" class="slide level2">
+<h2>Example Random Forest</h2>
+<p>scikit-learn’s <code>RandomForestRegressor</code> is a popular implementation</p>
+<div id="c28ad03d" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<span id="cb2-2"><a></a></span>
+<span id="cb2-3"><a></a>model_mlb_data <span class="op">=</span> model_mlb_data.dropna()</span>
+<span id="cb2-4"><a></a>X <span class="op">=</span> model_mlb_data.drop(columns<span class="op">=</span>[<span class="st">"war"</span>])</span>
+<span id="cb2-5"><a></a>y <span class="op">=</span> model_mlb_data[<span class="st">"war"</span>]</span>
+<span id="cb2-6"><a></a></span>
+<span id="cb2-7"><a></a>init_mlb_rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-8"><a></a>init_mlb_rf.fit(X, y)</span>
+<span id="cb2-9"><a></a><span class="bu">print</span>(<span class="ss">f"R² (training): </span><span class="sc">{</span>init_mlb_rf<span class="sc">.</span>score(X, y)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R² (training): 0.9876</code></pre>
+</div>
+</div>
+</section>
+<section id="out-of-bag-oob-estimate" class="slide level2">
+<h2>Out-of-bag (OOB) estimate</h2>
+<ul>
+<li>Each bootstrap sample draws <span class="math inline">\(N\)</span> observations <strong>with replacement</strong> from the original <span class="math inline">\(N\)</span></li>
+<li>Some observations will be selected multiple times, others <strong>not at all</strong></li>
+<li>On average, about <span class="math inline">\(63\%\)</span> of observations end up in any given bootstrap sample</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The remaining <span class="math inline">\(\approx 37\%\)</span> are called <strong>out-of-bag (OOB)</strong> observations for that tree</li>
+<li>For each observation <span class="math inline">\(i\)</span>, roughly <span class="math inline">\(B/3\)</span> trees were built <strong>without</strong> seeing it</li>
+<li>We can predict observation <span class="math inline">\(i\)</span> using only those trees — giving a <strong>built-in test set estimate</strong> without needing cross-validation</li>
+</ul>
+</div>
+</section>
+<section id="oob-why-63" class="slide level2">
+<h2>OOB: Why 63%?</h2>
+<ul>
+<li>The probability that observation <span class="math inline">\(i\)</span> is <strong>not</strong> selected in a single draw is <span class="math inline">\(\left(1 - \frac{1}{N}\right)\)</span></li>
+<li>After <span class="math inline">\(N\)</span> draws with replacement: <span class="math inline">\(P(\text{not in sample}) = \left(1 - \frac{1}{N}\right)^N \approx e^{-1} \approx 0.368\)</span></li>
+<li>So <span class="math inline">\(P(\text{in sample}) \approx 1 - 0.368 = 0.632\)</span>, i.e.&nbsp;about <span class="math inline">\(63\%\)</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>This means each tree has a <strong>free validation set</strong> of ~37% of the data</li>
+<li>The OOB error is computed by aggregating predictions for each observation using only the trees that did <strong>not</strong> include it in training</li>
+</ul>
+</div>
+</section>
+<section id="oob-in-the-mlb-example" class="slide level2">
+<h2>OOB in the MLB example</h2>
+<div id="7842e926" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="co"># Refit with oob_score=True to get OOB R²</span></span>
+<span id="cb4-2"><a></a>oob_rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">50</span>, oob_score<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-3"><a></a>oob_rf.fit(X, y)</span>
+<span id="cb4-4"><a></a><span class="bu">print</span>(<span class="ss">f"R² (training):  </span><span class="sc">{</span>oob_rf<span class="sc">.</span>score(X, y)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb4-5"><a></a><span class="bu">print</span>(<span class="ss">f"R² (OOB):       </span><span class="sc">{</span>oob_rf<span class="sc">.</span>oob_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R² (training):  0.9876
+R² (OOB):       0.9144</code></pre>
+</div>
+</div>
+<ul>
+<li>The <strong>training R²</strong> is high because the model has seen this data</li>
+<li>The <strong>OOB R²</strong> is a more honest estimate of performance on unseen data.</li>
+</ul>
+</section>
+<section id="tuning-hyperparameters" class="slide level2">
+<h2>Tuning Hyperparameters</h2>
+<ul>
+<li>A model’s <strong>hyperparameters</strong> are settings chosen <strong>before</strong> training — they control how the model learns, not what it learns</li>
+<li>Default values often work reasonably well, but tuning can significantly improve performance</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><strong>Under-tuned model</strong>: may underfit (too simple) or overfit (too complex)</li>
+<li><strong>Well-tuned model</strong>: finds the sweet spot between bias and variance</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Tuning is done via <strong>cross-validation</strong>: try different hyperparameter values, evaluate each on held-out folds, and pick the combination that generalizes best</li>
+<li>This is especially important for ensemble methods where multiple hyperparameters interact with each other</li>
+</ul>
+</div>
+</section>
+<section id="random-forest-hyperparameters" class="slide level2">
+<h2>Random Forest Hyperparameters</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>scikit-learn</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Number of trees</td>
+<td><code>n_estimators</code></td>
+<td>More trees = more stable predictions, but slower</td>
+</tr>
+<tr class="even">
+<td><strong>Features per split</strong></td>
+<td><strong><code>max_features</code></strong></td>
+<td><strong>Most important: controls <span class="math inline">\(m_{try}\)</span>, the randomness at each split</strong></td>
+</tr>
+<tr class="odd">
+<td>Max tree depth</td>
+<td><code>max_depth</code></td>
+<td>How deep each tree can grow (limits complexity)</td>
+</tr>
+<tr class="even">
+<td>Min samples to split</td>
+<td><code>min_samples_split</code></td>
+<td>A node must have at least this many observations to be split</td>
+</tr>
+<tr class="odd">
+<td>Min samples in leaf</td>
+<td><code>min_samples_leaf</code></td>
+<td>Each leaf must contain at least this many observations</td>
+</tr>
+<tr class="even">
+<td>Bootstrap</td>
+<td><code>bootstrap</code></td>
+<td>Whether to use bootstrap sampling (True) or full dataset (False)</td>
+</tr>
+<tr class="odd">
+<td>Max leaf nodes</td>
+<td><code>max_leaf_nodes</code></td>
+<td>Cap on total number of leaves per tree</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><strong><code>max_features</code></strong> is the most important — it controls the bias-variance tradeoff
+<ul>
+<li>Small <code>max_features</code>: trees are more different (less correlated), but individually weaker</li>
+<li>Large <code>max_features</code>: trees are stronger individually, but more similar to each other</li>
+<li>Rule of thumb: <span class="math inline">\(p/3\)</span> for regression, <span class="math inline">\(\sqrt{p}\)</span> for classification</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="tuning-random-forests" class="slide level2">
+<h2>Tuning Random Forests</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Important</strong>: <code>max_features</code> (equivalent to <span class="math inline">\(m_{try}\)</span>)</li>
+<li>Marginal: tree complexity, splitting rule, sampling scheme</li>
+</ul>
+<div id="3f703769" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb6-2"><a></a></span>
+<span id="cb6-3"><a></a>p <span class="op">=</span> X.shape[<span class="dv">1</span>]</span>
+<span id="cb6-4"><a></a>param_grid <span class="op">=</span> {</span>
+<span id="cb6-5"><a></a>    <span class="st">"max_features"</span>: <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2</span>, p <span class="op">+</span> <span class="dv">1</span>, <span class="dv">2</span>)),</span>
+<span id="cb6-6"><a></a>}</span>
+<span id="cb6-7"><a></a>rf <span class="op">=</span> RandomForestRegressor(</span>
+<span id="cb6-8"><a></a>    n_estimators<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb6-9"><a></a>)</span>
+<span id="cb6-10"><a></a>cv_rf <span class="op">=</span> GridSearchCV(</span>
+<span id="cb6-11"><a></a>    rf, param_grid, cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb6-12"><a></a>    scoring<span class="op">=</span><span class="st">"neg_root_mean_squared_error"</span></span>
+<span id="cb6-13"><a></a>)</span>
+<span id="cb6-14"><a></a>cv_rf.fit(X, y)</span>
+<span id="cb6-15"><a></a><span class="bu">print</span>(<span class="ss">f"Best max_features: "</span></span>
+<span id="cb6-16"><a></a>      <span class="ss">f"</span><span class="sc">{</span>cv_rf<span class="sc">.</span>best_params_[<span class="st">'max_features'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-17"><a></a><span class="bu">print</span>(<span class="ss">f"Best CV RMSE: "</span></span>
+<span id="cb6-18"><a></a>      <span class="ss">f"</span><span class="sc">{</span><span class="op">-</span>cv_rf<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best max_features: 18
+Best CV RMSE: 0.6467</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="4bcecb2f" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a></a><span class="co">#| fig-align: center</span></span>
+<span id="cb8-3"><a></a>results <span class="op">=</span> pd.DataFrame(cv_rf.cv_results_)</span>
+<span id="cb8-4"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb8-5"><a></a>ax.plot(</span>
+<span id="cb8-6"><a></a>    results[<span class="st">"param_max_features"</span>].astype(<span class="bu">int</span>),</span>
+<span id="cb8-7"><a></a>    <span class="op">-</span>results[<span class="st">"mean_test_score"</span>],</span>
+<span id="cb8-8"><a></a>    marker<span class="op">=</span><span class="st">"o"</span>,</span>
+<span id="cb8-9"><a></a>)</span>
+<span id="cb8-10"><a></a>ax.set_xlabel(<span class="st">"max_features (mtry)"</span>)</span>
+<span id="cb8-11"><a></a>ax.set_ylabel(<span class="st">"CV RMSE"</span>)</span>
+<span id="cb8-12"><a></a>ax.set_title(<span class="st">"RF Tuning"</span>)</span>
+<span id="cb8-13"><a></a>plt.tight_layout()</span>
+<span id="cb8-14"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="JSC370-slides-08_files/figure-revealjs/cell-6-output-1.png" width="566" height="374"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="variable-importance" class="slide level2 scrollable">
+<h2>Variable Importance</h2>
+<ul>
+<li>After fitting a random forest, we want to know: <strong>which features matter most?</strong></li>
+<li>Two common approaches:</li>
+</ul>
+<div class="fragment">
+<ol type="1">
+<li><strong>Impurity-based (Gain)</strong>: total reduction in the splitting criterion (e.g.&nbsp;RSS for regression, Gini for classification) each time a feature is used to split, averaged over all trees</li>
+<li><strong>Permutation-based</strong>: randomly shuffle one feature’s values and measure how much the model’s accuracy drops — bigger drop = more important</li>
+</ol>
+</div>
+<div class="fragment">
+<ul>
+<li>Impurity-based importance is fast (computed during training) but can be biased toward high-cardinality features</li>
+<li>Permutation importance is more reliable but slower (requires re-prediction)</li>
+</ul>
+</div>
+</section>
+<section id="variable-importance-mlb-example" class="slide level2">
+<h2>Variable Importance: MLB Example</h2>
+<div id="4d44c187" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> permutation_importance</span>
+<span id="cb9-2"><a></a></span>
+<span id="cb9-3"><a></a><span class="co"># Impurity-based (gain)</span></span>
+<span id="cb9-4"><a></a>gain_imp <span class="op">=</span> pd.Series(</span>
+<span id="cb9-5"><a></a>    oob_rf.feature_importances_, index<span class="op">=</span>X.columns</span>
+<span id="cb9-6"><a></a>).sort_values(ascending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-7"><a></a></span>
+<span id="cb9-8"><a></a><span class="co"># Permutation-based</span></span>
+<span id="cb9-9"><a></a>perm <span class="op">=</span> permutation_importance(</span>
+<span id="cb9-10"><a></a>    oob_rf, X, y, n_repeats<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb9-11"><a></a>)</span>
+<span id="cb9-12"><a></a>perm_imp <span class="op">=</span> pd.Series(</span>
+<span id="cb9-13"><a></a>    perm.importances_mean, index<span class="op">=</span>X.columns</span>
+<span id="cb9-14"><a></a>).sort_values(ascending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-15"><a></a></span>
+<span id="cb9-16"><a></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb9-17"><a></a>gain_imp.plot.barh(ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb9-18"><a></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Mean decrease in RSS (Gain)"</span>)</span>
+<span id="cb9-19"><a></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Impurity-based"</span>)</span>
+<span id="cb9-20"><a></a>perm_imp.plot.barh(ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb9-21"><a></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Mean decrease in R²"</span>)</span>
+<span id="cb9-22"><a></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Permutation-based"</span>)</span>
+<span id="cb9-23"><a></a>plt.tight_layout()</span>
+<span id="cb9-24"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-08_files/figure-revealjs/cell-7-output-1.png" class="quarto-figure quarto-figure-center" width="1142" height="470"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="boosting" class="slide level2">
+<h2>Boosting</h2>
+<p>Build ensemble models <strong>sequentially</strong></p>
+<div class="fragment">
+<ul>
+<li>start with a <strong>weak learner</strong>, e.g.&nbsp;small decision tree with few splits</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>each model in the sequence <em>slightly</em> improves upon the predictions of the previous models <strong>by focusing on the observations with the largest errors / residuals</strong></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="https://bradleyboehmke.github.io/HOML/images/boosted-trees-process.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="boosted-trees-algorithm" class="slide level2">
+<h2>Boosted trees algorithm</h2>
+<p>Write the prediction at step <span class="math inline">\(t\)</span> of the search as <span class="math inline">\(\hat y_i^{(t)}\)</span>, start with <span class="math inline">\(\hat y_i^{(0)} = 0\)</span></p>
+<ul>
+<li>Fit the first decision tree <span class="math inline">\(f_1\)</span> to the data: <span class="math inline">\(\hat y_i^{(1)} = f_1(x_i) = \hat y_i^{(0)} + f_1(x_i)\)</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Fit the next tree <span class="math inline">\(f_2\)</span> to the residuals of the previous: <span class="math inline">\(y_i - \hat y_i^{(1)}\)</span></p></li>
+<li><p>Add this to the prediction: <span class="math inline">\(\hat y_i^{(2)} = \hat y_i^{(1)} + f_2(x_i) = f_1(x_i) + f_2(x_i)\)</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Fit the next tree <span class="math inline">\(f_3\)</span> to the residuals of the previous: <span class="math inline">\(y_i - \hat y_i^{(2)}\)</span></p></li>
+<li><p>Add this to the prediction: <span class="math inline">\(\hat y_i^{(3)} = \hat{y}_i^{(2)} + f_3(x_i) = f_1(x_i) + f_2(x_i) + f_3(x_i)\)</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>Continue until some stopping criteria</strong> to reach final model as a <strong>sum of trees</strong>:</p>
+<p><span class="math display">\[\hat{y_i} = f(x_i) = \sum_{b=1}^B f_b(x_i)\]</span></p>
+</div>
+</section>
+<section id="visual-example-of-boosting-in-action" class="slide level2">
+<h2>Visual example of boosting in action</h2>
+
+<img data-src="https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/boosting-in-action-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="gradient-boosted-trees" class="slide level2">
+<h2>Gradient boosted trees</h2>
+<p>Regression boosting algorithm can be generalized to other loss functions via <strong>gradient descent</strong> - leading to gradient boosted trees, aka <strong>gradient boosting machines (GBMs)</strong></p>
+<p>Update the model parameters in the direction of the loss function’s descending gradient</p>
+
+<img data-src="https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/gradient-descent-fig-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"></section>
+<section id="tune-the-learning-rate-in-gradient-descent" class="slide level2">
+<h2>Tune the learning rate in gradient descent</h2>
+<p>We need to control how much we update by in each step - <strong>the learning rate</strong></p>
+
+<img data-src="https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/learning-rate-fig-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section class="slide level2">
+
+<h3 id="stochastic-gradient-descent-can-help-with-complex-loss-functions">Stochastic gradient descent can help with complex loss functions</h3>
+<ul>
+<li><p><strong>Batch gradient descent</strong> computes the gradient using <strong>all</strong> <span class="math inline">\(N\)</span> observations — expensive, and can get stuck in local minima</p></li>
+<li><p><strong>Stochastic GD</strong> randomly samples a subset of data each iteration</p></li>
+<li><p>The gradient estimate is <strong>noisier</strong>, which actually helps:</p>
+<ul>
+<li>Escape local minima and saddle points</li>
+<li>Each update is cheaper to compute</li>
+<li>Adds a regularization effect — noisy updates prevent overfitting</li>
+</ul></li>
+</ul>
+
+<img data-src="https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/stochastic-gradient-descent-fig-1.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="extreme-gradient-boosting-with-xgboost" class="slide level2">
+<h2>eXtreme gradient boosting with <a href="https://xgboost.readthedocs.io/en/latest/python/python_intro.html">XGBoost</a></h2>
+
+<img data-src="https://media1.tenor.com/images/6e86cad4899cd02047c33ecfc0e4052b/tenor.gif?itemid=11446810" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"></section>
+<section id="gbmxgb-hyperparameters" class="slide level2 smaller">
+<h2>GBM/XGB Hyperparameters</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>XGBoost</th>
+<th>What it controls</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Number of trees</strong></td>
+<td><code>n_estimators</code></td>
+<td>Total boosting rounds; more trees = more expressive but risk overfitting</td>
+</tr>
+<tr class="even">
+<td><strong>Learning rate</strong></td>
+<td><code>learning_rate</code> (<span class="math inline">\(\eta\)</span>)</td>
+<td>Shrinkage per step; smaller = slower learning, needs more trees</td>
+</tr>
+<tr class="odd">
+<td><strong>Max depth</strong></td>
+<td><code>max_depth</code></td>
+<td>Depth of each tree; controls interaction order (depth <span class="math inline">\(d\)</span> captures <span class="math inline">\(d\)</span>-way interactions)</td>
+</tr>
+<tr class="even">
+<td>Min child weight</td>
+<td><code>min_child_weight</code></td>
+<td>Minimum sum of instance weights in a leaf; acts like <code>min_samples_leaf</code></td>
+</tr>
+<tr class="odd">
+<td>Subsample ratio</td>
+<td><code>subsample</code></td>
+<td>Fraction of rows sampled per tree (stochastic gradient descent)</td>
+</tr>
+<tr class="even">
+<td>Column subsample</td>
+<td><code>colsample_bytree</code></td>
+<td>Fraction of features sampled per tree (similar to RF’s <code>max_features</code>)</td>
+</tr>
+<tr class="odd">
+<td>L2 regularization</td>
+<td><code>reg_lambda</code> (<span class="math inline">\(\lambda\)</span>)</td>
+<td>Ridge penalty on leaf weights; prevents large predictions</td>
+</tr>
+<tr class="even">
+<td>L1 regularization</td>
+<td><code>reg_alpha</code> (<span class="math inline">\(\alpha\)</span>)</td>
+<td>Lasso penalty on leaf weights; encourages sparsity</td>
+</tr>
+<tr class="odd">
+<td>Min split loss</td>
+<td><code>gamma</code> (<span class="math inline">\(\gamma\)</span>)</td>
+<td>Minimum loss reduction required to make a split; acts as pruning</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><strong><code>n_estimators</code> and <code>learning_rate</code></strong> must be tuned together — lower learning rate needs more trees</li>
+<li>Rule of thumb: set <code>learning_rate</code> small (0.01–0.1), then find the right <code>n_estimators</code> via early stopping</li>
+<li><strong>More work to tune than random forests</strong>, but GBMs offer more flexibility for different objective functions</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>In XGBoost, stochastic gradient descent is controlled by:
+<ul>
+<li><strong><code>subsample</code></strong>: fraction of rows sampled per tree (e.g., 0.8 = 80%)</li>
+<li><strong><code>colsample_bytree</code></strong>: fraction of features sampled per tree</li>
+</ul></li>
+<li>Both default to <code>1.0</code> (full data) — setting them below 1.0 enables stochastic updates</li>
+</ul>
+</div>
+</section>
+<section id="xgboost-example" class="slide level2">
+<h2>XGBoost example</h2>
+<div id="2b7c3682" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a><span class="im">from</span> xgboost <span class="im">import</span> XGBRegressor</span>
+<span id="cb10-2"><a></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb10-3"><a></a><span class="im">import</span> warnings</span>
+<span id="cb10-4"><a></a>warnings.filterwarnings(<span class="st">"ignore"</span>)</span>
+<span id="cb10-5"><a></a></span>
+<span id="cb10-6"><a></a>xgb_param_grid <span class="op">=</span> {</span>
+<span id="cb10-7"><a></a>    <span class="st">"n_estimators"</span>: <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">20</span>, <span class="dv">201</span>, <span class="dv">20</span>)),</span>
+<span id="cb10-8"><a></a>    <span class="st">"learning_rate"</span>: [<span class="fl">0.025</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.3</span>],</span>
+<span id="cb10-9"><a></a>    <span class="st">"max_depth"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>],</span>
+<span id="cb10-10"><a></a>}</span>
+<span id="cb10-11"><a></a></span>
+<span id="cb10-12"><a></a>xgb <span class="op">=</span> XGBRegressor(</span>
+<span id="cb10-13"><a></a>    objective<span class="op">=</span><span class="st">"reg:squarederror"</span>,</span>
+<span id="cb10-14"><a></a>    gamma<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb10-15"><a></a>    colsample_bytree<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-16"><a></a>    min_child_weight<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-17"><a></a>    subsample<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-18"><a></a>    random_state<span class="op">=</span><span class="dv">1937</span>,</span>
+<span id="cb10-19"><a></a>    verbosity<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb10-20"><a></a>)</span>
+<span id="cb10-21"><a></a></span>
+<span id="cb10-22"><a></a>xgb_cv <span class="op">=</span> GridSearchCV(</span>
+<span id="cb10-23"><a></a>    xgb, xgb_param_grid, cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb10-24"><a></a>    scoring<span class="op">=</span><span class="st">"neg_root_mean_squared_error"</span>,</span>
+<span id="cb10-25"><a></a>    n_jobs<span class="op">=-</span><span class="dv">1</span>,</span>
+<span id="cb10-26"><a></a>)</span>
+<span id="cb10-27"><a></a>xgb_cv.fit(X, y)</span>
+<span id="cb10-28"><a></a><span class="bu">print</span>(<span class="st">"Best parameters:"</span>, xgb_cv.best_params_)</span>
+<span id="cb10-29"><a></a><span class="bu">print</span>(<span class="ss">f"Best CV RMSE: </span><span class="sc">{</span><span class="op">-</span>xgb_cv<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb10-30"><a></a><span class="bu">print</span>(<span class="ss">f"Training R²:  </span><span class="sc">{</span>xgb_cv<span class="sc">.</span>best_estimator_<span class="sc">.</span>score(X, y)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best parameters: {'learning_rate': 0.3, 'max_depth': 1, 'n_estimators': 200}
+Best CV RMSE: 0.4621
+Training R²:  0.9951</code></pre>
+</div>
+</div>
+</section>
+<section id="xgboost-variable-importance" class="slide level2">
+<h2>XGBoost Variable Importance</h2>
+<div id="b026a8dd" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>xgb_fit_final <span class="op">=</span> xgb_cv.best_estimator_</span>
+<span id="cb12-2"><a></a></span>
+<span id="cb12-3"><a></a>importances_xgb <span class="op">=</span> pd.Series(xgb_fit_final.feature_importances_, index<span class="op">=</span>X.columns)</span>
+<span id="cb12-4"><a></a>importances_xgb <span class="op">=</span> importances_xgb.sort_values(ascending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-5"><a></a></span>
+<span id="cb12-6"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb12-7"><a></a>importances_xgb.plot.barh(ax<span class="op">=</span>ax)</span>
+<span id="cb12-8"><a></a>ax.set_xlabel(<span class="st">"Importance"</span>)</span>
+<span id="cb12-9"><a></a>ax.set_title(<span class="st">"XGBoost Variable Importance"</span>)</span>
+<span id="cb12-10"><a></a>plt.tight_layout()</span>
+<span id="cb12-11"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-08_files/figure-revealjs/cell-9-output-1.png" class="quarto-figure quarto-figure-center" width="758" height="566"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="partial-dependence-plots-pdps" class="slide level2">
+<h2>Partial Dependence Plots (PDPs)</h2>
+<ul>
+<li>Variable importance tells us <strong>which</strong> features matter, but not <strong>how</strong> they affect predictions</li>
+<li><strong>Partial dependence plots</strong> show the marginal effect of a feature on the predicted outcome</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><strong>How it works</strong>: for a feature <span class="math inline">\(x_j\)</span>, evaluate the model at each value of <span class="math inline">\(x_j\)</span> while averaging over all other features: <span class="math display">\[\hat{f}_j(x_j) = \frac{1}{N} \sum_{i=1}^{N} \hat{f}(x_j, \, x_{i,-j})\]</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Flat line</strong> → feature has little effect on predictions</li>
+<li><strong>Steep slope</strong> → predictions are sensitive to that feature</li>
+<li><strong>Non-linear shape</strong> → model learned a relationship that linear regression would miss</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>PDPs work with <strong>any</strong> model (random forests, GBMs, etc.), not just XGBoost</li>
+</ul>
+</div>
+</section>
+<section id="partial-dependence-mlb-example" class="slide level2">
+<h2>Partial Dependence: MLB Example</h2>
+<p>This is the partial dependence parameter for the <code>off</code> variable</p>
+<div id="a9f333de" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> PartialDependenceDisplay</span>
+<span id="cb13-2"><a></a></span>
+<span id="cb13-3"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
+<span id="cb13-4"><a></a>PartialDependenceDisplay.from_estimator(</span>
+<span id="cb13-5"><a></a>    xgb_fit_final, X, features<span class="op">=</span>[<span class="st">"off"</span>], ax<span class="op">=</span>ax</span>
+<span id="cb13-6"><a></a>)</span>
+<span id="cb13-7"><a></a>ax.set_title(<span class="st">"Partial Dependence: off"</span>)</span>
+<span id="cb13-8"><a></a>plt.tight_layout()</span>
+<span id="cb13-9"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="JSC370-slides-08_files/figure-revealjs/cell-10-output-1.png" class="quarto-figure quarto-figure-center" width="758" height="470"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="training-and-testing-the-big-picture" class="slide level2 scrollable">
+<h2>Training and Testing: The Big Picture</h2>
+<p>A proper ML workflow separates data into distinct roles:</p>
+<div class="fragment">
+<ol type="1">
+<li><strong>Split</strong> the data into a <strong>training set</strong> (~70–80%) and a <strong>test set</strong> (~20–30%) before doing anything</li>
+<li><strong>Tune hyperparameters</strong> using only the training set (via cross-validation or OOB)</li>
+<li><strong>Refit</strong> the final model on the full training set with the best hyperparameters</li>
+<li><strong>Evaluate</strong> on the held-out test set — this is your honest estimate of real-world performance</li>
+</ol>
+</div>
+<div class="fragment">
+<ul>
+<li>The test set must be <strong>completely untouched</strong> during training and tuning — otherwise your performance estimate is biased</li>
+<li>If you tune on the test set, you are effectively <strong>fitting to the test data</strong> and your reported metrics will be overly optimistic</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Next week</strong>: more on cross-validation strategies, train/validation/test splits, and how to avoid data leakage</li>
+</ul>
+
+
+</div>
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

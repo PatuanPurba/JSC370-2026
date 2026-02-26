@@ -1,0 +1,961 @@
+---
+title: "JSC 370: Data Science II "
+subtitle: "Week 8: Decision Trees, Random Forests, Boosting and Gradient Boosting"
+format:
+  revealjs:
+    transition: slide
+    slide-number: true
+    scrollable: true
+    css: styles.css
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+---
+
+## Outline
+- Part 1: Motivation for Classification and Regression Trees
+- Part 2: Decision Trees
+- Part 3: Ensemble methods including Bagging, Random Forests, Boosting, Gradient Boosting, XGBoost
+
+---
+
+## Geometry of Data for Classification
+
+- The decision boundary is defined where the probability of being in class 1 and class 0 are equal, i.e.
+
+$$P(Y=1) = P(Y=0) \rightarrow P(Y=1) = 0.5$$
+- In logistic regression this is equivalent the log-odds=0:  $x\beta=0$
+
+---
+
+
+## Geometry of Data for Classification
+
+- Here we are classifying vegetation and non-vegetation
+- The decision boundary is 
+$$−0.8 x_1+x_2=0 \rightarrow x_2=0.8x_1$$
+- This translates to latitude $=0.8\times$ longitude
+
+![](img/logistic.png){fig-align="center"}
+
+---
+
+## Geometry of Data for Classification
+
+- Logistic regression for classification works best when the classes are well separated in the feature space
+- Linear boundaries are easy to interpret, but not straightforward in non-linear cases
+
+---
+
+## Geometry of Data for Classification
+
+![](img/logistic2.png){fig-align="center"}
+
+- __LHS__: Multiple linear boundaries that form squares will perform better
+
+- __RHS__: Circular boundaries will perform better
+
+---
+
+## Geometry of Data for Regression
+
+- In regression, the goal is to predict a __continuous outcome__ rather than a class label
+
+- Instead of finding decision boundaries that separate classes, we partition the feature space into regions where we predict the __mean response__
+
+- Linear regression fits a global model: $\hat y = x\beta$, which works well when the relationship is linear
+
+. . .
+
+- But what if the relationship is __non-linear__ or involves __interactions__?
+  - We could add polynomial terms or interaction terms, but this requires knowing the form in advance
+  - GAM models were a step in this direction
+  - Tree-based methods __automatically__ discover non-linear relationships and interactions by recursively partitioning the feature space
+
+---
+
+## Regression Trees
+
+- A regression tree splits the feature space into $M$ distinct, non-overlapping regions $R_1, R_2, \dots, R_M$
+- For each region, we predict the __mean of the training responses__ in that region:
+$$ \hat y_{R_m} = \frac{1}{|R_m|} \sum_{i \in R_m} y_i $$
+
+. . .
+
+- To build the tree, we minimize the __residual sum of squares (RSS)__:
+$$\text{RSS} = \sum_{m=1}^{M} \sum_{i \in R_m} (y_i - \hat{y}_{R_m})^2$$
+
+. . .
+
+- At each step, we choose the predictor $j$ and split point $s$ that minimize:
+$$\sum_{i: x_i \in R_1(j,s)} (y_i - \hat y_{R_1})^2 + \sum_{i: x_i \in R_2(j,s)} (y_i - \hat y_{R_2})^2$$
+
+
+---
+
+## Decision Trees
+- Simple flow charts can be formulated as mathematical models for both classification and regression.
+- Properties:
+  - Interpretable by humans.
+  - Sufficiently complex decision boundaries.
+  - Locally linear decision boundaries.
+
+---
+
+## Decision Tree: Classification
+
+- Involve stratifying or segmenting the space into simple regions.
+
+
+![](img/tree1.png){fig-align="center" width="60%"}
+
+---
+
+## Decision Tree: Splitting
+
+Formally, a decision tree model is one in which the final outcome of the model is based on a series of comparisons of the values of predictors against threshold values. Each comparison and branching represents splitting a region in the feature space on a single feature. Typically, at each iteration, we split once along one dimension (one predictor).
+
+![](img/tree2.png){fig-align="center" width="50%"}
+
+---
+
+## Decision Tree Terminology
+
+- __Root node__: the top of the tree — contains all observations before any split
+- __Internal node__: where a split occurs — applies a rule like "is $x_j \leq t$?" and sends observations left or right
+- __Split__: the act of dividing a node into two child nodes based on a feature and threshold
+- __Leaf node__ (terminal node): where splitting has stopped — holds the final prediction
+  - Classification: the majority class in that leaf
+  - Regression: the mean response in that leaf
+- __Depth__: how many splits deep a node is from the root
+
+. . .
+
+Every path from root to leaf represents a series of __if-then rules__ — this is what makes decision trees interpretable
+
+---
+
+## Decision Tree: Regression
+
+- Predict grade from study time 
+
+
+![](img/regression-tree1.webp){fig-align="center" width="60%"}
+
+---
+
+
+## Decision Tree: Regression
+
+- The tree splits study time into $M$ distinct, non-overlapping regions $R_1, R_2, \dots, R_M$
+
+
+::: {.columns}
+
+::: {.column width="50%"}
+![](img/regression-tree2.webp){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](img/regression-tree3.webp){fig-align="center"}
+:::
+
+:::
+
+---
+
+
+
+## Learning the Tree Model
+
+1. Start with an empty decision tree.
+2. Choose the 'optimal' predictor and threshold for splitting.
+3. Recurse on each new node until stopping condition is met.
+4. Define the splitting criterion and stopping condition.
+
+__We need to define the splitting criterion and stopping condition__
+
+---
+
+## Greedy Algorithms
+
+- Always makes the choice that seems best at the moment.
+- Ensures local optimality at each step.
+- Makes greedy choices at each step to ensure that the objective function is optimized.
+- Never reverses a decision.
+
+. . .
+
+__Example: Making change for $0.63__
+
+- Available coins: quarters (25¢), dimes (10¢), nickels (5¢), pennies (1¢)
+- Greedy approach: always pick the largest coin that fits
+  - 25¢ → 25¢ → 10¢ → 1¢ → 1¢ → 1¢ = 6 coins
+- In decision trees: at each node, pick the single split (feature + threshold) that gives the best improvement — without considering whether a different split now might lead to a better tree overall
+
+---
+
+
+## Optimality of Splitting
+
+- The greedy algorithm needs a metric to decide the "best" split at each node
+- No single 'correct' way to define an optimal split, but two common approaches:
+
+. . .
+
+- __Classification__: minimize __impurity__ — how mixed are the classes in each region?
+  - Gini Index (most common), Entropy / Information Gain
+- __Regression__: minimize __RSS__ — how far are observations from the region mean?
+
+. . .
+
+- Common sense guidelines:
+  - Feature space should grow progressively more pure (classification) or more homogeneous (regression) with splits
+  - Fitness metric of a split should be differentiable
+  - Avoid empty regions with no training points
+
+---
+
+## Gini Index
+
+- The Gini Index is a metric used to measure the impurity or homogeneity of a dataset at a node.
+- It helps in determining the best feature to split on when building the tree.
+
+---
+
+## Gini Index
+- Suppose we have $J$ predictors, $N$ number of training points and  $K$ classes.
+- Suppose we select the $j$-th predictor and split a region containing $N$ number of training points along the threshold $t_j \in R$.
+- We can assess the quality of this split by measuring the purity of each newly created region, $R_1,R_2$. This metric is called the Gini Index:
+$$Gini = 1 - \sum_{i=1}^{k} p(k|R_i)^2$$
+
+---
+
+## Gini Index
+Understanding Gini Index
+
+- If all samples at a node belong to the same class, Gini = 0 (pure node).
+- If samples are evenly distributed among classes, Gini is maximized.
+- The goal of splitting in decision trees (like CART) is to minimize the Gini Index, leading to purer nodes.
+
+---
+
+## Gini Index
+
+![](img/gini.png){fig-align="center" width="50%"}
+
+We can try to find the predictor $j$ and the threshold $t_j$ that minimizes the average Gini Index over the two regions, weighted by the population of the regions ($N_i$ is the number of training points in region $R_i$):
+
+![](img/gini2.png){fig-align="center" width="50%"}
+
+---
+
+## RSS for Regression Trees
+
+- For regression, we use __Residual Sum of Squares (RSS)__ instead of Gini
+- At each split, choose the predictor $j$ and threshold $s$ that minimize the weighted RSS across the two new regions:
+
+$$\text{RSS}(j, s) = \sum_{i: x_i \in R_1(j,s)} (y_i - \hat y_{R_1})^2 + \sum_{i: x_i \in R_2(j,s)} (y_i - \hat y_{R_2})^2$$
+
+where $\hat y_{R_m}$ is the mean response in region $R_m$
+
+. . .
+
+- __Intuition__: a good split creates regions where the observations are close to their region mean — i.e., the variation within each region is small
+- Like Gini, the greedy algorithm tries every feature and every possible split point, and picks the one with the lowest RSS
+
+---
+
+## Splitting Criteria: Summary
+
+| | Classification | Regression |
+|---|---|---|
+| __Goal__ | Maximize purity | Minimize variance |
+| __Metric__ | Gini Index | RSS |
+| __Prediction__ | Majority class in region | Mean response in region |
+| __Greedy choice__ | Split that reduces Gini most | Split that reduces RSS most |
+
+---
+
+## From Splitting to Stopping
+
+- We now know how to evaluate a split: Gini (classification) or RSS (regression)
+- The greedy algorithm keeps splitting — but __when should it stop?__
+
+. . .
+
+- If we never stop, the tree grows until every leaf contains a single observation
+  - Perfect training accuracy, but massive __overfitting__
+- We need a __stopping condition__ to decide when a split is no longer worth making
+
+---
+
+## Gain: Measuring Improvement from a Split
+
+- __Gain__ measures how much a split improves the metric — it is the difference between the impurity (or RSS) of the parent node and the weighted average of the children:
+
+$$\text{Gain}(R) = m(R) - \frac{N_1}{N} m(R_1) - \frac{N_2}{N} m(R_2)$$
+
+- where $m$ is the splitting metric (Gini, entropy, or RSS), $R$ is the parent region, $R_1, R_2$ are the child regions, and $N_1, N_2$ are their sizes
+
+. . .
+
+- __High gain__: the split meaningfully separates the data — worth doing
+- __Low gain__: the split barely improves things — may not be worth the added complexity
+- __Zero gain__: no improvement — the split does nothing useful
+
+---
+
+## Stopping Conditions
+
+We can stop splitting when:
+
+- The __gain falls below a threshold__ — the split doesn't improve enough to justify
+- A node reaches a __minimum number of observations__ (e.g., `min_samples_leaf`)
+- The tree reaches a __maximum depth__
+- A node is already __pure__ (Gini = 0) or has __zero RSS__
+
+. . .
+
+__Problem__: What is the major issue with pre-specifying a stopping condition?
+
+- You may stop __too early__ (miss useful splits deeper in the tree) or __too late__ (overfit)
+
+. . .
+
+__Solutions__:
+
+- Try several thresholds and __cross-validate__ to find the best one
+- Or: don't stop at all — grow the full tree, then __prune__ it back
+
+---
+
+## Pruning
+
+- Instead of trying to find the right stopping condition up front, __grow a large tree first__, then cut it back
+- A fully grown tree overfits — it memorizes the training data, including noise
+
+![](img/full-tree.png){fig-align="center" width="80%"}
+
+---
+
+## Pruning: How It Works
+
+- __Cost-complexity pruning__: add a penalty for tree size
+
+$$\text{Cost}(T) = \text{RSS}(T) + \alpha |T|$$
+  - $|T|$ = number of leaf nodes, $\alpha$ = complexity parameter
+  - Small $\alpha$: keep more leaves (complex tree)
+  - Large $\alpha$: penalize leaves heavily (simpler tree)
+
+. . .
+
+- For each $\alpha$, find the subtree that minimizes Cost($T$)
+- Use __cross-validation__ to choose the best $\alpha$
+
+---
+
+## Pruning: Before and After
+
+![](img/tree-prune.png){fig-align="center" width="80%"}
+
+- The pruned tree is simpler, more interpretable, and generalizes better to new data
+- We trade a small increase in training error for a large decrease in test error
+
+---
+
+## Summary: Decision trees
+
+Decision trees partition training data into __homogenous nodes / subgroups__ with similar response values.
+
+__Pros__
+
+- Decision trees are __very easy to explain__ to non-statisticians.
+- Easy to visualize and thus easy to interpret __without assuming a parametric form__
+
+__Cons__
+
+- High variance, i.e. split a dataset in half and grow tress in each half, the result will be very different
+- Related note - __they generalize poorly resulting in higher test set error rates__
+
+. . .
+
+But there are several ways we can overcome this via __ensemble models__
+
+---
+
+## Bagging
+
+__Bootstrap aggregation__ (aka bagging) is a general approach for overcoming high variance
+
+. . .
+
+- __Bootstrap__: sample the training data _with replacement_
+
+![](https://bradleyboehmke.github.io/HOML/images/bootstrap-scheme.png){fig-align="center" width="60%"}
+
+. . .
+
+- __Aggregation__: Combine the results from many trees together, each constructed with a different bootstrapped sample of the data
+
+---
+
+## Bagging Algorithm
+
+Start with a __specified number of trees $B$__:
+
+. . .
+
+- For each tree $b$ in $1, \dots, B$:
+
+  - Construct a bootstrap sample from the training data
+
+. . .
+
+  - Grow a deep, unpruned, complicated (aka really overfit!) tree
+
+. . .
+
+To generate a prediction for a new point:
+
+- __Regression__: take the __average__ across the $B$ trees
+
+. . .
+
+- __Classification__: take the __majority vote__ across the $B$ trees
+
+  - assuming each tree predicts a single class (could use probabilities instead...)
+
+. . .
+
+Improves prediction accuracy via __wisdom of the crowds__ - but at the expense of interpretability
+
+- Easy to read one tree, but how do you read $B = 500$?
+
+. . .
+
+But we can still use the measures of __variable importance__ and __partial dependence__ to summarize our models
+
+---
+
+## Random Forest Algorithm
+
+Random forests are __an extension of bagging__
+
+. . .
+
+- For each tree $b$ in $1, \dots, B$:
+
+  - Construct a bootstrap sample from the training data
+
+. . .
+
+  - Grow a deep, unpruned, complicated (aka really overfit!) tree __but with a twist__
+
+. . .
+
+  - __At each split__: limit the variables considered to a __random subset__ $m_{try}$ of original $p$ variables
+
+. . .
+
+Predictions are made the same way as bagging:
+
+- __Regression__: take the __average__ across the $B$ trees
+
+- __Classification__: take the __majority vote__ across the $B$ trees
+
+. . .
+
+__Split-variable randomization__ adds more randomness to make __each tree more independent of each other__
+
+. . .
+
+Introduce $m_{try}$ as a tuning parameter: typically use $p / 3$ (regression) or $\sqrt{p}$ (classification)
+
+- $m_{try} = p$ is bagging
+
+---
+
+## Example data: MLB 2021 batting statistics
+
+The MLB 2021 batting statistics leaderboard from [Fangraphs](https://www.fangraphs.com/leaders.aspx?pos=all&stats=bat&lg=all&qual=y&type=8&season=2021&month=0&season1=2021&ind=0)
+
+We aim to predict WAR (Wins Above Replacement), an advanced metric that estimates the total number of wins a player contributes to their team compared to a "replacement-level" player. A replacement-level player is a theoretical player who is readily available, typically a Triple-A call-up or a minimum-salary free agent, and represents the baseline of a "0.0 WAR" player
+
+```{python}
+import pandas as pd
+import numpy as np
+
+mlb_data = pd.read_csv("http://www.stat.cmu.edu/cmsac/sure/2021/materials/data/fg_batting_2021.csv")
+mlb_data.columns = mlb_data.columns.str.lower().str.replace(" ", "_")
+
+# fix strings with % in BB% and K% to make numeric
+for col in ["bb%", "k%"]:
+    if col in mlb_data.columns:
+        mlb_data[col] = mlb_data[col].astype(str).str.replace("%", "").str.strip()
+        mlb_data[col] = pd.to_numeric(mlb_data[col], errors="coerce")
+
+model_mlb_data = mlb_data.drop(columns=["name", "team", "playerid"], errors="ignore")
+model_mlb_data.head()
+```
+
+---
+
+## MLB 2021 Batting Statistics: Variables {.smaller}
+
+| Column | Description | Column | Description |
+|---|---|---|---|
+| `g` | Games played | `babip` | Batting avg on balls in play |
+| `pa` | Plate appearances | `avg` | Batting average |
+| `hr` | Home runs | `obp` | On-base percentage |
+| `r` | Runs scored | `slg` | Slugging percentage |
+| `rbi` | Runs batted in | `woba` | Weighted on-base average |
+| `sb` | Stolen bases | `xwoba` | Expected wOBA (Statcast) |
+| `bb%` | Walk rate (%) | `wrc+` | Weighted runs created plus |
+| `k%` | Strikeout rate (%) | `bsr` | Base running runs above avg |
+| `iso` | Isolated power (SLG − AVG) | `off` | Offensive runs above avg |
+|  |  | `def` | Defensive runs above avg |
+
+**Target**: `war` — Wins Above Replacement. Note, `off`, `def`, and `bsr` are direct components of WAR (WAR is approx Off + Def + BsR + replacement adjustment).
+
+---
+
+## Example Random Forest
+
+scikit-learn's `RandomForestRegressor` is a popular implementation
+
+```{python}
+from sklearn.ensemble import RandomForestRegressor
+
+model_mlb_data = model_mlb_data.dropna()
+X = model_mlb_data.drop(columns=["war"])
+y = model_mlb_data["war"]
+
+init_mlb_rf = RandomForestRegressor(n_estimators=50, random_state=42)
+init_mlb_rf.fit(X, y)
+print(f"R² (training): {init_mlb_rf.score(X, y):.4f}")
+```
+
+---
+
+## Out-of-bag (OOB) estimate
+
+- Each bootstrap sample draws $N$ observations __with replacement__ from the original $N$
+- Some observations will be selected multiple times, others __not at all__
+- On average, about $63\%$ of observations end up in any given bootstrap sample
+
+. . .
+
+- The remaining $\approx 37\%$ are called __out-of-bag (OOB)__ observations for that tree
+- For each observation $i$, roughly $B/3$ trees were built __without__ seeing it
+- We can predict observation $i$ using only those trees — giving a __built-in test set estimate__ without needing cross-validation
+
+---
+
+## OOB: Why 63%?
+
+- The probability that observation $i$ is __not__ selected in a single draw is $\left(1 - \frac{1}{N}\right)$
+- After $N$ draws with replacement: $P(\text{not in sample}) = \left(1 - \frac{1}{N}\right)^N \approx e^{-1} \approx 0.368$
+- So $P(\text{in sample}) \approx 1 - 0.368 = 0.632$, i.e. about $63\%$
+
+. . .
+
+- This means each tree has a __free validation set__ of ~37% of the data
+- The OOB error is computed by aggregating predictions for each observation using only the trees that did __not__ include it in training
+
+---
+
+## OOB in the MLB example
+
+```{python}
+# Refit with oob_score=True to get OOB R²
+oob_rf = RandomForestRegressor(n_estimators=50, oob_score=True, random_state=42)
+oob_rf.fit(X, y)
+print(f"R² (training):  {oob_rf.score(X, y):.4f}")
+print(f"R² (OOB):       {oob_rf.oob_score_:.4f}")
+```
+
+- The __training R²__ is high because the model has seen this data
+- The __OOB R²__ is a more honest estimate of performance on unseen data.
+
+---
+
+## Tuning Hyperparameters
+
+- A model's __hyperparameters__ are settings chosen __before__ training — they control how the model learns, not what it learns
+- Default values often work reasonably well, but tuning can significantly improve performance
+
+. . .
+
+- __Under-tuned model__: may underfit (too simple) or overfit (too complex)
+- __Well-tuned model__: finds the sweet spot between bias and variance
+
+. . .
+
+- Tuning is done via __cross-validation__: try different hyperparameter values, evaluate each on held-out folds, and pick the combination that generalizes best
+- This is especially important for ensemble methods where multiple hyperparameters interact with each other
+
+---
+
+## Random Forest Hyperparameters
+
+| Parameter | scikit-learn | What it controls |
+|---|---|---|
+| Number of trees | `n_estimators` | More trees = more stable predictions, but slower |
+| __Features per split__ | __`max_features`__ | __Most important: controls $m_{try}$, the randomness at each split__ |
+| Max tree depth | `max_depth` | How deep each tree can grow (limits complexity) |
+| Min samples to split | `min_samples_split` | A node must have at least this many observations to be split |
+| Min samples in leaf | `min_samples_leaf` | Each leaf must contain at least this many observations |
+| Bootstrap | `bootstrap` | Whether to use bootstrap sampling (True) or full dataset (False) |
+| Max leaf nodes | `max_leaf_nodes` | Cap on total number of leaves per tree |
+
+. . .
+
+- __`max_features`__ is the most important — it controls the bias-variance tradeoff
+  - Small `max_features`: trees are more different (less correlated), but individually weaker
+  - Large `max_features`: trees are stronger individually, but more similar to each other
+  - Rule of thumb: $p/3$ for regression, $\sqrt{p}$ for classification
+
+---
+
+## Tuning Random Forests
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+- __Important__: `max_features` (equivalent to $m_{try}$)
+- Marginal: tree complexity, splitting rule, sampling scheme
+
+```{python}
+from sklearn.model_selection import GridSearchCV
+
+p = X.shape[1]
+param_grid = {
+    "max_features": list(range(2, p + 1, 2)),
+}
+rf = RandomForestRegressor(
+    n_estimators=500, random_state=42
+)
+cv_rf = GridSearchCV(
+    rf, param_grid, cv=5,
+    scoring="neg_root_mean_squared_error"
+)
+cv_rf.fit(X, y)
+print(f"Best max_features: "
+      f"{cv_rf.best_params_['max_features']}")
+print(f"Best CV RMSE: "
+      f"{-cv_rf.best_score_:.4f}")
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{python}
+import matplotlib.pyplot as plt
+#| fig-align: center
+results = pd.DataFrame(cv_rf.cv_results_)
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.plot(
+    results["param_max_features"].astype(int),
+    -results["mean_test_score"],
+    marker="o",
+)
+ax.set_xlabel("max_features (mtry)")
+ax.set_ylabel("CV RMSE")
+ax.set_title("RF Tuning")
+plt.tight_layout()
+plt.show()
+```
+
+:::
+
+:::
+
+---
+
+## Variable Importance
+
+- After fitting a random forest, we want to know: __which features matter most?__
+- Two common approaches:
+
+. . .
+
+1. **Impurity-based (Gain)**: total reduction in the splitting criterion (e.g. RSS for regression, Gini for classification) each time a feature is used to split, averaged over all trees
+2. **Permutation-based**: randomly shuffle one feature's values and measure how much the model's accuracy drops — bigger drop = more important
+
+. . .
+
+- Impurity-based importance is fast (computed during training) but can be biased toward high-cardinality features
+- Permutation importance is more reliable but slower (requires re-prediction)
+
+---
+
+## Variable Importance: MLB Example
+
+```{python}
+#| fig-align: center
+from sklearn.inspection import permutation_importance
+
+# Impurity-based (gain)
+gain_imp = pd.Series(
+    oob_rf.feature_importances_, index=X.columns
+).sort_values(ascending=True)
+
+# Permutation-based
+perm = permutation_importance(
+    oob_rf, X, y, n_repeats=10, random_state=42
+)
+perm_imp = pd.Series(
+    perm.importances_mean, index=X.columns
+).sort_values(ascending=True)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+gain_imp.plot.barh(ax=axes[0])
+axes[0].set_xlabel("Mean decrease in RSS (Gain)")
+axes[0].set_title("Impurity-based")
+perm_imp.plot.barh(ax=axes[1])
+axes[1].set_xlabel("Mean decrease in R²")
+axes[1].set_title("Permutation-based")
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+
+## Boosting
+
+Build ensemble models __sequentially__
+
+. . .
+
+- start with a __weak learner__, e.g. small decision tree with few splits
+
+. . .
+
+- each model in the sequence _slightly_ improves upon the predictions of the previous models __by focusing on the observations with the largest errors / residuals__
+
+![](https://bradleyboehmke.github.io/HOML/images/boosted-trees-process.png){fig-align="center" width="80%"}
+
+---
+
+## Boosted trees algorithm
+
+Write the prediction at step $t$ of the search as $\hat y_i^{(t)}$, start with $\hat y_i^{(0)} = 0$
+
+- Fit the first decision tree $f_1$ to the data: $\hat y_i^{(1)} = f_1(x_i) = \hat y_i^{(0)} + f_1(x_i)$
+
+. . .
+
+- Fit the next tree $f_2$ to the residuals of the previous: $y_i - \hat y_i^{(1)}$
+
+- Add this to the prediction: $\hat y_i^{(2)} = \hat y_i^{(1)} + f_2(x_i) = f_1(x_i) + f_2(x_i)$
+
+. . .
+
+- Fit the next tree $f_3$ to the residuals of the previous: $y_i - \hat y_i^{(2)}$
+
+- Add this to the prediction:  $\hat y_i^{(3)} = \hat{y}_i^{(2)} + f_3(x_i) = f_1(x_i) + f_2(x_i) + f_3(x_i)$
+
+. . .
+
+__Continue until some stopping criteria__ to reach final model as a __sum of trees__:
+
+$$\hat{y_i} = f(x_i) = \sum_{b=1}^B f_b(x_i)$$
+
+---
+
+## Visual example of boosting in action
+
+![](https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/boosting-in-action-1.png){fig-align="center" width="80%"}
+
+---
+
+## Gradient boosted trees
+
+Regression boosting algorithm can be generalized to other loss functions via __gradient descent__ - leading to gradient boosted trees, aka __gradient boosting machines (GBMs)__
+
+Update the model parameters in the direction of the loss function's descending gradient
+
+![](https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/gradient-descent-fig-1.png){fig-align="center" width="60%"}
+
+---
+
+## Tune the learning rate in gradient descent
+
+We need to control how much we update by in each step - __the learning rate__
+
+![](https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/learning-rate-fig-1.png){fig-align="center" width="100%"}
+
+---
+
+### Stochastic gradient descent can help with complex loss functions
+
+- **Batch gradient descent** computes the gradient using __all__ $N$ observations — expensive, and can get stuck in local minima
+- **Stochastic GD** randomly samples a subset of data each iteration
+
+- The gradient estimate is __noisier__, which actually helps:
+  - Escape local minima and saddle points
+  - Each update is cheaper to compute
+  - Adds a regularization effect — noisy updates prevent overfitting
+
+![](https://bradleyboehmke.github.io/HOML/10-gradient-boosting_files/figure-html/stochastic-gradient-descent-fig-1.png){fig-align="center" width="80%"}
+
+
+---
+
+## eXtreme gradient boosting with [XGBoost](https://xgboost.readthedocs.io/en/latest/python/python_intro.html)
+
+![](https://media1.tenor.com/images/6e86cad4899cd02047c33ecfc0e4052b/tenor.gif?itemid=11446810){fig-align="center" width="80%"}
+
+---
+
+## GBM/XGB Hyperparameters {.smaller}
+
+| Parameter | XGBoost | What it controls |
+|---|---|---|
+| __Number of trees__ | `n_estimators` | Total boosting rounds; more trees = more expressive but risk overfitting |
+| __Learning rate__ | `learning_rate` ($\eta$) | Shrinkage per step; smaller = slower learning, needs more trees |
+| __Max depth__ | `max_depth` | Depth of each tree; controls interaction order (depth $d$ captures $d$-way interactions) |
+| Min child weight | `min_child_weight` | Minimum sum of instance weights in a leaf; acts like `min_samples_leaf` |
+| Subsample ratio | `subsample` | Fraction of rows sampled per tree (stochastic gradient descent) |
+| Column subsample | `colsample_bytree` | Fraction of features sampled per tree (similar to RF's `max_features`) |
+| L2 regularization | `reg_lambda` ($\lambda$) | Ridge penalty on leaf weights; prevents large predictions |
+| L1 regularization | `reg_alpha` ($\alpha$) | Lasso penalty on leaf weights; encourages sparsity |
+| Min split loss | `gamma` ($\gamma$) | Minimum loss reduction required to make a split; acts as pruning |
+
+. . .
+
+- __`n_estimators` and `learning_rate`__ must be tuned together — lower learning rate needs more trees
+- Rule of thumb: set `learning_rate` small (0.01–0.1), then find the right `n_estimators` via early stopping
+- __More work to tune than random forests__, but GBMs offer more flexibility for different objective functions
+
+. . .
+
+- In XGBoost, stochastic gradient descent is controlled by:
+  - **`subsample`**: fraction of rows sampled per tree (e.g., 0.8 = 80%)
+  - **`colsample_bytree`**: fraction of features sampled per tree
+- Both default to `1.0` (full data) — setting them below 1.0 enables stochastic updates
+
+---
+
+## XGBoost example
+
+```{python}
+from xgboost import XGBRegressor
+from sklearn.model_selection import GridSearchCV
+import warnings
+warnings.filterwarnings("ignore")
+
+xgb_param_grid = {
+    "n_estimators": list(range(20, 201, 20)),
+    "learning_rate": [0.025, 0.05, 0.1, 0.3],
+    "max_depth": [1, 2, 3, 4],
+}
+
+xgb = XGBRegressor(
+    objective="reg:squarederror",
+    gamma=0,
+    colsample_bytree=1,
+    min_child_weight=1,
+    subsample=1,
+    random_state=1937,
+    verbosity=0,
+)
+
+xgb_cv = GridSearchCV(
+    xgb, xgb_param_grid, cv=5,
+    scoring="neg_root_mean_squared_error",
+    n_jobs=-1,
+)
+xgb_cv.fit(X, y)
+print("Best parameters:", xgb_cv.best_params_)
+print(f"Best CV RMSE: {-xgb_cv.best_score_:.4f}")
+print(f"Training R²:  {xgb_cv.best_estimator_.score(X, y):.4f}")
+```
+
+---
+
+## XGBoost Variable Importance
+
+```{python}
+#| fig-align: center
+xgb_fit_final = xgb_cv.best_estimator_
+
+importances_xgb = pd.Series(xgb_fit_final.feature_importances_, index=X.columns)
+importances_xgb = importances_xgb.sort_values(ascending=True)
+
+fig, ax = plt.subplots(figsize=(8, 6))
+importances_xgb.plot.barh(ax=ax)
+ax.set_xlabel("Importance")
+ax.set_title("XGBoost Variable Importance")
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Partial Dependence Plots (PDPs)
+
+- Variable importance tells us __which__ features matter, but not __how__ they affect predictions
+- **Partial dependence plots** show the marginal effect of a feature on the predicted outcome
+
+. . .
+
+- **How it works**: for a feature $x_j$, evaluate the model at each value of $x_j$ while averaging over all other features:
+$$\hat{f}_j(x_j) = \frac{1}{N} \sum_{i=1}^{N} \hat{f}(x_j, \, x_{i,-j})$$
+
+. . .
+
+- **Flat line** → feature has little effect on predictions
+- **Steep slope** → predictions are sensitive to that feature
+- **Non-linear shape** → model learned a relationship that linear regression would miss
+
+. . .
+
+- PDPs work with __any__ model (random forests, GBMs, etc.), not just XGBoost
+
+---
+
+## Partial Dependence: MLB Example
+
+This is the partial dependence parameter for the `off` variable 
+
+```{python}
+#| fig-align: center
+from sklearn.inspection import PartialDependenceDisplay
+
+fig, ax = plt.subplots(figsize=(8, 5))
+PartialDependenceDisplay.from_estimator(
+    xgb_fit_final, X, features=["off"], ax=ax
+)
+ax.set_title("Partial Dependence: off")
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Training and Testing: The Big Picture
+
+A proper ML workflow separates data into distinct roles:
+
+. . .
+
+1. **Split** the data into a __training set__ (~70–80%) and a __test set__ (~20–30%) before doing anything
+2. **Tune hyperparameters** using only the training set (via cross-validation or OOB)
+3. **Refit** the final model on the full training set with the best hyperparameters
+4. **Evaluate** on the held-out test set — this is your honest estimate of real-world performance
+
+. . .
+
+- The test set must be __completely untouched__ during training and tuning — otherwise your performance estimate is biased
+- If you tune on the test set, you are effectively __fitting to the test data__ and your reported metrics will be overly optimistic
+
+. . .
+
+- __Next week__: more on cross-validation strategies, train/validation/test splits, and how to avoid data leakage
