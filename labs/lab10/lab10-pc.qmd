@@ -31,8 +31,8 @@ Check your system
 ```{python}
 #| eval: false
 # Uncomment to install
-import subprocess
-subprocess.run(["pip", "install", "xgboost", "scikit-learn"])
+# import subprocess
+# subprocess.run(["pip", "install", "xgboost", "scikit-learn"])
 ```
 
 
@@ -60,22 +60,10 @@ Take a few minutes to think about what you learned about parallelization.
 **1a.** List **three examples** of data science / scientific computing tasks that are well-suited to parallel computing. For each one, briefly explain *why* it is parallelizable (i.e., what makes the sub-tasks independent?).
 
 *Answer here.*
-- Taking and processing data from API based on id (1 observation per API call). In here, each process doesn't depend to other so it can be parralized
-
-- Hyperparameter grid search. In here, for each hyperparameter set, the model independent to other hyperparameter set. 
-
-- Computing matrix determinant. Based on block theory, we can use divide-and-conquer for this task. Since each sub-task only interact during "merge process" which relatively faster, this task can be parallized. 
-
-- k-fold Cross-Validation: For each k-fold, the model is independent to other fold.
-
-- Building Random-Forest. Each tree is independent to each other.
 
 **1b.** List **one example** of a computation that is **not** easily parallelized, and explain the bottleneck.
 
 *Answer here.*
-- Fitting a model, especially XG-boost model. Since each tree use the "error" from previous tree, we can't parallelize this process. 
-
-- Monte-Carlo-Markov Chain: Non-Parralized since for each stage, it depend on the result of the previous state.  
 
 **1c.** Look at the code below. Before running it, predict: will parallelizing this loop give a big speedup? Why or why not?
 
@@ -92,8 +80,6 @@ pairs = [(rng.standard_normal(1000), rng.standard_normal(1000)) for _ in range(5
 
 *Your prediction here.*
 
-- No, since dot products is already optimized. Besides, overhead running time for forking process may make the "parralized attempt" take much longer time
-
 Now time the serial and parallel versions and report the actual speedup.
 
 ```{python}
@@ -106,20 +92,15 @@ t_serial = time.perf_counter() - t0
 # Parallel — YOUR CODE HERE
 # Use Parallel(n_jobs=4)(delayed(dot_products)(p) for p in pairs)
 t0 = time.perf_counter()
-parallel_results = Parallel(n_jobs=4)(delayed(dot_products)(p) for p in pairs)
+# ...
 t_parallel = time.perf_counter() - t0
 
 print(f"Serial:   {t_serial*1000:.1f} ms")
 print(f"Parallel: {t_parallel*1000:.1f} ms")
-print(f"Speedup:  {t_serial/t_parallel:.2f}x")
+# print(f"Speedup:  {t_serial/t_parallel:.2f}x")
 ```
 
 *Was your prediction correct? Explain the result.*
-- Yes, the pararlized attempt take much longer runtim than the serial one. It took around 1s longer than the serial attempt.
-
-- However, after try to reruning again, the parallel become 100 ms, which may related to cache or process of other tasks. 
-
-- By experimenting n_jobs, we can see very high jump from n_jobs = 1 and n_jobs = 2 while having slightly difference on n_jobs >= 2. Therefore, it suggests that the forking process dominates the running time. 
 
 ---
 
@@ -143,8 +124,6 @@ def fun1(n=100, k=4, lam=4, seed=0):
 
 def fun1_fast(n=100, k=4, lam=4, seed=0):
     # YOUR CODE HERE — use a single rng.poisson call
-    rng = np.random.default_rng(seed)
-    return rng.poisson(lam, (n, k))
     pass
 
 # Verify same shape
@@ -159,9 +138,6 @@ print(f"Speedup:   {t_slow/t_fast:.1f}x")
 ```
 
 *How much faster is your version? Explain briefly why.*
-- The speed up is around 10 - 32x. It's because when when we do single poisson call, it's already optimized by numpy. 
-
-- Besides, we know that np.vstack is rewriting a completely new array for each call. Which mean, for each call, we copy old array into new one and add the new row. This makes the runtime much slower since we do copy the same row for multiple times. 
 
 **2b.** The function below finds the **row index of the maximum value** in each column of a matrix using a Python loop. Write a faster vectorized version using NumPy.
 
@@ -178,7 +154,6 @@ def fun2(x):
 
 def fun2_fast(x):
     # YOUR CODE HERE — hint: np.argmax has an axis argument
-    return np.argmax(x, axis=0)
     pass
 
 # Verify
@@ -192,9 +167,6 @@ print(f"Speedup:   {t_slow/t_fast:.1f}x")
 ```
 
 *Report the speedup and explain.*
-- The speedup is around 30-40x. It's faster since the function is already optimized, we may convert all array into numpy array once. However, in the old implementation, we do np.array() per column, which may makes it slower. 
-
-- It's also possible that np.argmax() are already implemented parallelization.
 
 ---
 
@@ -207,13 +179,12 @@ Hyperparameter tuning via grid search is a classic **embarrassingly parallel** t
 Run this cell as-is (no changes needed):
 
 ```{python}
-#| eval: true
+#| eval: false
 import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.metrics import roc_auc_score
 import matplotlib.pyplot as plt
-import pprint
 
 cps = pd.read_csv("https://raw.githubusercontent.com/JSC370/JSC370-2026/main/data/cps_clean.csv")
 cps = cps[cps['YEAR'].isin([2025])]
@@ -244,16 +215,13 @@ print(f"Employment rate (train):   {y_train.mean():.3f}")
 
 - Fill in three values for each of these hyperparameters: `max_depth`, `learning_rate`, `n_estimators`, `subsample`
 
-```{python}
-#| eval: false
-# 
-# All combinations — 81 total
+```{python}#| eval: false# All combinations — 81 total
 param_grid = [
     {'max_depth': d, 'learning_rate': lr, 'n_estimators': n, 'subsample': ss}
-    for d in [3, 6, 9]
-    for lr in [0.00001, 0.0001, 0.001]
-    for n in [50, 100, 150]
-    for ss in [0.3, 0.5, 0.7]
+    for d in []
+    for lr in []
+    for n in []
+    for ss in []
 ]
 print(f"Total hyperparameter combinations: {len(param_grid)}")
 ```
@@ -271,20 +239,6 @@ def fit_xgb(params):
     #    eval_metric='logloss', random_state=42, verbosity=0
     # 2. Run cross_val_score with cv=5, scoring='roc_auc', n_jobs=1 on (X_train, y_train)
     # 3. Return (params, scores.mean())
-
-    model = xgb.XGBClassifier(
-        **params, 
-        eval_metric='logloss',
-        random_rate=42, 
-        verbosity=0
-    )
-
-    scores = cross_val_score(
-            model, X_train, y_train,
-            cv=5, scoring="roc_auc",
-            n_jobs=1
-        )
-    return (params, scores.mean())
     pass
 
 # Serial grid search
@@ -301,7 +255,7 @@ print(f"Serial grid search: {time_serial:.2f}s  ({len(param_grid)} combinations)
 t0 = time.time()
 # YOUR CODE HERE
 # Use: Parallel(n_jobs=4)(delayed(fit_xgb)(p) for p in param_grid)
-parallel_results = Parallel(n_jobs=4)(delayed(fit_xgb)(p) for p in param_grid)
+parallel_results = None
 time_parallel = time.time() - t0
 
 print(f"Parallel grid search (4 workers): {time_parallel:.2f}s")
@@ -318,36 +272,12 @@ print(f"Speedup: {time_serial / time_parallel:.2f}x")
 # 3. Find the entry in parallel_results with the highest mean CV AUC
 # 4. Refit an XGBClassifier with best params on X_train, evaluate on X_test
 #    using roc_auc_score — this is the final unbiased test performance
-serial_mean_AUC = [result[1] for result in serial_results]
-parallel_mean_AUC = [result[1] for result in parallel_results]
-
-print("Is it close:", np.allclose(serial_mean_AUC, parallel_mean_AUC, atol=1e-6))
-
-print("Best Mean AUC", np.max(parallel_mean_AUC))
-print("Best parameter in parallel result")
-
-best_parameter = parallel_results[np.argmax(parallel_mean_AUC)][0]
-print(best_parameter)
-
-final_model = xgb.XGBClassifier(
-    **best_parameter, 
-    eval_metric='logloss',
-    random_rate=42, 
-    verbosity=0
-)
-final_model.fit(X_train, y_train)
-
-y_pred = final_model.predict_proba(X_test)[:, 1]
-final_score = roc_auc_score(y_test, y_pred)
-print("Final Score:", final_score)
-
 ```
 
 **3d.** Experiment with 1, 2, 4, and `multiprocessing.cpu_count()` workers. Print a timing table and plot speedup vs number of workers.
 
 ```{python}
 #| eval: false
-
 worker_counts = [1, 2, 4, multiprocessing.cpu_count() - 1]
 times = {}
 
@@ -369,13 +299,4 @@ plt.tight_layout()
 plt.show()
 ```
 
-
 *Does speedup scale linearly with the number of workers? Why or why not? What overhead is present even in an embarrassingly parallel task like this?*
-
-- As we can see, as the number of workers get higher, the impact of additional workers into additional speed up decrease. Some of the reasons is, worker_startup: since joblib call a forks worker, it gives us fixed overhead cost.
-
-- The second one is result_serialization: returning each worker result into parent requires pickling
-
-- The third one is load_imbalance: Some parameter train and fit faster, which leaves some of the workers idle
-
-- The fourth one is memory bandwith: At high-core counts, all workers compete for the same memory bus and CPU cache. 
