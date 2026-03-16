@@ -1,6 +1,6 @@
 ---
 title: "Lab 08 - Trees and Random Forests"
-format:
+format: 
   html:
     embed-resources: true
 jupyter: python3
@@ -113,16 +113,16 @@ We want to predict worker category (Unemployed, Part-time, Private for-profit, P
 X_class = cps_encoded[feature_cols]
 y_class = cps_encoded['worker_cat']
 
-_, _, _, _ = train_test_split(
-  ...
+X_train, X_test, y_train, y_test = train_test_split(
+  X_class, y_class, test_size=0.3
 )
 
-print(f"Training set size: {}")
-print(f"Testing set size: {}")
+print(f"Training set size: {len(X_train)}")
+print(f"Testing set size: {len(X_test)}")
 print(f"\nCount of each worker_cat category in training set:")
-print()
+print(y_train.value_counts())
 print(f"\nProportions:")
-print()
+print(y_train.value_counts() / len(y_train))
 ```
 
 **b)** Fit a full (unpruned) classification tree using [`DecisionTreeClassifier`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) with `min_samples_split=20` and `min_samples_leaf=5`. Plot the tree using [`plot_tree`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.plot_tree.html) (hint: use `max_depth=3` for readability). How many leaves does the full tree have?
@@ -132,16 +132,17 @@ print()
 class_labels = sorted(y_class.unique())
 
 full_tree_c = DecisionTreeClassifier(
-  ...
+  min_samples_split=20, min_samples_leaf=5
 )
-full_tree_c.?
+full_tree_c.fit(X_train, y_train)
 
-print(f"Number of leaves in full tree: {}")
-print(f"Depth of full tree: {}")
+print(f"Number of leaves in full tree: {full_tree_c.get_n_leaves()}")
+print(f"Depth of full tree: {full_tree_c.get_depth()}")
 
 plt.figure(figsize=(24, 10))
 plot_tree(
-  ...
+  full_tree_c,
+  max_depth = 3
 )
 plt.title("Full Classification Tree (showing top 3 levels)")
 plt.tight_layout()
@@ -151,22 +152,25 @@ plt.show()
 **c)** Use [`cost_complexity_pruning_path`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier.cost_complexity_pruning_path) to explore how `ccp_alpha` affects tree size. Plot the number of leaves as a function of `ccp_alpha`. Choose a `ccp_alpha` that produces a reasonably small tree (e.g., 5-15 leaves).
 
 ```{python}
+X_train_c = X_train
+y_train_c = y_train
+
 path = full_tree_c.cost_complexity_pruning_path(X_train_c, y_train_c)
 ccp_alphas = path.ccp_alphas
 ccp_alphas_pos = ccp_alphas[ccp_alphas > 0]
 
 # Subsample ~25 log-spaced alpha values (fitting a tree for every alpha is too slow)
 # Log-spacing captures the interesting range where tree size changes most
-log_alphas = np.logspace(...)
+log_alphas = np.logspace(np.log10(ccp_alphas_pos[0]), np.log10(ccp_alphas_pos[-1]), num=25)
 
 # Compute number of leaves for each sampled alpha
 n_leaves = []
 for alpha in log_alphas:
     tree = DecisionTreeClassifier(
-        ...
+        ccp_alpha = alpha
     )
-    tree.?
-    n_leaves.append(...)
+    tree.fit(X_train_c, y_train_c)
+    n_leaves.append(tree.get_n_leaves())
 
 ccp_df = pd.DataFrame({'ccp_alpha': log_alphas, 'n_leaves': n_leaves})
 print(ccp_df)
@@ -175,32 +179,35 @@ print(ccp_df)
 ```{python}
 # Plot number of leaves vs ccp_alpha
 (
-  ggplot(...) +
+  ggplot(ccp_df, aes(x="ccp_alpha", y="n_leaves")) +
   geom_line() +
   geom_point() +
-  ...
+  scale_x_log10() + 
+  scale_y_log10() +
+  labs(x="ccp_alpha", y="Number of leaves", title="Tree size vs ccp_alpha") + 
+  theme_minimal()
 )
 ```
 
 ```{python}
 # Choose a ccp_alpha that gives a small, interpretable tree
 # Look at the table above and pick one with ~5-15 leaves
-optimal_ccp_alpha_c = ...
-print(f"Chosen ccp_alpha: {}")
-print(f"Expected number of leaves: {}")
+optimal_ccp_alpha_c = ccp_df.loc[19, "ccp_alpha"]
+print(f"Chosen ccp_alpha: {optimal_ccp_alpha_c}")
+print(f"Expected number of leaves: {ccp_df[ccp_df["ccp_alpha"] == optimal_ccp_alpha_c]["n_leaves"].values[0]}")
 ```
 
 **d)** Fit a pruned tree using the chosen `ccp_alpha` and plot it. How does the pruned tree compare to the full tree in terms of complexity? Which variables appear most important for splitting?
 
 ```{python}
-pruned_tree_c = ...
-pruned_tree_c.?
+pruned_tree_c = DecisionTreeClassifier(ccp_alpha=optimal_ccp_alpha_c)
+pruned_tree_c.fit(X_train_c, y_train_c)
 
-print(f"Number of leaves in pruned tree: {}")
-print(f"Depth of pruned tree: {}")
+print(f"Number of leaves in pruned tree: {pruned_tree_c.get_n_leaves()}")
+print(f"Depth of pruned tree: {pruned_tree_c.get_depth()}")
 
 plt.figure(figsize=(20, 10))
-plot_tree(...)
+plot_tree(pruned_tree_c)
 plt.title("Pruned Classification Tree")
 plt.tight_layout()
 plt.show()
@@ -209,14 +216,14 @@ plt.show()
 **e)** Compute the test accuracy and test misclassification error of the pruned tree. Also display the [`confusion_matrix`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html). Which categories are easiest/hardest to predict?
 
 ```{python}
-y_pred_c = pruned_tree_c.?
-test_acc_c = accuracy_score(...)
-test_error_c = ...
-print(f"Test accuracy (pruned tree): {}")
-print(f"Test misclassification error (pruned tree): {}")
+y_pred_c = pruned_tree_c.predict(X_test)
+test_acc_c = accuracy_score(y_true = y_test, y_pred=y_pred_c)
+test_error_c = (1 - test_acc_c) * len(y_pred_c)
+print(f"Test accuracy (pruned tree): {test_acc_c}")
+print(f"Test misclassification error (pruned tree): {test_error_c}")
 
 # Confusion matrix
-cm = confusion_matrix(...)
+cm = confusion_matrix(y_true=y_test, y_pred=y_pred_c)
 fig, ax = plt.subplots(figsize=(10, 8))
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=class_labels)
 disp.plot(ax=ax, cmap='Blues', xticks_rotation=45)
@@ -225,7 +232,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-**Summary:** *Your answer here.*
+**Summary:** 
+
+- We can see that there are 5781 leaves.
+
+- We can see that the pruned_tree is much simpler since it only has 9 leaves. Besides, on the graph, we can see that early splitting and some late split are using x[9], which are FIRMSIZE.
+
+- In term of correctness, then Government, Self-Employed and Unemployed are the hardest class to predict since our model doesn't even predict any of test observation to be one of those. It's likely due to heavy dat imbalance in training data. 
 
 ### Question 2: Classification Random Forest
 
@@ -239,12 +252,16 @@ results = []
 for mf in ['sqrt', 1/3, 0.5]:
     for msl in [1, 5, 10]:
         rf = RandomForestClassifier(
-            ...
+            max_features=mf,
+            min_samples_leaf=msl,
+            n_estimators=200, 
+            oob_score=True,
+            random_state=65
         )
-        rf.?
+        rf.fit(X_train_c, y_train_c)
         results.append({
             'max_features': mf, 'min_samples_leaf': msl,
-            'oob_accuracy': ...
+            'oob_accuracy': rf.oob_score_
         })
 
 tune_df = pd.DataFrame(results).sort_values('oob_accuracy', ascending=False)
@@ -254,26 +271,30 @@ print(tune_df.to_string(index=False))
 ```{python}
 # Fit the best model with n_estimators=500
 best = tune_df.iloc[0]
-print(f"Best parameters: max_features={}, min_samples_leaf={}")
+print(f"Best parameters: max_features={best["max_features"]}, min_samples_leaf={best["min_samples_leaf"]}")
 
 rf_class = RandomForestClassifier(
-    ...
+    n_estimators=500,
+    max_features=best["max_features"],
+    min_samples_leaf=best["min_samples_leaf"],
+    random_state=65,
+    oob_score=True
 )
-rf_class.?
+rf_class.fit(X_train_c, y_train_c)
 
-y_pred_rf_c = ...
-rf_test_acc_c = ...
+y_pred_rf_c = rf.predict(X_test)
+rf_test_acc_c = accuracy_score(y_true=y_test, y_pred=y_pred_rf_c)
 
-print(f"\nRandom Forest OOB accuracy: {}")
-print(f"Random Forest OOB error: {}")
-print(f"Random Forest test accuracy: {}")
-print(f"Random Forest test error: {}")
+print(f"\nRandom Forest OOB accuracy: {rf_class.oob_score_}")
+print(f"Random Forest OOB error: {(1 - rf_class.oob_score_) * len(y_test)}")
+print(f"Random Forest test accuracy: {rf_test_acc_c}")
+print(f"Random Forest test error: {(1 - rf_test_acc_c) * len(y_test)}")
 ```
 
 **b)** Generate a feature importance plot using gain (scikit-learn's `feature_importances_`). Which are the top 3 most important features? Do these align with the variables that appeared in the pruned classification tree?
 
 ```{python}
-rf_importances_c = ...
+rf_importances_c = rf_class.feature_importances_
 
 imp_df_c = pd.DataFrame({
     'feature': feature_cols,
@@ -282,27 +303,33 @@ imp_df_c = pd.DataFrame({
 imp_df_c['feature'] = pd.Categorical(imp_df_c['feature'], categories=imp_df_c['feature'])
 
 (
-    ggplot(...) +
+    ggplot(imp_df_c, aes(x="feature", y="importance")) +
     geom_col() +
     coord_flip() +
-    ...
+    labs(x="Feature", y="Importance Score", title="Feature Importance")
 )
 ```
 
-**Summary:** *Your answer here.*
+**Summary:** 
+
+- Yes, this align with feature importance from the pruned tree. Remember that in the pruned tree, x[9] ("FIRMSIZE") is used for many early splitting. Besides, x[0] (Age) is also used for some of the splitting.
 
 **c)** Compare the pruned tree and random forest test performance in a summary table. Which model performs better and why might that be?
 
 ```{python}
 comparison_c = pd.DataFrame({
     'Model': ['Pruned Decision Tree', 'Random Forest'],
-    'Test Accuracy': [...],
-    'Test Misclassification Error': [...]
+    'Test Accuracy': [test_acc_c, rf_test_acc_c],
+    'Test Misclassification Error': [test_error_c, (1 - rf_test_acc_c) * len(y_test)]
 })
 print(comparison_c.to_string(index=False))
 ```
 
-**Summary:** *Your answer here.*
+**Summary:** 
+
+- We can see that Random Forest has higher test accuracy by 3%. However, including about interpretability, pruned_tree is better since the test accuracy is only slightly lower but has significant higher interpretability. 
+
+- Note also that random forest in here has 500 different tree, which may very complex to calculate for bigger dataset
 
 
 ---
@@ -317,37 +344,40 @@ Now we switch to predicting wage income (`INCWAGE`) as a continuous outcome. We 
 **a)** Prepare the data for regression. One-hot encode `worker_cat` and add it to the feature set. Split into training (70%) and testing (30%) with `random_state=65`. Print the mean and standard deviation of `INCWAGE` in the training set.
 
 ```{python}
-cps_reg = ...
+cps_reg = pd.get_dummies(cps_encoded, columns=["worker_cat"], prefix="worker_cat", drop_first=False)
 
 # Build the regression feature list
 worker_cat_cols = [c for c in cps_reg.columns if c.startswith('worker_cat_')]
 reg_feature_cols = feature_cols + worker_cat_cols
 
-X_reg = cps_reg[...]
-y_reg = cps_reg[...]
+X_reg = cps_reg[reg_feature_cols]
+y_reg = cps_reg["INCWAGE"]
 
-_, _, _, _ = train_test_split(...)
+X_train_r, X_test_r, y_train_r, y_test_r = train_test_split(X_reg, y_reg, test_size = 0.3)
 
-print(f"Training set size: {}")
-print(f"Testing set size: {}")
+print(f"Training set size: {len(X_train_r)}")
+print(f"Testing set size: {len(X_test_r)}")
 print(f"\nINCWAGE in training set:")
-print(f"  Mean: ${}")
-print(f"  Std:  ${}")
-print(f"  Min:  ${}")
-print(f"  Max:  ${}")
+print(f"  Mean: ${np.mean(y_train_r)}")
+print(f"  Std:  ${np.std(y_train_r)}")
+print(f"  Min:  ${np.min(y_train_r)}")
+print(f"  Max:  ${np.max(y_train_r)}")
 ```
 
 **b)** Fit a full regression tree using [`DecisionTreeRegressor`](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html) with `min_samples_split=20` and `min_samples_leaf=5`. Plot the tree (use `max_depth=3` for readability). How many leaves does the full tree have?
 
 ```{python}
-full_tree_r = ...
-full_tree_r.?
+full_tree_r = DecisionTreeRegressor(
+    min_samples_split=20, 
+    min_samples_leaf=5
+)
+full_tree_r.fit(X_train_r, y_train_r)
 
-print(f"Number of leaves in full tree: {}")
-print(f"Depth of full tree: {}")
+print(f"Number of leaves in full tree: {full_tree_r.get_n_leaves()}")
+print(f"Depth of full tree: {full_tree_r.get_depth()}")
 
 plt.figure(figsize=(24, 10))
-plot_tree(...)
+plot_tree(full_tree_r, max_depth=3)
 plt.title("Full Regression Tree (showing top 3 levels)")
 plt.tight_layout()
 plt.show()
@@ -357,18 +387,24 @@ plt.show()
 
 ```{python}
 # Get the pruning path
-path_r = full_tree_r.?
-ccp_alphas_r = path_r.?
-ccp_alphas_r_pos = ccp_alphas_r[...]
+path_r = full_tree_r.cost_complexity_pruning_path(X_train_r, y_train_r)
+ccp_alphas_r = path_r.ccp_alphas
+ccp_alphas_r_pos = ccp_alphas_r[ccp_alphas_r > 0]
 # Subsample ~25 log-spaced alpha values (fitting a tree for every alpha is too slow)
-log_alphas_r = np.logspace(...)
+log_alphas_r = np.logspace(
+    np.log10(ccp_alphas_r_pos[0]), 
+    np.log10(ccp_alphas_r_pos[-1]),
+    num=25
+)
 
 # Compute number of leaves for each sampled alpha
 n_leaves_r = []
 for alpha in log_alphas_r:
-    tree = ...
-    tree.?
-    n_leaves_r.append(...)
+    tree = DecisionTreeRegressor(
+        ccp_alpha=alpha
+    )
+    tree.fit(X_train_r, y_train_r)
+    n_leaves_r.append(tree.get_n_leaves())
 
 ccp_df_r = pd.DataFrame({'ccp_alpha': log_alphas_r, 'n_leaves': n_leaves_r})
 print(ccp_df_r)
@@ -377,38 +413,42 @@ print(ccp_df_r)
 ```{python}
 # Plot number of leaves vs ccp_alpha
 (
-    ggplot(...) +
+    ggplot(ccp_df_r, aes(x="ccp_alpha", y="n_leaves")) +
     geom_line() +
     geom_point() +
-    ...
+    scale_x_log10() + 
+    scale_y_log10() +
+    labs(x="ccp alpha", y="Number of Leaves", title="How CCP Alpha affects number of leaves")
 )
 ```
 
 ```{python}
 # Choose a ccp_alpha that gives a small, interpretable tree
-optimal_ccp_alpha_r = ...
-print(f"Chosen ccp_alpha: {}")
-print(f"Expected number of leaves: {}")
+optimal_ccp_alpha_r = ccp_df_r.loc[20, "ccp_alpha"]
+print(f"Chosen ccp_alpha: {optimal_ccp_alpha_r}")
+print(f"Expected number of leaves: {ccp_df_r.loc[20, "n_leaves"]}")
 ```
 
 **d)** Fit a pruned regression tree with the optimal `ccp_alpha` and plot it. Compute the test RMSE ([`mean_squared_error`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html)) and R-squared ([`r2_score`](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html)).
 
 ```{python}
-pruned_tree_r = ...
-pruned_tree_r.?
+pruned_tree_r = DecisionTreeRegressor(
+    ccp_alpha = optimal_ccp_alpha_r
+)
+pruned_tree_r.fit(X_train_r, y_train_r)
 
-print(f"Number of leaves in pruned tree: {}")
-print(f"Depth of pruned tree: {}")
+print(f"Number of leaves in pruned tree: {pruned_tree_r.get_n_leaves()}")
+print(f"Depth of pruned tree: {pruned_tree_r.get_depth()}")
 
 # Test performance
-y_pred_r = ...
-test_rmse_tree = np.sqrt(mean_squared_error(...))
-test_r2_tree = r2_score(...)
-print(f"\nTest RMSE (pruned tree): ${}")
-print(f"Test R-squared (pruned tree): {}")
+y_pred_r = pruned_tree_r.predict(X_test_r)
+test_rmse_tree = np.sqrt(mean_squared_error(y_true=y_test_r, y_pred=y_pred_r))
+test_r2_tree = r2_score(y_true=y_test_r, y_pred=y_pred_r)
+print(f"\nTest RMSE (pruned tree): ${test_rmse_tree}")
+print(f"Test R-squared (pruned tree): {test_r2_tree}")
 
 plt.figure(figsize=(24, 12))
-plot_tree(...)
+plot_tree(pruned_tree_r)
 plt.title("Pruned Regression Tree")
 plt.tight_layout()
 plt.show()
@@ -427,12 +467,16 @@ results_r = []
 for mf in ['sqrt', 1/3, 0.5]:
     for msl in [1, 5, 10]:
         rf = RandomForestRegressor(
-            ...
+            max_features=mf,
+            min_samples_leaf=msl, 
+            n_estimators=200,
+            random_state=65, 
+            oob_score=True
         )
-        rf.?
+        rf.fit(X_train_r, y_train_r)
         results_r.append({
             'max_features': mf, 'min_samples_leaf': msl,
-            'oob_r2': ...
+            'oob_r2': rf.oob_score_
         })
 
 tune_df_r = pd.DataFrame(results_r).sort_values('oob_r2', ascending=False)
@@ -442,26 +486,29 @@ print(tune_df_r.to_string(index=False))
 ```{python}
 # Fit the best model with n_estimators=500
 best_r = tune_df_r.iloc[0]
-print(f"Best parameters: max_features={}, min_samples_leaf={}")
+print(f"Best parameters: max_features={best_r["max_features"]}, min_samples_leaf={best_r["min_samples_leaf"]}")
 
 rf_reg = RandomForestRegressor(
-    ...
+    max_features=best_r["max_features"], 
+    min_samples_leaf=best_r["min_samples_leaf"], 
+    n_estimators=500,
+    oob_score=True
 )
-rf_reg.?
+rf_reg.fit(X_train_r, y_train_r)
 
-y_pred_rf_r = ...
-rf_test_rmse = ...
-rf_test_r2 = ...
+y_pred_rf_r = rf_reg.predict(X_test_r)
+rf_test_rmse = np.sqrt(mean_squared_error(y_true=y_test_r, y_pred=y_pred_rf_r))
+rf_test_r2 = r2_score(y_true=y_test_r, y_pred=y_pred_rf_r)
 
-print(f"\nRandom Forest OOB R-squared: {}")
-print(f"Random Forest test RMSE: ${}")
-print(f"Random Forest test R-squared: {}")
+print(f"\nRandom Forest OOB R-squared: {rf_test_r2}")
+print(f"Random Forest test RMSE: ${rf_test_rmse}")
+print(f"Random Forest test R-squared: {rf_reg.oob_score_}")
 ```
 
 **b)** Generate a feature importance plot. Which are the top 3 most important predictors of wage income? Do these make substantive sense?
 
 ```{python}
-rf_importances_r = ...
+rf_importances_r = rf_reg.feature_importances_
 
 imp_df_r = pd.DataFrame({
     'feature': reg_feature_cols,
@@ -470,24 +517,34 @@ imp_df_r = pd.DataFrame({
 imp_df_r['feature'] = pd.Categorical(imp_df_r['feature'], categories=imp_df_r['feature'])
 
 (
-    ggplot(...) +
+    ggplot(imp_df_r, aes(x="feature", y="importance")) +
     geom_col() +
     coord_flip() +
-    ...
+    labs(x="Feature", y="Importance Score", title="Feature Importance")
 )
 ```
 
-**Summary:** *Your answer here.*
+**Summary:** 
+
+- We can see that the Test R^2 on Random Forest is much more higher than pruned tree, 30% higher. We can also see RMSE being lower in random forest. Besides, the random forest OOB R-squared is also not so much difference than Test R-squared, which mean likely stable performance
+
+- Top 3 most important predictors in order: educ_cat, faminc_cat, AGE. These columns are very make sense. It's very expected that higher education person will have higher income. Besides, it's also known that family income bracket may affect due to networking privillage. Lastly, age is also very sensible since. Too low (no experience) or too high (not meet some job requirements) age may affect on the person Income
 
 **c)** Create a summary table comparing the pruned regression tree and random forest on test RMSE and R-squared. Briefly discuss which model you would recommend and why.
 
 ```{python}
 comparison_r = pd.DataFrame({
     'Model': ['Pruned Regression Tree', 'Random Forest'],
-    'Test RMSE': [...],
-    'Test R-squared': [...]
+    'Test RMSE': [test_rmse_tree, rf_test_rmse],
+    'Test R-squared': [test_r2_tree, rf_test_r2]
 })
 print(comparison_r.to_string(index=False))
 ```
 
-**Summary:** *Your answer here.*
+**Summary:** 
+
+- Based on the summary table, we can see that Random Forest beat Pruned Regression Tree at every metrics, especially in R^2
+
+- Therefore, I think I will recommend on random forest. In prediction task, random forest is much better since it has significantly higher R-squared, which mean the perfomance is more stable. For interpretability, we may still used feature importances, although not as sure as in pruned regression tree
+
+- Note, if we want to literally want to know any meaningful split on predictors, we may choose pruned regression tree. However, it's very rare to have this specific goal for regression type of task
