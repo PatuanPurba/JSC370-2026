@@ -1,5 +1,5 @@
 ---
-title: "Homework 3 - Machine Learning and Parallel Computing"
+title: "Homework 4 - Machine Learning and Parallel Computing"
 format:
   html:
     embed-resources: true
@@ -26,6 +26,44 @@ Please answer all questions and interpret your findings. Upload both the `.qmd` 
 The [Ames Housing Dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data) contains 81 features describing residential properties sold in Ames, Iowa between 2006 and 2010.
 Our goal is to predict `SalePrice`. Please use fetch_openml to get the data from OpenML rather than Kaggle, https://www.openml.org/search?type=data&status=active&id=43926 (use fetch_openml(name="house_prices", version=1, as_frame=True, parser="auto"))
 
+```{python}
+import subprocess
+subprocess.run(["pip", "install", "xgboost", "scikit-learn"])
+
+import pandas as pd
+import numpy as np
+from sklearn.datasets import fetch_openml
+import xgboost as xgb
+from plotnine import *
+import matplotlib.pyplot as plt
+import openml
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import mean_squared_error, r2_score
+import time
+from joblib import Parallel, delayed
+```
+
+```{python}
+#| eval: false
+
+# df  = fetch_openml(data_id=43926, as_frame=True, parser="auto")
+df = fetch_openml(name="house_prices", version=1, as_frame=True, parser="auto")
+feature = df.data
+target = df.target
+
+
+print("Feature Shape:", feature.shape)
+print("Target Shape:", target.shape)
+
+
+data = feature.copy()
+data["SalePrice"] = target
+data = data.drop(columns=["Id"])
+print("Data shape:", data.shape)
+
+raw = data.copy()
+```
+
 
 ### Question 1: Data Preparation and Feature Engineering (14 points)
 
@@ -33,6 +71,41 @@ Our goal is to predict `SalePrice`. Please use fetch_openml to get the data from
 
 - Plot the distribution of `SalePrice` and `log(SalePrice)` side by side. Report the skewness of each and indicate whether logging might be preferred for modeling.
 - Print a summary table of the categorical columns showing: column name, number of unique values, and first few values. Use this to identify which columns are truly nominal (no order, e.g. `Neighborhood`) vs ordinal quality ratings (e.g. `ExterQual` with values `Ex/Gd/TA/Fa/Po`). Write a brief interpretation.
+
+```{python}
+fig, axes = plt.subplots(1, 2, figsize=(18, 6), sharey=True)
+
+axes[0].hist(data["SalePrice"])
+axes[0].set_xlabel("Sale Price")
+axes[0].set_ylabel("Count")
+axes[0].set_title("Historam Sale Price")
+
+axes[1].hist(np.log(data["SalePrice"]))
+axes[1].set_xlabel("Log(Sale Price)")
+axes[1].set_title("Histogram log(SalePrice)")
+
+plt.show()
+```
+
+```{python}
+cat_cols = data.select_dtypes(include=["object", "category", "string"]).columns
+
+summary = pd.DataFrame({
+  "Column Name": cat_cols,
+  "N Unique": data[cat_cols].nunique(),
+  "First 5 Values": [data[col].unique()[:5] for col in cat_cols]
+}
+)
+
+display(summary)
+
+```
+
+Summary:
+
+- We can see that Sale Price is quite right-skewed while log(SalePrice) is more normal shaped. With more even-distributed data, we may expect clearer boundary and more spread error. Therefore, we prefer log-transformed
+
+- While we can't really ensure which one is nominal and ordinal, we can have a good heuristics based on number of unique. First good heuristics for ordinal is if the column contain (Quality, Condition, or QC). Second heuristics for ordinal is the unique value contains [TA, Fa, Gd, Po, Ex] (This value has order)
 
 
 **1b.** (8 points) Handle missing values, engineer features, encode ordinal columns, set the target, and binary encode the remaining nominal categoricals. Complete all steps:
@@ -50,7 +123,7 @@ Note: keep `YrSold` (captures market conditions). `PoolArea` and `GarageArea` al
 
 - **Ordinal encode** the quality/condition columns by mapping their string levels to integers. Many features use the scale `Ex > Gd > TA > Fa > Po`, and encoding them as numbers (5–1) preserves the ordering that dummy variable encoding would discard. Use the mappings below:
 
-```python
+```{python}
 qual_map = {'None': 0, 'Po': 1, 'Fa': 2, 'TA': 3, 'Gd': 4, 'Ex': 5}
 qual_cols = ['ExterQual', 'ExterCond', 'BsmtQual', 'BsmtCond',
              'HeatingQC', 'KitchenQual', 'FireplaceQu',
@@ -72,31 +145,464 @@ other_ordinal = {
 
 - Use log `SalePrice` as your target and drop `SalePrice`. Create dummy variables of the remaining `object`-dtype columns (the nominal categoricals) using `pd.get_dummies(...)`. Print the final feature count and summarize the feature engineered variables (but no need to summarize all of the dummy variables).
 
+```{python}
+# Since we use drop and this cell is the first augmenting cells, we replace with raw
+data = raw.copy()
+
+# Fill Missing Values
+numeric_cols = data.select_dtypes(include=["number"]).columns
+data[numeric_cols] = data[numeric_cols].fillna(0)
+
+cat_cols = data.columns.difference(numeric_cols)
+data[cat_cols] = data[cat_cols].fillna("None")
+
+# Feature Engineering
+data["TotalSF"] = data["TotalBsmtSF"] + data["1stFlrSF"] + data["2ndFlrSF"]
+data["HouseAge"] = data["YrSold"] - data["YearBuilt"]
+data["RemodAge"] = data["YrSold"] - data["YearRemodAdd"]
+
+data.drop(columns=["TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "YearBuilt", "YearRemodAdd"], inplace=True)
+
+# Get the Numeric Cols Before Encode Ordinal and Nominal Columns
+numeric_cols = data.select_dtypes(include=["number"]).columns
+
+# Ordinal Encode
+data[qual_cols] = data[qual_cols].replace(qual_map)
+
+other_ordinal_cols = [key for key in other_ordinal.keys()]
+for col in other_ordinal_cols:
+  data[col] = data[col].replace(other_ordinal[col])
+
+
+
+# Get Dummies and log_transformed
+ordinal_cols = qual_cols + [key for key in other_ordinal.keys()]
+nominal_cols = cat_cols.difference(ordinal_cols)
+
+data = pd.get_dummies(
+    data,
+    columns=nominal_cols,
+    drop_first=True,
+    dtype=int
+)
+
+data["SalePrice"] = np.log(data["SalePrice"])
+
+
+# Print Total Feature number and Head of dataset, classified by columns type.
+print("Total Final Feature", len(data.columns) - 1) # - 1 for target variable
+print("Summary Numeric Columns:", data[numeric_cols].shape[1], "Columns")
+display(data[numeric_cols].head(3))
+
+print("\n\n")
+
+print("Summary Ordinal Columns:", data[ordinal_cols].shape[1], "Columns")
+display(data[ordinal_cols].head(3))
+
+print("\n\n")
+
+nominal_cols = data.columns.difference(numeric_cols.tolist() + ordinal_cols + ["SalePrice"], sort=False)
+print("Summary Nominal Columns:", data[nominal_cols].shape[1], "Columns")
+display(data[nominal_cols].head(3))
+```
+
+Summary:
+
+- In final dataset, we have 201 Features. Based on their original type, we have 35 numeric cols, 19 Ordinal Columns, and 148 Nominal Columns (Many due to Dummy Variable). 
+
+- For the ordinal variable encode, we always reserve 0 to represent missing data. For the dummy variable, we cans. However, notice that, some Ordinal Columns that is already encoded numerically from original are considered as Numeric in this case. Some of the example: "OverallQual", "OverallCond". The "0-rules" doesn't apply to these columns since we don't encode it manually
+
+- For dummy variable columns, the value of each observation is between {0, 1}.
 
 **1c.** (3 points) Split into 70% train and 30% test (set `random_state=370`). Print the shapes of `X_train`, `X_test`, `y_train`, `y_test`. Report the mean and standard deviation of `y_train` and `y_test`.
 
 
+```{python}
+feature_cols = data.columns.difference(["SalePrice"])
+target_col = "SalePrice"
+
+X = data[feature_cols].apply(pd.to_numeric)
+y = data[target_col]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state=370)
+
+print("y_train:", "Mean:", np.round(y_train.mean(), 5), "Std:", y_train.std())
+print("y_test: ", "Mean:", np.round(y_test.mean(), 5), "Std:", y_test.std())
+```
+
 ### Question 2: Baseline — Ridge Regression (10 points)
 
 **2** (10 points) Write a brief description of what ridge regression is, and then fit `RidgeCV` model using `alphas=np.logspace(-3, 3, 50)` and `cv=5`. Explain what you are tuning and report the chosen `alpha_`. Then estimate the 5-fold CV RMSE using the chosen alpha. The on the test set report R$^2$ and RMSE (log scale) and convert log-scale predictions back to dollars to report test R$^2$ and RMSE in dollars. Interpret the model performance metrics.
+
+Ridge Regression: A linear regression method but with L2 Regularization on weight/coefficient. So, we add penalty term on the loss function, which
+$$
+\lambda \sum_{j=1}^p \beta_j^2
+$$
+
+```{python}
+from sklearn.linear_model import RidgeCV
+
+alphas = np.logspace(-3, 3, 50)
+
+best_ridge = RidgeCV(alphas=alphas, cv=5)
+best_ridge.fit(X_train, y_train)
+
+best_scores_ridge = best_ridge.best_score_
+
+print("Best alpha:", best_ridge.alpha_)
+
+y_pred = best_ridge.predict(X_test)
+y_pred_exp = np.exp(y_pred)
+y_test_exp = np.exp(y_test)
+
+
+r2_ridge_log = r2_score(y_test, y_pred)
+rmse_ridge_log = np.sqrt(mean_squared_error(y_test, y_pred))
+r2_ridge_dollar = r2_score(y_test_exp, y_pred_exp)
+rmse_ridge_dollar = np.sqrt(mean_squared_error(y_test_exp, y_pred_exp))
+
+
+print("Log Scale")
+print("R^2:", r2_ridge_log)
+print("RMSE:", rmse_ridge_log)
+
+print("\n")
+print("Real Scale")
+print("R^2:", r2_ridge_dollar)
+print("RMSE:", rmse_ridge_dollar, "Dollars")
+
+```
+
+Summary:
+
+- Log-Scale: Our model, with its feature, can explain 83.2% of variability in log(SalePrice). The RMSE of this model is 0.163 "log-Dollars"
+
+- Normal Scale: With its feature trained on log-scale, this model predict worst than just predicting with mean SalePrice (Since the value of R^2 is negative). The RMSE is 87675 dollars
+
+- We can see that our model become so much worst when we try to convert back from log-scale into normal scale. One of the reason is because our model train on completely different objective. For example, notice that in training, the difference (10 with 11) is "same" as (11 with 12). However, in dollar scale, the error on (e^12 - e^11) is much bigger than (e^11 - e^10). 
 
 
 ### Question 3: Random Forest (12 points)
 
 **3a.** (10 points) Tune a `RandomForestRegressor` by trying two different values for `n_estimators`, three different `max_features`, two different `max_depth` values, and two different `min_samples_leaf` values (24 combinations). Write a function `fit_rf_cv(n_est, max_feat, max_d, min_leaf)` that fits the model and returns the CV RMSE, then run the grid search both serially and in parallel with `Parallel(n_jobs=4)`. Keep `random_state=370` and `n_jobs=1` inside the model. Report serial time and speedup time. Report the best combination in a table. Then fit the best Random Forest on the full training set, report test R$^2$ and RMSE (log scale and dollars). Interpret and discuss.
 
+```{python}
+from sklearn.ensemble import RandomForestRegressor
+
+n_estimators = [100, 200]
+max_features = [1/3, 1/2, 3/4]
+max_depth = [10, 20]
+min_sample_leaf = [3, 9]
+
+
+param_grid = [
+    {'n_est': n, 'max_feat': max_feat, 'max_d': max_d, 'min_leaf': msl}
+    for max_d in max_depth
+    for max_feat in max_features 
+    for n in n_estimators
+    for msl in min_sample_leaf
+]
+
+def fit_rf_cv(n_est, max_feat, max_d, min_leaf):
+    rf = RandomForestRegressor(
+            n_estimators=n_est,
+            max_features=max_feat,
+            max_depth=max_d,
+            min_samples_leaf=min_leaf,
+            random_state=370, 
+            oob_score=True,
+            n_jobs=1
+    )
+
+    scores = cross_val_score(
+        rf,
+        X_train, 
+        y_train,
+        cv=5,
+        scoring="neg_root_mean_squared_error"
+    )
+
+    return -scores.mean()
+```
+
+```{python}
+# SERIAL TIME
+t0 = time.time()
+scores = []
+for param in param_grid:
+    scores.append(fit_rf_cv(**param))
+
+serial_time = time.time() - t0
+print("Time Needed (Serial):", serial_time)
+
+
+# PARALLEL TIME
+t0 = time.time()
+Parallel(n_jobs=4)(delayed(fit_rf_cv)(**p) for p in param_grid)
+parallel_time = time.time() - t0
+print("Time Needed (Parallel):", parallel_time)
+print(f"SPEED UP: {serial_time/parallel_time:.1f}x")
+
+```
+
+```{python}
+# Best Model
+
+best_index = np.argmin(scores)
+best_param_serial = param_grid[best_index]
+param_df = pd.DataFrame([best_param_serial])
+
+best_scores_rf = scores[best_index]
+print("Best Score RMSE:", best_scores_rf)
+print("Best Parameter:")
+display(param_df.head())
+
+best_rf = RandomForestRegressor(
+            n_estimators=best_param_serial["n_est"],
+            max_features=best_param_serial["max_feat"],
+            max_depth=best_param_serial["max_d"],
+            min_samples_leaf=best_param_serial["min_leaf"],
+            random_state=370, 
+            oob_score=True,
+            n_jobs=1
+        )
+best_rf.fit(X_train, y_train)
+
+
+y_pred = best_rf.predict(X_test)
+y_pred_exp = np.exp(y_pred)
+y_test_exp = np.exp(y_test)
+
+
+r2_rf_log = r2_score(y_test, y_pred)
+rmse_rf_log = np.sqrt(mean_squared_error(y_test, y_pred))
+r2_rf_dollar = r2_score(y_test_exp, y_pred_exp)
+rmse_rf_dollar = np.sqrt(mean_squared_error(y_test_exp, y_pred_exp))
+
+
+print("Log Scale")
+print("R^2:", r2_rf_log)
+print("RMSE:", rmse_rf_log)
+
+print("\n")
+print("Real Scale")
+print("R^2:", r2_rf_dollar)
+print("RMSE:", rmse_rf_dollar, "Dollars")
+
+```
+
+Summary:
+
+- Remember that our random forest model are trained with log(SalePrice) as target
+
+- In here, the model's performance between on log-scale and dollar is quite similar, unlike Ridge Regression. Both scale has around 0.85 RMSE, which mean the model can expain 85% variability of SalePrice. Besides, in term of RMSE in dollar scale, it's 3x smaller than RMSE of Ridge Regression. 
+
+- The interesting takepoint is despite having the "quite-similar" performance in log-scale, performance of RF is much better than performance of RidgeCV. Some of the reasons is small error in log-scale can be amplified by huge factor based on the level of log-scale. Further, we also need to learn whether the they have the same type of error (evenly-distributed or skewed)
+
 
 **3b.** (2 points) Plot the top 15 features. Do the most important features make intuitive sense for predicting house prices?
 
+```{python}
+rf_importances_r = best_rf.feature_importances_
+reg_feature_cols = X_train.columns.tolist()
+
+imp_df_r = pd.DataFrame({
+    'feature': reg_feature_cols,
+    'importance': rf_importances_r
+}).sort_values('importance', ascending=False)
+imp_df_r['feature'] = pd.Categorical(imp_df_r['feature'], categories=imp_df_r['feature'][::-1])
+
+imp_df_r = imp_df_r.iloc[:15, :]
+
+(
+    ggplot(imp_df_r, aes(x="feature", y="importance")) +
+    geom_col() +
+    coord_flip() +
+    labs(x="Feature", y="Importance Score", title="Feature Importance")
+)
+
+```
+
+Summary:
+
+- The first 2 most important features is Total Square Floor and Overall Quality. Notice that these column has importance 2x of other columns importance. These columns are make sense since TotalSF represents how big is the house and Overall Quality represents the quality of the house. By intuition, we can have a pretty good approximation given how big is the house and the quality of it. Further, HouseAge is also one of the most important feature
+
+- Notice that 8th-15th columns have similar importance, suggesting either equal columns' importance or highly correlated columns (Many columns contain the same information)
 
 ### Question 4: XGBoost with Parallel Hyperparameter Search (12 points)
 
 **4a.** (8 points) Define a hyperparameter grid with **at least 3 values** for each of `max_depth`, `learning_rate`, `n_estimators`, and `subsample` (minimum 81 combinations). Print the total number of combinations. Write a function `fit_xgb_cv(params)` that builds an `XGBRegressor` with the given `params` (plus `n_jobs=1`, `random_state=370`, `verbosity=0`), runs 5-fold CV with `scoring='neg_root_mean_squared_error'` and `n_jobs=1` on `(X_train, y_train)`, and returns `(params, mean_cv_rmse)`. Run the grid search both serially and in parallel with `Parallel(n_jobs=4)`. Report serial time and parallel speedup. Find the best hyperparameter combination (lowest mean CV RMSE), refit on the full training set, and report test R$^2$ and RMSE in log scale and dollars. Interpret and discuss.
 
+```{python}
+import xgboost as xgb
+
+param_grid_xgb = [
+    {'max_depth': d, 'learning_rate': lr, 'n_estimators': n, 'subsample': ss}
+    for d in [5, 10, 15]
+    for lr in [0.001, 0.01, 0.1]
+    for n in [50, 100, 150]
+    for ss in [0.3, 0.5, 0.7]
+]
+
+
+def fit_xgb_cv(params):
+    """Evaluate one hyperparameter combination via 5-fold CV."""
+    # YOUR CODE HERE
+    # 1. Build an XGBClassifier with the given params, n_jobs=1,
+    #    eval_metric='logloss', random_state=42, verbosity=0
+    # 2. Run cross_val_score with cv=5, scoring='roc_auc', n_jobs=1 on (X_train, y_train)
+    # 3. Return (params, scores.mean())
+
+    model = xgb.XGBRegressor(
+        **params, 
+        random_state=370, 
+        verbosity=0
+    )
+
+    scores = cross_val_score(
+            model, X_train, y_train,
+            cv=5, scoring="neg_root_mean_squared_error",
+            n_jobs=1
+        )
+
+    mean_cv_rmse = -scores.mean()
+    return (params, mean_cv_rmse)
+    
+```
+
+
+```{python}
+# SERIAL TIME
+t0 = time.time()
+serial_results = [fit_xgb_cv(p) for p in param_grid_xgb]
+time_serial = time.time() - t0
+print(f"Serial grid search: {time_serial:.2f}s  ({len(param_grid_xgb)} combinations)")
+
+
+# PARALLEL TIME
+t0 = time.time()
+parallel_results = Parallel(n_jobs=4)(delayed(fit_xgb_cv)(p) for p in param_grid_xgb)
+time_parallel = time.time() - t0
+
+print(f"Parallel grid search (4 workers): {time_parallel:.2f}s")
+print(f"Speedup: {time_serial / time_parallel:.2f}x")
+```
+
+
+```{python}
+# Best Model
+
+results_xgb = serial_results + parallel_results
+scores_xgb = [result_xgb[1] for result_xgb in results_xgb]
+
+best_scores_xgb = np.min(scores_xgb)
+best_index_xgb = np.argmin(scores_xgb) % len(serial_results)
+
+best_param_xgb = results_xgb[best_index_xgb][0]
+best_xgb = xgb.XGBRegressor(
+        **best_param_xgb, 
+        random_rate=370, 
+        verbosity=0
+)
+
+best_xgb.fit(X_train, y_train)
+
+y_pred = best_xgb.predict(X_test)
+y_pred_exp = np.exp(y_pred)
+y_test_exp = np.exp(y_test)
+
+
+r2_xgb_log = r2_score(y_test, y_pred)
+rmse_xgb_log = np.sqrt(mean_squared_error(y_test, y_pred))
+r2_xgb_dollar = r2_score(y_test_exp, y_pred_exp)
+rmse_xgb_dollar = np.sqrt(mean_squared_error(y_test_exp, y_pred_exp))
+
+
+print("Log Scale")
+print("R^2:", r2_xgb_log)
+print("RMSE:", rmse_xgb_log)
+
+print("\n")
+print("Real Scale")
+print("R^2:", r2_xgb_dollar)
+print("RMSE:", rmse_xgb_dollar, "Dollars")
+
+```
+
+Summary:
+
+- We can see that the speed up of using parallelization in XGB is similar with the speed up with get on Random Forest. (Around 3x)
+
+- Our model can explain 90% the variability of log(SalePrice), or around 88% of variability in Dollars term. In term of dollars, our model has RMSE of 27162 Dollars which mean that our model prediction "typically off" by around 27000 dollars from actual value. Note that this interpretation is "simplified" version of what RMSE represents
+
+- As we know, XGBoost is one of the best model in predicting tabular data. Therefore, the result we get is not really unexpected. The more interesting takeaway is how Random Forest can have similar performance to XGBoost, which make model selection more interesting (explainibility, interpretability, and performance)
+
 **4b.** (2 points) Now try **inner-level parallelism**: write `fit_xgb_cv_inner(params)` that uses `n_jobs=4` on the `XGBRegressor` itself (so each model uses 4 threads internally) and `n_jobs=1` in `cross_val_score`, then run the grid search serially. Report wall-clock time and compare it to the serial (`n_jobs=1`) and outer-parallel (`Parallel(n_jobs=4)`) approaches from 4a. Which strategy is fastest and why?
+
+```{python}
+def fit_xgb_cv_inner(params):
+    model = xgb.XGBRegressor(
+        **params, 
+        n_jobs=4,
+        random_state=370, 
+        verbosity=0
+    )
+
+    scores = cross_val_score(
+            model, X_train, y_train,
+            cv=5, scoring="neg_root_mean_squared_error",
+            n_jobs=1
+        )
+
+    mean_cv_rmse = -scores.mean()
+    return (params, mean_cv_rmse)
+
+# PARALLEL INNER TIME
+t0 = time.time()
+parallel_inner_results = [fit_xgb_cv_inner(p) for p in param_grid_xgb]
+time_parallel_inner = time.time() - t0
+print(f"Parallel Inner grid search: {time_parallel_inner:.2f}s  ({len(param_grid_xgb)} combinations)")
+print(f"Parallel Outer grid serach: {time_parallel:.2f}s  ({len(param_grid_xgb)} combinations)")
+```
+
+Summary:
+
+- Using Parallel Inner takes 161s while Parallel Outer takes 72s, which mean doing parallelization outside the model is better.
+
+- The reason is because the task is more independent when doing outside parallel rather than inside parallel. When we doing outside parallel, then each "worker/process" is works completely independent to each other. However, when we doing inside parallel, the task that is splitted is scanning features when choosing split. It means that some worker may be idle while it wait for other cpu's results before choosing the best split (Correlated task)
 
 **4c.** (2 points) Plot the top 15 features. How do they compare to the random forest variable importance?
 
+```{python}
+# Features' Importance
+
+xgb_importances_r = best_xgb.feature_importances_
+reg_feature_cols = X_train.columns.tolist()
+
+imp_df_xgb = pd.DataFrame({
+    'feature': reg_feature_cols,
+    'importance': xgb_importances_r
+}).sort_values('importance', ascending=False)
+imp_df_xgb['feature'] = pd.Categorical(imp_df_xgb['feature'], categories=imp_df_xgb['feature'][::-1])
+
+imp_df_xgb = imp_df_xgb.iloc[:15, :]
+
+(
+    ggplot(imp_df_xgb, aes(x="feature", y="importance")) +
+    geom_col() +
+    coord_flip() +
+    labs(x="Feature", y="Importance Score", title="Feature Importance")
+)
+
+```
+
+Summary:
+
+- We can see that the top 2 features are same between XGB and RF, despite reverse order and significantly bigger gap between the first and second feature. Not only that, the second and the third feature in XGB has significantly smaller gap in term of importance. Therefore, it suggests that "Overall Quality" is really an important/strong predictor.
+
+- There is also new predictor, which is an indicator whether the kitchen above groud or not.
+
+- The same pattern on 8th-15th predictors appears again, where all of them has similar importance. It can mean that these columns either "equally-important" or "Highly correlated columns (redundant information)"
 
 ### Question 5: Model Comparison (6 points)
 
@@ -104,6 +610,58 @@ other_ordinal = {
 `Model`, `Best CV RMSE (log)`, `Test RMSE (log)`, `Test RMSE ($)`, `Test R2`.
 Include Ridge, Random Forest, and XGBoost. On a single figure with three side-by-side panels, plot predicted vs actual
 `SalePrice` (in dollars) for Ridge, Random Forest, and XGBoost. Add a 1-to-1 reference line to each panel. Interpret and discuss your findings.
+
+```{python}
+Model = ["Ridge Regression", "Random Forest", "XGBoost"]
+Best_CV_RMSE = [best_scores_ridge, best_scores_rf, best_scores_xgb]
+Test_RMSE_log = [rmse_ridge_log, rmse_rf_log, rmse_xgb_log]
+Test_RMSE_dollar = [rmse_ridge_dollar, rmse_rf_dollar, rmse_xgb_dollar]
+Test_R2 = [r2_ridge_dollar, r2_rf_dollar, r2_xgb_dollar]
+ 
+comparison_df = pd.DataFrame()
+comparison_df["Model"] = Model
+comparison_df["Best CV RMSE (log)"] = Best_CV_RMSE
+comparison_df["Test RMSE (log)"] = Test_RMSE_log
+comparison_df["Test RMSE ($)"] = Test_RMSE_dollar
+comparison_df["Test R2"] = Test_R2
+
+display(comparison_df)
+```
+
+
+```{python}
+fig, axes = plt.subplots(1, 3, figsize=(24, 6))
+
+best_models = [best_ridge, best_rf, best_xgb]
+title = ["Ridge Regression", "Random Forest", "XGBoost"]
+
+for i, model in enumerate(best_models):
+    y_pred = model.predict(X_test)
+
+    y_pred_exp = np.exp(y_pred)
+    y_test_exp = np.exp(y_test)
+
+    axes[i].scatter(y=y_pred_exp, x=y_test_exp)
+
+    mn = min(min(y_test_exp), min(y_pred_exp))
+    mx = max(max(y_test_exp), max(y_pred_exp))
+    axes[i].plot([mn, mx], [mn, mx], '--', color="red")
+
+    axes[i].set_title(title[i])
+    axes[i].set_ylabel("Predicted Values ($)")
+    axes[i].set_xlabel("Actual Values ($)")
+
+fig.subplots_adjust(wspace=0.3, hspace=0.5)
+plt.show()
+```
+
+Summary:
+
+- From the table, we can see see that Ridge Regression has significantly worse performance that other models. Based on the graph, we can see that there is a point where the error is unexpectedly very high, which may inflates overall RMSE. However, we doesn't know whether the bad performance of Ridge Regression is caused solely by this outliers or just "averagely" higher error compared to other models.
+
+- The performance of Random Forest and XGBoost is similar with XGBoost performs better slightly. While these model Test RMSE in log-scale is similar with the one from Ridge Regression, Random Forest and XGBoost still preserve their performance in real (dollar) scale. 
+
+- Since the performance seems similar, then the model selection boiled down into whether we want interpretability/explainibility or pure predictive performance. In term of explainibility to general audience, random forest is much easier to explain since it's just a collection of tree (Decision algorithm). However, if we want pure predictive power, XGBoost is way to go model since it performs better in this dataset and generally perform better in general tabular dataset
 
 ---
 
@@ -120,12 +678,97 @@ Include Ridge, Random Forest, and XGBoost. On a single figure with three side-by
 Run it with N = 1,000, 100,000, and 1,000,000. For each, report the estimate, the absolute
 error from `np.pi`, and the serial time. How does accuracy scale with N? How does run time scale?
 
+```{python}
+def estimate_pi(N, seed=None):
+    rng = np.random.default_rng(seed)
+    x = rng.uniform(0, 1, size=N)
+    y = rng.uniform(0, 1, size=N)
+    
+    # counter = 0
+    # for i in range(N):
+    #     counter += (x[i]**2 + y[i]**2 <= 1)
+    
+    counter = np.sum(x**2 + y**2 <= 1)
+
+    return 4 * counter/N 
+
+Ns = [1000, 100000, 1000000]
+results = []
+times = []
+errors = []
+
+for n in Ns:
+    t0 = time.time()
+    result = estimate_pi(n)
+
+    results.append(result)
+    times.append(time.time() - t0)
+    errors.append(np.abs(np.pi - result))
+
+
+results_df = pd.DataFrame()
+results_df["N"] = Ns
+results_df["Estimates"] = results
+results_df["Error"] = errors
+results_df["Serial Time"] = times
+
+display(results_df)
+```
+
+Summary:
+
+- We can see the error getting smaller as N goes higher. The error seems get reduced by around 30% - 50% every time we use 10x more N.
+
+- The serial time seems grow linearly (10x higher N will result to 10x longer serial time). However, there seems fixed cost which makes the difference between N = 100000 and N = 1000 is no 10x. 
+
 **6b.** (4 points) Run `estimate_pi(N=100_000)` serially with seeds 0–1999 (2,000 runs).
 Record the serial time. Report the mean and standard deviation of the estimates.
 
+```{python}
+t0 = time.time()
+results_serial = []
+for i in range(2000):
+    results_serial.append(estimate_pi(N=100000, seed=i))
+
+serial_time = time.time() - t0
+print("Serial Time:", serial_time, "s")
+print("\n")
+print("Results:")
+print("Mean:", np.mean(results))
+print("Std:", np.std(results))
+```
 
 **6c.** (4 points) Repeat 6b in parallel with `Parallel(n_jobs=4, prefer="threads")`. Report speedup.
 Verify the mean estimate is within 0.001 of the serial result. Why is `prefer="threads"` a good choice here? Is the speedup closer to 4x compared to the XGBoost grid search? Why?
+
+```{python}
+t0 = time.time()
+results_parallel = Parallel(n_jobs=4, prefer="threads")(delayed(estimate_pi)(N=100000, seed=i) for i in range(2000))
+
+parallel_time = time.time() - t0
+print("Parallel Time:", parallel_time, "s")
+print(f"Speedup: {serial_time/parallel_time}x")
+print("\n")
+closeness = np.allclose(results_serial, results_parallel, atol=0.001, rtol=0)
+
+if closeness:
+    print("Close Enough (each element differs less than 0.001)")
+
+else:
+    print("Some elements deviates higher than 0.001")
+    results_serial = np.array(results_serial)
+    results_parallel = np.array(results_parallel)
+    print("Max Difference:", np.max(np.abs(results_serial - results_parallel)))
+
+```
+
+Summary:
+
+- We can see that both results (serial vs parallel) is not exactly within 0.001 from each other. The max difference element wise is 0.03, which is 30x bigger than what we want
+
+- The speed up is around 2.7x times. We prefer using threads in here since it has less overhead cost and more fit on task that memory-heavy rather than compute-heavy. Our task in here fit with these reasons since we use numpy (Already computation-optimized). Besides, this task is less affected by GIL, which be another reason why 'threads' better
+
+- The speed up between estimate_pi and xgboost grid search are quite similar, which is around 2.5x. One of probable reason why it's similar is because each subtask has the same level of independence on both task (estiamte_pi and xgboost grid search). 
 
 
 ### Question 7: Bootstrap Confidence Interval for Test RMSE (12 points)
@@ -140,14 +783,63 @@ assumptions. Each resample is independent, making it naturally parallel.
 2. Predicts with the best XGBoost model
 3. Returns the RMSE on the resample (log scale)
 
+```{python}
+def boot_rmse(idx):
+    X_b = X_test.iloc[idx]
+    y_b = y_test.iloc[idx]
+
+    y_pred_b = best_xgb.predict(X_b)
+    return np.sqrt(mean_squared_error(y_b, y_pred_b))
+
+```
+
 **7b.** (4 points) Generate 1,000 bootstrap index arrays using a fixed random seed, run
 `boot_rmse` serially, and compute the 95% percentile bootstrap CI for test RMSE.
 Time the computation.
+
+```{python}
+B = 1000
+rng = np.random.default_rng(123)
+n_test = len(y_test)
+
+boot_indices = [rng.integers(0, n_test, size=n_test) for _ in range(B)]
+
+t0 = time.perf_counter()
+rmse_boot_serial = np.array([boot_rmse(idx) for idx in boot_indices])
+t1 = time.perf_counter()
+
+ci_serial = np.percentile(rmse_boot_serial, [2.5, 97.5])
+serial_time = t1 - t0
+
+print("Serial 95% bootstrap CI:", ci_serial)
+print(f"Serial time: {serial_time}s")
+```
+
 
 
 **7c.** (4 points) Run the same 1,000 bootstrap resamples in parallel with `Parallel(n_jobs=4, prefer="threads")`.
 Compare the CI to 7b and report speedup. Why is `prefer="threads"` important here, what happens if you use the default process backend instead? Do the serial and parallel CIs agree? Should they, given that both use the same pre-generated index arrays?
 
+```{python}
+t0 = time.perf_counter()
+rmse_boot_parallel = Parallel(n_jobs=4, prefer='threads')(delayed(boot_rmse)(idx) for idx in boot_indices)
+t1 = time.perf_counter()
 
+rmse_boot_parallel = np.array(rmse_boot_parallel)
+ci_parallel = np.percentile(rmse_boot_parallel, [2.5, 97.5])
+parallel_time = t1 - t0
 
+print("Parallel 95% bootstrap CI:", ci_parallel)
+print("Parallel time:", parallel_time)
+print("Speedup:", serial_time / parallel_time)
+print("Same bootstrap RMSEs:", np.allclose(rmse_boot_serial, rmse_boot_parallel))
 
+```
+
+Summary:
+
+- As we can see, since we use the same bootstrap indices, the results from Serial and Parallel. It lead both, serial and parallel, has the same exact CI. Notice that this should be the case since predict() on xgboost doesn't contain random given the X_test.
+
+- The speed up we get here is aroudn 1.1x
+
+- There are some reasons why we prefer 'threads' in task. First, since threads share memory and all jobs reuse the same fitted XGBoost model and same test data, we avoid overhead cost of copying and serializing large Python objects. Further, each boostrap job is small
