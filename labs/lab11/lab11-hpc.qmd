@@ -67,6 +67,9 @@ squeue -u $USER       # your jobs only
 ```
 
 *Paste the output of `sinfo` here.*
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+jsc370       up   infinite      1    mix squid01
+jsc370       up   infinite     26   idle coral[01-08],prawn[01-12],squid[02-07]
 
 **1b.** Check how many CPU cores are available right now and what Python version is installed:
 
@@ -77,6 +80,10 @@ nproc              # cores on the login node (don't run compute-heavy work here!
 ```
 
 *Paste the output here.*
+
+Python 3.13.7
+/local/bin/python3
+48
 
 **1c.** Make a working directory for this lab on the cluster:
 
@@ -137,6 +144,25 @@ cat lab11_*.out
 ```
 
 *Paste the output here. How many CPU cores does the compute node report? Is it different from the 1 core you requested?*
+=== System Info from Compute Node ===
+Hostname:       squid01
+Python version: 3.13.7 (main, Sep  2 2025, 16:35:01) [GCC 13.3.0]
+OS:             Linux-6.8.0-90-generic-x86_64-with-glibc2.39
+CPU cores:      24
+SLURM job ID:   203127
+SLURM node:     squid01
+CPUs allocated: 1
+=== System Info from Compute Node ===
+Hostname:       squid01
+Python version: 3.13.7 (main, Sep  2 2025, 16:35:01) [GCC 13.3.0]
+OS:             Linux-6.8.0-90-generic-x86_64-with-glibc2.39
+CPU cores:      24
+SLURM job ID:   203129
+SLURM node:     squid01
+CPUs allocated: 1
+
+
+Yes, our program use 1 CPU cores as we requested on lab11.sh
 
 ---
 
@@ -307,10 +333,12 @@ cat flu_4core_*.out
 
 | Script | Cores requested | Serial time (s) | Parallel time (s) | Speedup |
 |--------|----------------|----------------|------------------|---------|
-| `flu_1core.sh` | 1 | | | |
-| `flu_4core.sh` | 4 | | | |
+| `flu_1core.sh` | 1 | 3.03s| 2.58s | 1.18x | 
+| `flu_4core.sh` | 4 | 2.74s | 0.92s | 2.99x |
 
 *Is the speedup on the cluster similar to what you observed on your laptop in Lab 10? What factors might cause differences?*
+
+No, it's much slower with only 3x while in local, it can get into 30x speed up. One of the factor is because different type Hardware (CPU/Processor) which lead to different baseline time. Second, we have different task, which may affect the degree of independence of subtasks. Besides, we may have different overhead cost of parallelization for local and cluster. 
 
 ---
 
@@ -447,13 +475,16 @@ cat flu_sweep_*_4.out   # 100% vaccination
 
 | Task ID | Vaccination | Mean deceased (step 20) | Std |
 |---------|-------------|------------------------|-----|
-| 0 | 0% (0/900) | | |
-| 1 | 25% (225/900) | | |
-| 2 | 50% (450/900) | | |
-| 3 | 75% (675/900) | | |
-| 4 | 100% (900/900) | | |
+| 0 | 0% (0/900) | 45.85 | 7.2 |
+| 1 | 25% (225/900) | 44.48 | 6.8 |
+| 2 | 50% (450/900) | 40.67 | 6.45 |
+| 3 | 75% (675/900) | 15.59 | 6.37 |
+| 4 | 100% (900/900) | 1.21 | 1.1 |
 
 *Describe the trend. At what vaccination level do deaths drop most sharply?*
+As the vaccination rate increase, the mean_decesased decrease but the standard deviation fairly same (Except for 100% Vaccination). 
+
+In term of absolute unit, the most death drop is from 50% into 75% (25 units). However, in term of percentages, the most significant death drop is between 75% - 100% (Drop by 90%)
 
 ---
 
@@ -515,12 +546,13 @@ print("Saved flu_cluster_results.png")
 ```
 
 *Include the plot in your submission (paste the image or attach the file). What does the plot reveal about herd immunity?*
-
+The impact of additional unit of vaccination rate is not linear, with the impact is hgiher as the level is higher (Percentagely). It's because when the vaccination rate is higher, then overtime, the infected person become exponentially less which makes the overall spreading rate decrease too. This is called about herd immunity where most of the person is vaccinated, non-vaccinated person has less source of infection (reducing risk of infected on non-vaccinated person)
 ---
 
 ## Problem 6: Interactive session (bonus)
 
 Sometimes you want to test code interactively on a compute node before submitting a batch job. SLURM's `srun` command opens an interactive shell on a node.
+
 
 **6a.** Request an interactive session on the `jsc370` partition with 2 cores for 30 minutes:
 
@@ -537,7 +569,11 @@ nproc
 python3 -c "import multiprocessing; print(multiprocessing.cpu_count())"
 ```
 
+
 *Paste the output. Does `nproc` match `--cpus-per-task=2` or the physical core count of the node?*
+squid01
+2
+24
 
 **6b.** Run a quick parallel test directly in the interactive session:
 
@@ -554,6 +590,7 @@ print(f'Done in {time.time()-t0:.2f}s, sum={sum(r)}')
 ```
 
 *Paste the output.*
+Done in 0.26s, sum=333332833333500000
 
 Exit the interactive session when done:
 
@@ -569,10 +606,20 @@ Answer the following questions in your own words:
 
 1. What is the role of SLURM on the teach.cs cluster? Why can't you just SSH directly to a compute node?
 
+
 2. What is a SLURM job array, and when is it more convenient than writing separate batch scripts?
 
+
 3. On the cluster you requested `--cpus-per-task=4`. On your laptop in Lab 10 you also used 4 workers. Was the speedup similar? What hardware differences might explain any gap?
+
 
 4. You ran 100 simulations × 5 vaccination levels = 500 simulations total. Roughly how long would this take serially on a single core (extrapolate from your timing results)? How long did it take with the job array?
 
 *Your answers here.*
+1. SLURM is the cluster’s resource manager and scheduler. Its role is to decide who gets access to compute nodes, how much CPU and memory each job can use, and when jobs should run so that many users can share the cluster fairly and safely. We can't just SSH directly to a compute node because compute nodes shouldn't be used freely like personal machines. Without SLURM as manager and scheduler, it's harder to enforce resource limit and users can interfere with each other's jobs. 
+
+2. A SLURM job array is a way to submit many similar jobs at once using one batch script. Each task in the array gets its own array index, which can be used to choose a different parameter, input file, or random seed. It become more convenient if each jobs has similar structure and only differs in small parameter or input value (That can be made into a list)
+
+3. It's very different, with speedup in local is around 20x - 40x and speedup in cluster is only around 3x. Hardware difference, such as RAM, memory, CPU, may explain the gap since it can lead to different baseline time for Serial and Parallel
+
+4. In 3b, we can see that a run with 1 processor takes around 3s. Since we ran 5 similar tasks in SLURM array, then by extrapolating, it takes around 15s to run all the tasks serially. For job array, since all the tasks run simultaneously, it only takes around 3s.
